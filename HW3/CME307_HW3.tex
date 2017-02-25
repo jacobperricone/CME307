@@ -1,0 +1,619 @@
+\documentclass{article} % For LaTeX2e
+\usepackage{cos424,times}
+\usepackage{hyperref}
+\usepackage{url}
+\usepackage{graphicx}
+\usepackage{enumitem}
+\usepackage{wrapfig}
+% For LaTeX2e
+\usepackage{cos424,times}
+\usepackage{hyperref}
+\usepackage{url}
+\usepackage{graphicx}
+\usepackage{wrapfig}
+\usepackage{amsmath}
+\usepackage{enumitem}
+\usepackage{booktabs}
+% packages that allow mathematical formatting
+\usepackage{setspace}
+% package that allows you to change spacing
+\usepackage{comment}
+% text become 1.5 spaced
+
+\usepackage{fullpage}
+% package that specifies normal margins
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{listings}
+\usepackage{subfig}
+\usepackage{bbm}
+\usepackage{multirow}
+ \usepackage[ruled,vlined]{algorithm2e}
+\usepackage{algpseudocode}
+\usepackage{booktabs}
+
+\newenvironment{strategy}[1][H]
+  { \renewcommand{\algorithmcfname}{}% Update algorithm name
+   \begin{algorithm}[#1]%
+  }{\end{algorithm}}
+
+
+\title{CME307 HW2}
+
+
+\author{
+Jacob Perricone\\
+Stanford University\\
+\texttt{jacobp2@stanford.edu} \\
+}
+
+\newcommand{\fix}{\marginpar{FIX}}
+
+\usepackage{xcolor}
+%\usepackage{mathbb}
+\usepackage{sympytex}
+\usepackage{color}
+\usepackage{sectsty}
+\sectionfont{\LARGE\underline}
+\subsectionfont{\underline\normalsize}
+\subsubsectionfont{\underline\normalsize\itshape}
+
+
+\definecolor{mygreen}{rgb}{0,0.6,0}
+\definecolor{mygray}{rgb}{0.5,0.5,0.5}
+\definecolor{mymauve}{rgb}{0.58,0,0.82}
+
+\lstset{ %
+backgroundcolor=\color{white},   % choose the background color; you must add \usepackage{color} or \usepackage{xcolor}
+basicstyle=\footnotesize,
+flexiblecolumns=true      % the size of the fonts that are used for the code
+breakatwhitespace=false,         % sets if automatic breaks should only happen at whitespace
+breaklines=true,                 % sets automatic line breaking
+captionpos=b,                    % sets the caption-position to bottom
+commentstyle=\color{mygreen},    % comment style
+deletekeywords={...},            % if you want to delete keywords from the given language
+    escapeinside={\%*}{*)},          % if you want to add LaTeX within your code
+    extendedchars=true,              % lets you use non-ASCII characters; for 8-bits encodings only, does not work with UTF-8
+    frame=single,                    % adds a frame around the code
+    keepspaces=true,                 % keeps spaces in text, useful for keeping indentation of code (possibly needs columns=flexible)
+    keywordstyle=\color{blue},       % keyword style
+    language=Matlab,                 % the language of the code
+    otherkeywords={*,...},           % if you want to add more keywords to the set
+    numbers=left,                    % where to put the line-numbers; possible values are (none, left, right)
+    numbersep=5pt,                   % how far the line-numbers are from the code
+    numberstyle=\tiny\color{mygray}, % the style that is used for the line-numbers
+    %rulecolor=\color{black},         % if not set, the frame-color may be changed on line-breaks within not-black text (e.g. comments (green here))
+    showspaces=false,                % show spaces everywhere adding particular underscores; it overrides 'showstringspaces'
+    showstringspaces=false,          % underline spaces within strings only
+    showtabs=false,                  % show tabs within strings adding particular underscores
+    stepnumber=2,                    % the step between two line-numbers. If it's 1, each line will be numbered
+    stringstyle=\color{mymauve},     % string literal style
+    tabsize=2,                     % sets default tabsize to 2 spaces
+    title=\lstname,
+    % Single frame around code                               % show the filename of files included with \lstinputlisting; also try caption instead of title
+    }
+    
+    \newcommand{\E}{{\mbox {\bf E}}}
+    \newcommand{\me}{\mathrm{e}}
+    \newcommand{\I}{\mathbbm{1}}
+    \newcommand{\R}{\mathbbm{R}}
+    \newcommand{\Q}{\mathbbm{Q}}
+    \newcommand{\Z}{\mathbb{Z}}
+    \newcommand{\N}{\operatorname{N}}
+    \newcommand{\C}{\operatorname{C}}
+    \newcommand{\f}[1][]{\hat{#1}}
+    \newcommand{\rev}[1]{\frac{1}{#1}}
+    % \newcommand{+binomial}[3][2]{(#2 + #3)^#1}
+    \newcommand{\prev}[1]{#1_{t-1}}
+    \newcommand{\nex}[1]{#1_{t+1}}
+    \newcommand{\now}[1]{#1_t}
+    \newcommand{\ttwo}[1]{\now{#1}^{2}}
+    \newcommand*{\dprime}{^{\prime\prime}\mkern-1.2mu}
+    \newcommand*{\tprime}{^{\prime\prime\prime}\mkern-1.2mu}
+    
+    \newcommand{\ptwo}[1]{\prev{#1^{2}}}
+    \newcommand{\h}[1]{\expandafter\hat#1}
+    \newcommand{\ti}[1]{\widetilde{#1}}
+    \newcommand{\B}[1]{\mathbf#1}
+    \newcommand{\ii}[1]{\mathit#1}
+    \newcommand{\that}[1]{\mathbf{\hat{#1}}}
+    \newcommand{\ttil}[1]{\mathbf{\tilde{#1}}}
+    \newcommand{\new}{\marginpar{NEW}}
+    %\usepackage[active]{srcltx}
+%\usepackage{fullpage}
+%\usepackage[dvips]{graphicx}
+%\DeclareGraphicsExtensions{.eps} \graphicspath{{images/}}
+\linespread{1.3}
+\parskip 1ex  \parindent 0ex
+%\voffset -15mm
+\oddsidemargin -0mm \topmargin 0mm \headheight 0pt \headsep 0pt
+\textwidth 6.5in \textheight 9in %\marginparsep 0pt \marginparwidth 0pt
+\renewcommand{\baselinestretch}{1.3}
+\newtheorem{prop}{Proposition}
+\newtheorem{Cor}{Corollary}
+\newtheorem{lema}{Lemma}
+\renewcommand\a{{\bf a}}
+\renewcommand\b{{\bf b}}
+\newcommand\x{{\bf x}}
+
+\begin{document}
+\pagestyle{empty}
+\def \NATUR{ I \hspace*{-0.8ex} N}
+\def \REALES{ I \hspace*{-0.8ex} R}
+\renewcommand{\labelenumi}{\alph{enumi})}
+\renewcommand{\labelenumii}{\roman{enumii})}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\hspace*{-4mm} {\includegraphics[bb=0 0 482 723, height=2.3cm]{}}
+\hspace{-6mm}
+\begin{tabular}{lcr}
+CME 307 / MS\&E 311 & \hspace{3in} & Winter 2016-2017 \\ Optimization & & Feb 10, 2017 \\
+Prof. Yinyu Ye & & Due Thursday Feb 23 5pm
+\end{tabular}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\bigskip
+
+\begin{center}
+{\large \bf Homework Assignment 3 \\  Discuss Session Friday Feb 24 in Class}
+\end{center}
+%\vfill
+
+%{}
+
+\bigskip
+
+{\textbf{Reading.}} Read selected sections in Luenberger and Ye's {\sl Linear
+and Nonlinear Programming Fourth Edition} Chapters 3, 8, 9 and 10.
+
+{\textbf{Solve the following problems:}}
+\begin{enumerate}
+\item[1.] 8.6 in text book L\&Y.
+
+
+
+Consider 
+\[
+x_{k+1}= \frac{1}{2}[ x_k + \frac{a}{x_k}]
+\]
+Assuming this sequence converges, what does it converge two and what is the order of convergence. 
+
+\rule{\textwidth}{1pt}
+
+Since the sequence converges we have that $\lim_{k \to \infty} |x_{k+1} - x_{k}| = 0$. Thus we have
+\begin{equation*}
+\begin{aligned}
+\lim_{k \to \infty} |x_{k+1} - x_{k} | &= 0 \\ 
+\lim_{k \to \infty}| \frac{1}{2}[ \frac{ a  - x_k^2}{x_k}] | = 0 \\ 
+\lim_{k \to \infty}| [ \frac{ a -  x_k^2}{x_k}] | = 0 \\ 
+\end{aligned}
+\end{equation*}
+So the $\lim_{x_k \to \infty} = \pm \sqrt{a}$, where $a > 0$. 
+
+Let $g(x) = \frac{1}{2} x - \frac{a}{2x}$. Then $g(x^{*}) = x^{*}$.  Note
+that $g'(x) = \frac{1}{2} - \frac{a}{2x^2}, g\dprime(x) = \frac{1}{x^3}$. Also note that
+$g'(x^{*}) = 0$, and $g\prime(x^{*}) = \frac{1}{\pm \sqrt{a}}$, since $x^* = \pm \sqrt{a}$
+Taylor expanding $g(x)$
+
+\[
+g(x_k) = g(x^{*}) - g'(x^{*})(x_k - x^{*}) + \frac{(x_k - x^*)^2}{2} f\dprime (\psi)
+\]
+
+where $\psi$ is in the region $[x_k, x^{*}]$. Now since $g'(x^{*}) = 0$. we have 
+
+\[
+g(x_k) = g(x^{*}) +  \frac{(x_k - x^*)^2}{2} f\dprime (\psi)
+\]
+Letting the successive error $e_k = x_k - x^{*}$. we have
+
+\[
+e_{k+1} = g(x_{k+1}) - x^{*} =  \frac{(e_k^2)^2}{2} f\dprime (\psi)
+\]
+
+
+
+Each successive error term is proportional to the square of the previous error, thus the method has quadratic convergence.
+
+\rule{\textwidth}{1pt}
+
+
+\item[2.] Prove Lemma 1 of Lecture Note 11. (Hint: using the Taylor Expansion Theorem.)
+
+\rule{\textwidth}{1pt}
+
+I am going to prove this slightly differently than the typical taylor expansion proof. First note that if $f(x)$ is $\beta$-Lipschitz, we have
+
+
+\[
+|| \nabla f(x) - \nabla f(y) || \leq \beta ||x - y ||
+\]
+For $\beta > 0$. Now let $z(t) = f(y + t(x -y))$ so that $z(0) = f(y)$ and $z(1) = f(x)$. Furthermore note that
+\[
+g'(t)|_{t = 0 } = \nabla f(y + t(x - y))^{T} (x - y)
+\]
+
+and that $\int_{0}^{1} g'(t) dt = g(1) - g(0)$. Then it follows that 
+\begin{equation*}
+\begin{aligned}
+|f(x) - f(y) - \nabla f(y)^T (x - y) | &= | \int_{0}^{1} g'(t) dt - \nabla f(y)^T (x -y)|   \\ 
+&= | \int_{0}^{1} \nabla f(y + t(x - y))^T (x - y) dt - \nabla f(y)^T (x - y) | \\ 
+&\leq \int_{0}^1 | \nabla f(y + t(x - y))^T (x - y) - \nabla f(y)^T (x - y) |dt  \\ 
+&\leq \int_{0}^1 || \nabla f(y + t(x - y)) - \nabla f(y) || ||x - y|| dt   \mbox{    by Cauchy Schwartz } \\ 
+&\leq \int_{0}^1 \beta t ||x - y||^2 dt   \mbox{    by $\beta$- Lipschitz } \\ 
+&\leq  \beta  \frac{||x - y||^2}{2} dt  
+\end{aligned}
+\end{equation*}
+
+and thus the proof is complete. 
+
+\rule{\textwidth}{1pt}
+\item[3.] Using the simplex method to solve 3.10 in text book L\&Y, assuming that you start from corner origin (there is two typos in
+the text book where: ``minimize'' should be :maximize'' and ``$x_1\ge 0$'' should be ``$x_i\ge 0$''.
+
+
+\rule{\textwidth}{1pt}
+
+
+We have the problem 
+
+\begin{equation*}
+\begin{aligned}
+\mbox{maximize } &2x_1 + 4x_2+ x_3 + x_4 \\ 
+\mbox{ such that: } & x_1 + 3x_2 + x_4 \leq 4 \\ 
+& 2x_1 + x_2 \leq 3 \\ 
+& x_2 + 4x_3 + x_4 \leq 3 \\ 
+& x_i \geq 0 
+\end{aligned}
+\end{equation*}
+
+Introducing the slack variables $w_1,w_2, w_3$ we have
+
+\begin{equation*}
+\begin{aligned}
+\mbox{maximize } &2x_1 + 4x_2+ x_3 + x_4 \\ 
+\mbox{ such that: } & \\ 
+w_1 &= 4 - x_1 - 3 x_2 - x_4 \\ 
+w_2 &= 3 - 2x_1 - x_2 \\
+w_3 &= 3 - x_2 - 4x_3 - x_4  \\ 
+x_i, w_i \geq 0
+\end{aligned}
+\end{equation*}
+
+Now not our basic set $B = \{ w_1, w_2, w_3 \}$ is feasible. Noticing that the objective increases most rapidly with $x_2$, we pivot $x_2$ into the basis and $w_1$ out of the basis, yielding $B = \{ x_2, w_2, w_3 \}, NB = \{w_1, x_1, x_3, x_4 \}$.
+\begin{equation*}
+\begin{aligned}
+\mbox{maximize } & \frac{16}{3}  + \frac{1}{3} x_1 - \frac{4}{3}w_1+ x_3 - \frac{1}{3} x_4 \\ 
+\mbox{ such that: } & \\ 
+x_2 &= \frac{1}{3}[ 4 -  x_1 -  w_1 -  x_4] \\ 
+w_2 &= \frac{1}{3} [ 5 - 5x_1  + w_1  + x_4]  \\ 
+w_3 &= \frac{1}{3} [ 5 + x_1 + w_1  - 12 x_3 - 2 w_4]  \\ 
+x_i, w_i \geq 0
+\end{aligned}
+\end{equation*}
+
+Now pivoting $x_3$ into the basis and $w_3$ out of the basis $ B = \{x_2, w_2, w_3 \}, NB = \{x_1, x_3, x_4, w_1 \}$. 
+
+\begin{equation*}
+\begin{aligned}
+\mbox{maximize } & 5.75  + .75 x_1 - \frac{5}{4}w_1 - .25 w_3 - .5 x_4 \\ 
+\mbox{ such that: } & \\ 
+x_2 &= \frac{1}{3}[ 4 -  x_1 -  w_1 -  x_4] \\ 
+w_2 &= \frac{1}{3} [ 5 - 5x_1  + w_1  + x_4]  \\ 
+x_3 &= \frac{1}{12} [ 5 + x_1 + w_1  - .25 w_3 -  2 w_4]  \\ 
+x_i, w_i \geq 0
+\end{aligned}
+\end{equation*}
+
+Now, pivoting $x_1$ into the basis and $w_2$ out of the basis so $B= \{x_1, x_2, x_3 \}, NB = \{w_1, w_2, w_3, x_4\}$
+\begin{equation*}
+\begin{aligned}
+\mbox{maximize } & 6.5  - 4.5 w_1 - 1.1w_1 - .25 w_3 - .35 x_4 \\ 
+\mbox{ such that: } & \\ 
+x_2 &= \frac{1}{10}[ 10 + 2 w_2 -  4 w_1 -  x_4] \\ 
+x_1 &= \frac{1}{10} [10  - 6 w_2 + 2 w_1  + 2x_4]  \\ 
+x_3 &= \frac{1}{20} [10 - w_2 + 2 w_1  - 5 w_3 -  3 w_4]  \\ 
+x_i, w_i \geq 0
+\end{aligned}
+\end{equation*}
+
+This is optimal, so the optimal value is $6.5$, with $x_1 = 1, x_2 = 1, x_3 = .5, x_4 = 0$. 
+
+
+
+\rule{\textwidth}{1pt}
+
+
+
+
+
+\item[4.] In Logistic Regression, we like to determine $x_0$ and $\x$ to maximize
+\[
+\left(\prod_{i,c_i=1}\frac{1}{1+\exp(-\a_i^T\x-x_0)}\right)
+\left(\prod_{i,c_i=-1}\frac{1}{1+\exp(\a_i^T\x+x_0)}\right).
+\]
+which is equivalent to maximize the log-likelihood probability
+\[
+-\sum_{i,c_i=1}\log\left(1+\exp(-\a_i^T\x-x_0)\right)-\sum_{i,c_i=-1}\log\left(1+\exp(\a_i^T\x+x_0)\right).
+\]
+Or to minimize the log-logistic-loss
+\[
+\sum_{i,c_i=1}\log\left(1+\exp(-\a_i^T\x-x_0)\right)+\sum_{i,c_i=-1}\log\left(1+\exp(\a_i^T\x+x_0)\right).
+\]
+\begin{enumerate}
+\item[(a)] Write down the gradient vector function of the log-logistic-loss function.
+
+\rule{\textwidth}{1pt}
+
+Let $f(x,x_0)$ be the log-logistic loss function. 
+\begin{equation*}
+\begin{aligned}
+\nabla f(\x,x_0)_{x_j} &= \sum_{i,c_i = 1} \frac{-a_{ij} \exp[ -\a_i^T \x - x_0 ]}{ 1 + \exp[ -\a_i^T \x - x_0 ]} + \sum_{i, c_i = -1} \frac{a_{ij} \exp[ \a_i^T \x + x_0 ]}{ 1 + \exp[ \a_i^T \x + x_0 ]}  \mbox{  } \forall j \\
+\nabla f(\x,x_0)_{x_0} &= \sum_{i,c_i = 1} \frac{- \exp[ -\a_i^T \x - x_0 ]}{ 1 + \exp[ -\a_i^T \x - x_0 ]} + \sum_{i, c_i = -1} \frac{ \exp[ \a_i^T \x + x_0 ]}{ 1 + \exp[ \a_i^T \x + x_0 ]} \\  
+\end{aligned}
+\end{equation*}
+
+
+\rule{\textwidth}{1pt}
+
+\item[(b)] Consider the specific problem described in question (b) of Problem 6 in HW2, and find the solution by
+Logistic regression using the KKT conditions. 
+
+
+\end{enumerate}
+
+\item[5] (Computation Team Work) Use the steepest descent, the accelerated steepest descent, the conjugate direction, and the BB methods to numerically solve the problem in (4.b) and compare their convergence speeds.
+
+\item[6.] Questions (a) to (c) of 8.24 in the text book L\&Y. (Bonus Question: In this method, we fist take the standard $1/\beta$ step-size. If some coordinate in the new iterate become negative, then we take a smaller step-size such that the iterate remain non-negative.  What is the convergence speed of the method?)
+
+
+
+
+Consider a problem of the form 
+
+\begin{equation*}
+\begin{aligned}
+\mbox{minimize } & f(x) \\ 
+\mbox{such that } & x \geq 0
+\end{aligned}
+\end{equation*}
+
+At a give point $x = (x_1, \hdots, x_n).$ the direction $d = (d_1, \hdots, d_n)$ is determined from the gradient vector $\nabla f(x)^T = g = (g_1, \hdots, g_n)$ by 
+
+\begin{gather*}
+d_i = \begin{cases} -g_i \mbox{ if } x_i > 0 \mbox{ or} g_i < 0 \\ 
+0 \mbox {if } x_i = 0 \mbox{ and } g_i \geq 0 \end{cases}
+\end{gather*}
+
+\begin{enumerate}
+
+\item  What are the first order conditions for a minimum of the problem. 
+
+
+\rule{\textwidth}{1pt}
+
+
+The lagrangian of the problem is 
+
+\[
+L(x, \lambda) = f(x) - \lambda^T x 
+\]
+Thus the KKT conditions are
+
+\begin{equation*}
+\begin{aligned}
+(1) & \nabla f(x) -  \lambda = 0 \\ 
+(2) & \lambda_i  \geq 0 \mbox{    } \forall i \\ 
+(3) & \lambda_i x_i = 0 \mbox{   } \forall i 
+\end{aligned}
+\end{equation*}
+
+\rule{\textwidth}{1pt}
+
+
+\item Show that d, as determined by the algorithm, is zero only at a point that satisfies the first order conditions. 
+\rule{\textwidth}{1pt}
+
+
+
+We have that $d_i = 0$ when $x_i = 0$ and $g_i \geq 0$. From the KKT conditions we know that if $x_i = 0$ for all $i$, we have condition (3) satisfied no matter $\lambda$. Furthermore, since $g_i \geq 0$, we have that $\nabla f(x) = \lambda  \geq 0, \forall i$. Thus condition (1) and (2), are satisfied. Therefore if $d_i = 0$, the KKT conditions are satisfied.  Now $d_i \neq 0$, then  $x_i \neq 0$ and $g_i < 0$ it is obvious the KKT conditions do not hold. Assume $d_i < 0$ and $x_i \neq 0$, then we have that $\nabla f(x)_i < 0$, since $\nabla f(x)_i = \lambda_i$, we must have that $\lambda_i < 0$, which violates the second KKT condition. Futhermore since $\lambda_i x_i = 0$, for condition (3), it follows that $\lambda_i$ must equal zero, which is a contradiction. 
+
+\rule{\textwidth}{1pt}
+
+
+
+\item Show that if $d \neq 0$, it is possible to decrease the value of f by movement along d. 
+
+\rule{\textwidth}{1pt}
+
+One thing to notice is that this is projected gradient descent. Let $\Pi_{C}(x) $ be the projection operator onto a set $C$. This problem reduces to projected gradient descent onto the non-negative orthant. To show you this, lets start the algorithm at some $x_0$. We have that
+
+\[
+x_{k+1}= \Pi_{\R_n^{+}}(x_k - \alpha g)
+\]
+Now since the nonnegative orthant is closed and convex, the projection exists and is unique. In particular, for some $x_i$ the projection onto the non-negative orthant is $ \Pi_{\R_n^{+}}(x_i) = \max(x_i, 0)$. Lets see the iteration procedure in this light.
+
+\begin{equation*}
+\begin{aligned}
+ x_{k+1} &= \Pi_{\R_n^{+}}(x_k - \alpha_k g)  \\ 
+ &= \max(x_k - \alpha g, 0)
+\end{aligned}
+\end{equation*}
+Now fix an i, we see that $x_{k+1}^{i} = \max(x_k^{i} - \alpha g_i, 0)$. It is obvious that if both $x_k^i =0$ and $g_i \geq 0$, the update is just zero. Now for the case $x_{k+1}^{i} > 0 || g_i < 0$. There are three cases, either $x_{k}^{i} > 0$, $g_i < 0$ or $x_{k+1}^{i} \& g_i < 0$.Notice if $g_i$ in the kth iteration is larger than $x_{k}^{i}$, we can scale $\alpha$, so that $\alpha g_i < x_k^{i} \forall i$. Assume only that $x_k^i > 0$. If $g_i > 0$, the function increases in x, thus any step we take will be in a direction of steepest decent, i.e. 
+\begin{equation*}
+\begin{aligned}
+x_{k+1} &=  \max(x_k^i - \alpha g_i, 0) 
+&= x_k^{i} - \alpha g_i \mbox{   for an appropriately scaled alpha }
+\end{aligned}
+\end{equation*}
+Now since $g_i > 0$, then $f(x_{k+1}) < f(x_k)$. If $g_i =0$, then $d_i = 0$, and $f(x_{k+1}^i) = f(x_k)$. Now if $g_i < 0$, we have that the gradient is increasing with $x_i$. Furthermore $x_k^i - \alpha g_i$ will always be greater than zero, so this is standard steepest descent. With this update, it follows that $f(x_{k+1}) > f(x_k)$, since $g_i < 0$. Now fix the $g_i < 0$. For all $x_k^i$ we have that $x_{k+1}^{i} = x_{k}^i - \alpha g_i > x_k^{i}$. Since $g_i < 0$, it follows that $f(x_{k+1})^{i} > f(x_k^i)$. Therefore, if $d \neq 0$, it is possible to find an $x$ in the direction of d that decreases the value f. 
+
+
+\rule{\textwidth}{1pt}
+\end{enumerate}
+
+
+
+\item[7.] Consider the problem 8.24 in the text L\&Y, but solve the Barrier problem
+\[\min_{x>0}\ \phi(\x):=f(\x)-\mu\sum_{j=1}^n\ln(x_j)\]
+where $\mu$ is a small positive constant.
+\begin{itemize}
+\item[(a)] What are the first-order necessary conditions for the minimizer of $\phi(\x)$?
+
+\rule{\textwidth}{1pt}
+First notice that the log penalty constraint prevents the minimization from ever going negative, thus there is no need for a lagrangian constraint term. The first order necessary conditions are thus 
+
+\begin{equation*}
+\begin{aligned}
+\nabla_x \phi(x) &= 0 \\ 
+\nabla_x f(x) - \mu \mbox{diag}(x)^{-1} \B{e} &= 0
+\end{aligned}
+\end{equation*}
+
+
+\rule{\textwidth}{1pt}
+
+\item[(b)] Let $f(\x)=\frac{1}{2}\|A\x-\b\|^2$. Then develop the standard steepest gradient iterative process to find a KKT solution.
+
+\rule{\textwidth}{1pt}
+The gradient of $\phi(x)$ becomes 
+
+\[
+\nabla_x \phi(\x) = A^T(A\x - b) - \mu \mbox{diag}(\x)^{-1} \B{e}
+\]
+
+Thus the steepest descent algorithm is as follows 
+
+ \begin{strategy}
+\caption{Steepest descent}
+\begin{algorithmic}[1]
+\item initialize $x_0, \alpha_0, \mu$
+\item $\x_{k+1} = \x_k - \alpha_k(A^T(A\x - b) - \mu \mbox{diag}(\x)^{-1} \B{e})$
+\end{algorithmic}
+\end{strategy}
+
+where $\alpha_k, \x_k > 0$. 
+
+\rule{\textwidth}{1pt}
+
+\item[(c)] Again let $f(\x)=\frac{1}{2}\|A\x-\b\|^2$, and at the $k$ step consider the (affine) scaled gradient vector
+\[(X^k)^2\nabla\phi(\x^k),\]
+where $X^k$ is the diagonal matrix of $k$th iterate $\x^k(>0)$. Let us generate the next iterate by
+\[\x^{k+1}=\x^k-\alpha^k(X^k)^2\nabla\phi(\x^k),\]
+for some stepsize $\alpha^k$. How is this process different from (b)
+
+\rule{\textwidth}{1pt}
+This is SDM with affine scaling, an interior point method that ensures that the SDM alogrithm can continue to take large steps even when the $x_k$ is close to the feasible regions boundary. It does this by doing gradient descent in a re-scaled version of the problem and then rescaling back to the original problem. In the case above, not only does it eliminate the need to take the inverse of the matrix (which could lead to instability if the values in the diagonal are small), it also keeps the algorithm from staying strictly within the feasible region.
+
+\rule{\textwidth}{1pt}
+
+
+\item[(d)] (Computation Team Work) Generate some random data and solve them with $\mu=0$ and $\mu=10^{-4}$, and observe any possible difference between methods (b) and (c).
+\end{itemize}
+
+\item[8.] Now consider the problem:
+\[\min\ f(X)\quad \mbox{s.t.}\quad X\succeq 0,\]
+and its Barrier problem
+\[\min_{X\succ 0}\ \phi(X):=f(X)-\mu\ln\det(X)\]
+where $\mu$ is a small positive constant.
+
+\begin{itemize}
+\item[(a)] What are the (symmetric) gradient matrix and the first-order necessary conditions for the minimizer of $\phi(X)$?
+
+\rule{\textwidth}{1pt}
+Since the log of the determinent functions as a barrier ensuring that that the matrix $X$ is always positive definite (if $det(X) <= 0$, the log blows up to negative infinity). Taking the gradient with respect to $\phi(\x)$
+\[
+\nabla_x \phi(\x) = \nabla_x f(X) - \mu (X^{-1}) 
+\]
+Thus the first order conditions are 
+
+\[
+\nabla_x f(X) = \mu X^{-1}
+\]
+$X \succeq 0$
+
+
+\rule{\textwidth}{1pt}
+
+\item[(b)] Let $f(X)=\frac{1}{2}\|{\cal A}X-\b\|^2$, where
+\[{\cal A}X=\left(\begin{array}{c}
+                           A_1\bullet X\\
+                           ...\\
+                           A_m\bullet X
+                           \end{array}\right).\]
+for some symmetric data matrices $A_1$,...,$A_m$, and data vector $\b$.
+Then develop the standard steepest gradient iterative process to find a KKT solution.
+
+
+\rule{\textwidth}{1pt}
+
+
+We have that $\nabla f(X) = {\cal A^T} ({\cal A} X - b)$. Thus 
+
+\[
+\nabla \phi(\x) =  {\cal A}^{T} ({\cal A} X - b) - \mu X^{-1}
+\]
+
+The first order conditions are then
+
+\[
+{\cal A}^T ({\cal A} X - b) = \mu X^{-1}
+\]
+$X \succeq 0$. 
+
+So the SDM becomes
+
+ \begin{strategy}
+\caption{Steepest descent SDP }
+\begin{algorithmic}[1]
+\item initialize $x_0, \alpha_0, \mu$
+\item $\x_{k+1} = \x_k - \alpha_k({\cal A^T} ({\cal A} X - b)-  \mu (X^{-1}))$
+\end{algorithmic}
+\end{strategy}
+
+
+
+
+
+
+\rule{\textwidth}{1pt}
+
+
+
+\item[(c)] Again let $f(X)=\frac{1}{2}\|{\cal A}X-\b\|^2$, and at the $k$ step consider the scaled gradient matrix
+\[X^k\nabla\phi(X^k)X^k,\]
+where $X^k\succ 0$ is the $k$th iterate solution matrix. Let us generate the next iterate by
+\[X^{k+1}=X^k-\alpha^kX^k\nabla\phi(X^k)X^k,\]
+for some stepsize $\alpha^k$. What is the difference between the two iterative processes in (b) and (c).
+
+\rule{\textwidth}{1pt}
+
+
+Again, this is a form of affine scaling for SDP cone, where in each step 
+Di n
+
+
+
+\rule{\textwidth}{1pt}
+
+\item[(d)] (Computation Team Work) Apply this method for Sensor Network Localization problems in HW1 and HW2 varying
+with $\mu=0$ to $\mu=10^{-4}$.
+\end{itemize}
+
+\item[9.] (20pts Computation Team Work) 
+All pieces of Computation Team Work stated above, and one more decribed below.
+
+There is a simple nonlinear least squares approach for Sensor Network Localization:
+\begin{equation}\label{snl-nls}
+\begin{array}{lll}
+&\min        & \sum_{(ij)\in N_x}\left(\|\x_i-\x_j\|^2 - d_{ij}^2\right)^2+\sum_{(kj)\in N_a} \left(\|\a_k-\x_j\|^2 - d_{kj}^2\right)^2
+\end{array}
+\end{equation}
+which is an unconstrained nonlinear minimization problem.
+
+Use the SDP solution (which may not accurate) as the initial solution for (\ref{snl-nls}) and apply the Steepest Descent Method for a few number of steps for the two SNL problems in HW1 and HW2, where you can add some noises to the distance measurements. How is the final solution come out after steepest descent? How does the final solution compare with the SDM starting from a random initial solution?
+
+\end{enumerate}
+
+\end{document}

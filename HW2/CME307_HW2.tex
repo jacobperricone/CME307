@@ -1,0 +1,966 @@
+\documentclass{article} % For LaTeX2e
+\usepackage{cos424,times}
+\usepackage{hyperref}
+\usepackage{url}
+\usepackage{graphicx}
+\usepackage{enumitem}
+\usepackage{wrapfig}
+% For LaTeX2e
+\usepackage{cos424,times}
+\usepackage{hyperref}
+\usepackage{url}
+\usepackage{graphicx}
+\usepackage{wrapfig}
+\usepackage{amsmath}
+\usepackage{enumitem}
+\usepackage{booktabs}
+% packages that allow mathematical formatting
+\usepackage{setspace}
+% package that allows you to change spacing
+\usepackage{comment}
+% text become 1.5 spaced
+
+\usepackage{fullpage}
+% package that specifies normal margins
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{listings}
+\usepackage{subfig}
+\usepackage{bbm}
+\usepackage{multirow}
+\usepackage{booktabs}
+
+\title{CME307 HW2}
+
+
+\author{
+Jacob Perricone\\
+Stanford University\\
+\texttt{jacobp2@stanford.edu} \\
+}
+
+\newcommand{\fix}{\marginpar{FIX}}
+
+\usepackage{xcolor}
+%\usepackage{mathbb}
+\usepackage{sympytex}
+\usepackage{color}
+\usepackage{sectsty}
+\sectionfont{\LARGE\underline}
+\subsectionfont{\underline\normalsize}
+\subsubsectionfont{\underline\normalsize\itshape}
+
+
+\definecolor{mygreen}{rgb}{0,0.6,0}
+\definecolor{mygray}{rgb}{0.5,0.5,0.5}
+\definecolor{mymauve}{rgb}{0.58,0,0.82}
+
+\lstset{ %
+backgroundcolor=\color{white},   % choose the background color; you must add \usepackage{color} or \usepackage{xcolor}
+basicstyle=\footnotesize,
+flexiblecolumns=true      % the size of the fonts that are used for the code
+breakatwhitespace=false,         % sets if automatic breaks should only happen at whitespace
+breaklines=true,                 % sets automatic line breaking
+captionpos=b,                    % sets the caption-position to bottom
+commentstyle=\color{mygreen},    % comment style
+deletekeywords={...},            % if you want to delete keywords from the given language
+    escapeinside={\%*}{*)},          % if you want to add LaTeX within your code
+    extendedchars=true,              % lets you use non-ASCII characters; for 8-bits encodings only, does not work with UTF-8
+    frame=single,                    % adds a frame around the code
+    keepspaces=true,                 % keeps spaces in text, useful for keeping indentation of code (possibly needs columns=flexible)
+    keywordstyle=\color{blue},       % keyword style
+    language=Matlab,                 % the language of the code
+    otherkeywords={*,...},           % if you want to add more keywords to the set
+    numbers=left,                    % where to put the line-numbers; possible values are (none, left, right)
+    numbersep=5pt,                   % how far the line-numbers are from the code
+    numberstyle=\tiny\color{mygray}, % the style that is used for the line-numbers
+    %rulecolor=\color{black},         % if not set, the frame-color may be changed on line-breaks within not-black text (e.g. comments (green here))
+    showspaces=false,                % show spaces everywhere adding particular underscores; it overrides 'showstringspaces'
+    showstringspaces=false,          % underline spaces within strings only
+    showtabs=false,                  % show tabs within strings adding particular underscores
+    stepnumber=2,                    % the step between two line-numbers. If it's 1, each line will be numbered
+    stringstyle=\color{mymauve},     % string literal style
+    tabsize=2,                     % sets default tabsize to 2 spaces
+    title=\lstname,
+    % Single frame around code                               % show the filename of files included with \lstinputlisting; also try caption instead of title
+    }
+    
+    \newcommand{\E}{{\mbox {\bf E}}}
+    \newcommand{\me}{\mathrm{e}}
+    \newcommand{\I}{\mathbbm{1}}
+    \newcommand{\R}{\mathbbm{R}}
+    \newcommand{\Q}{\mathbbm{Q}}
+    \newcommand{\Z}{\mathbb{Z}}
+    \newcommand{\N}{\operatorname{N}}
+    \newcommand{\C}{\operatorname{C}}
+    \newcommand{\f}[1][]{\hat{#1}}
+    \newcommand{\rev}[1]{\frac{1}{#1}}
+    % \newcommand{+binomial}[3][2]{(#2 + #3)^#1}
+    \newcommand{\prev}[1]{#1_{t-1}}
+    \newcommand{\nex}[1]{#1_{t+1}}
+    \newcommand{\now}[1]{#1_t}
+    \newcommand{\ttwo}[1]{\now{#1}^{2}}
+    \newcommand*{\dprime}{^{\prime\prime}\mkern-1.2mu}
+    \newcommand*{\tprime}{^{\prime\prime\prime}\mkern-1.2mu}
+    
+    \newcommand{\ptwo}[1]{\prev{#1^{2}}}
+    \newcommand{\h}[1]{\expandafter\hat#1}
+    \newcommand{\ti}[1]{\widetilde{#1}}
+    \newcommand{\B}[1]{\mathbf#1}
+    \newcommand{\ii}[1]{\mathit#1}
+    \newcommand{\that}[1]{\mathbf{\hat{#1}}}
+    \newcommand{\ttil}[1]{\mathbf{\tilde{#1}}}
+    \newcommand{\new}{\marginpar{NEW}}
+    \begin{document}
+    \newcommand{\argmin}{\operatornamewithlimits{argmin}}.
+    \maketitle
+    
+    
+    
+ \begin{center}
+{\large \bf Homework Assignment 2 \\  Discuss Session Friday Feb 10 in Class}
+\end{center}
+
+%\vfill
+
+%{}
+
+\bigskip
+
+{\textbf{Optional Reading.}} Read Luenberger and Ye's {\sl Linear
+and Nonlinear Programming 4th Edition} Chapters 4, 6, 11.
+
+{\textbf{Solve the following problems:}}
+\begin{enumerate}
+\item[1.] Consider problem 6) of Homework Assignment 1 where the second-order cone is replaced by the $p$-order cone for $p\ge 1$:
+\[\begin{array}{rl}
+       \min        & 2x_1+x_2+x_3\\
+    \mbox{s.t.} & x_1+x_2+x_3=1,\\
+                      &x_1-\|(x_2,\ x_3)\|_{p}\ge 0.
+  \end{array}
+\]
+\begin{itemize}
+\item[(a)] Write out the conic dual problem.
+
+
+\rule{\textwidth}{1pt}
+
+
+
+We have 
+\begin{equation*}
+\begin{aligned}
+\mbox{max } & y \\ 
+\mbox{Such That: } & \\ 
+\vec{e} y + s &= \begin{bmatrix} 2 \\ 1 \\ 1 \end{bmatrix} \\  
+|| (s_2, s_3)||_{q} &\leq s_1  \\ 
+\end{aligned}
+\end{equation*}
+or equivalently that $s \in K^*$ a q order cone where $ \frac{1}{p} + \frac{1}{q} = 1$. 
+
+\rule{\textwidth}{1pt}
+
+\item[(b)] Compute the dual optimal solution ($y^*,s^*)$.
+
+\rule{\textwidth}{1pt}
+
+
+First note that 
+\[
+s = \begin{bmatrix} 2 - y \\ 1 - y \\ 1- 6 \end{bmatrix}
+\]
+Using the norm condition and recalling that $ ||x ||_q = [\sum_{i} |x|^{q}]^{\frac{1}{q}}$
+\begin{equation*}
+\begin{aligned}
+\mbox{max } & y \\ 
+\mbox{Such That: } & \\ 
+2 - y & \geq \big[ 2 | 1 - y|^q]^{\frac{1}{q}}
+\end{aligned}
+\end{equation*}
+Since $ y = 1$ is dual feasible, it follows that $y^{*} \geq 1$. Thus we can write
+
+\begin{equation*}
+\begin{aligned}
+2 - y &\geq 2^{\frac{1}{q}}[y - 1] \\ 
+2 &\geq 2^{\frac{1}{q}}[y -1] + y \\ 
+2 + 2^{\frac{1}{q}} &\geq (2^{\frac{1}{q}} + 1)y \\ 
+y &\leq \frac{2 + 2^{\frac{1}{q}}}{1 + 2^{\frac{1}{q}}}
+\end{aligned}
+\end{equation*}
+
+Therefore, $y^{*} = \frac{2 + 2^{\frac{1}{q}}}{1 + 2^{\frac{1}{q}}}$. and 
+
+\[
+s^{*} = \begin{bmatrix} 2 - y^{*} \\ 1 - y^{*} \\ 1 - y^{*}\end{bmatrix}
+\]
+
+
+
+\rule{\textwidth}{1pt}
+
+\item[(c)] Using the zero duality condition to compute the primal optimal solution $x^*$.
+
+
+\rule{\textwidth}{1pt}
+
+
+Since we know that the duality gap is zero we have that 
+
+\[
+c^{T} x = b^{T} y
+\]
+and that 
+\[
+x^{T} s = 0
+\]
+Since $s_2 = s_3 < 0$, it is apparent that $x_2 = x_3$ and thus that 
+
+\begin{equation*}
+\begin{aligned}
+x_1 s_1 &= -2 x_2 s_2 \\ 
+x_1( 2- y^{*}) = 2 x_2 (y^{*} - 1) \\ 
+x_1 = 2 x_2 \frac{(y^{*} - 1) }{ 2 - y^{*}}
+\end{aligned}
+\end{equation*}
+
+Now using the fact taht $c^{T} x = b^y$ we have: 
+
+\begin{equation*}
+\begin{aligned}
+2(x_1 + x_2) &= y^{*} \\ 
+x_1 + x_2 &= \frac{y^{*}}{2} \\
+2 x_2 \frac{(y^{*} - 1) }{ 2 - y^{*}} + x_2 &= \frac{y^{*}}{2}\\ 
+x_2 [\frac{y^{*}}{2 - y^{*}}] &=  \frac{y^{*}}{2}\\ 
+x_2 = \frac{2 - y^{*}}{2}
+\end{aligned}
+\end{equation*}
+
+Thus $x_1 = 2 \frac{(y^{*} - 1) }{ 2 - y^{*}}  \frac{2 - y^{*}}{2} = y^{*} - 1$. 
+
+In sumamry:
+\begin{equation*}
+\begin{aligned}
+x &= \begin{bmatrix}  y^{*} - 1 \\ \frac{2 - y^{*}}{2} \\ \frac{2 - y^{*}}{2} \end{bmatrix} 
+&= \begin{bmatrix} \frac{2 + 2^{\frac{1}{q}}}{1 + 2^{\frac{1}{q}}} - 1 \\ \frac{2 - \frac{2 + 2^{\frac{1}{q}}}{1 + 2^{\frac{1}{q}}}}{2} \\ \frac{2 - \frac{2 + 2^{\frac{1}{q}}}{1 + 2^{\frac{1}{q}}}}{2} \end{bmatrix} 
+\end{aligned}
+\end{equation*}
+checking the constraint that $x_1 + x_2 + x_3 = 1$, we have $x_1 + 2x_2 = 2 - y^{*} + y^{*} - 1 = 1$. 
+
+
+\end{itemize}
+
+\item[2.] Consider the SOCP relaxation in problem 9) of Homework Assignment 1:
+\[\begin{array}{rcl}
+\min          & 0^Tx &\\
+\mbox{s.t.} &\|x-a_i\|^2\le d^2_i,\ i=1,2,3.
+\end{array}
+\]
+\begin{itemize}
+\item[(a)] Write down the KKT optimality conditions. 
+
+
+\rule{\textwidth}{1pt}
+
+Let \[ \vec{g}(x) = \begin{bmatrix} || x - a_1||^2 - d_i^2 \\ || x - a_2||^2 - d_2^2 \\ || x - a_3||^2 - d_3^2 \end{bmatrix} \] 
+Then \[ \nabla \vec{g}(x) = \begin{bmatrix} 2(x - a_1) \\ 2( x - a_2) \\ 2( x - a_3) \end{bmatrix} \] 
+Let $x^{*}$ be a relative minimum and suppose that it is a regular point for the constraints, then the KKT conditions require that $\exists \mbox{ } \mu \in \R^{2}$ such that 
+
+\begin{equation*}
+\begin{aligned}
+\mu^T  \nabla \vec{g}(x^{*}) &= \vec{0} \\ 
+\mu^T  \vec{g}(x^{*}) &= \vec{0} \\ 
+\mu_T \geq 0
+\end{aligned}
+\end{equation*}
+
+
+\rule{\textwidth}{1pt}
+
+\item[(b)] Then explain/interpret the three optimal multipliers when the true position of the sensor is inside the convex hull of the three anchors.
+
+
+\rule{\textwidth}{1pt}
+
+When the true position of the sensor is within the convex hull, we are able to find $\mu$ such that the sum of the gradient vectors are equal to zero. One can think about it as finding the forces such that they balance to zero. Within the convex hull, there is a linear combination of the multipliers such that there sum is zero. 
+
+\rule{\textwidth}{1pt}
+
+
+\item[(c)] Could the true position $\bar{x}\in R^2$ of the sensor satisfy the optimality conditions if it is outside the convex hull of the three anchors? What would be the multiplier values?
+
+
+\rule{\textwidth}{1pt}
+
+When the true position is outside  of the convex hull, there is no way to balance the gradient of the constraints, thus it is impossible to find a $ \mu, \mu \neq \B{0}$ such that $\mu^T  \nabla \vec{g}(x^{*}) = \vec{0}$, thus all the multipliers will be zero. 
+
+
+\rule{\textwidth}{1pt}
+
+
+\end{itemize}
+
+\item[3.] Consider the SDP relaxation in problem 9) of Homework Assignment 1:
+\[\begin{array}{rcl}
+\max          & 0\bullet Z &\\
+\mbox{s.t.} &(1;0;0)(1;0;0)^T\bullet Z &=1,\\
+                 &(0;1;0)(0;1;0)^T\bullet Z& =1,\\
+                 &(1;1;0)(1;1;0)^T\bullet Z& =2,\\
+                 &(a_i;-1)(a_i;-1)^T\bullet Z &= d^2_i,\ i=1,2,3,\\
+                 &                                Z &\succeq 0.
+\end{array}
+\]
+\begin{itemize}
+\item[(a)] Write out the SDP dual problem, especially the dual slack matrix $U\in S^{3}$.
+
+\rule{\textwidth}{1pt}
+
+Let us define \[ w:= \begin{bmatrix} w_1 & w_2 & w_3 \end{bmatrix}\] and \[ \h{w} := \begin{bmatrix} \h{w_1} & \h{w_2} & \h{w_3} \end{bmatrix} \]. 
+Furthermore let  \begin{gather*}
+\h{d} = \begin{bmatrix} d_1^2 \\ d_2^2 \\ d_3^2 \end{bmatrix} \\ 
+b = \begin{bmatrix} 2 \\ 1 \\  2 \end{bmatrix} \
+\end{gather*}
+
+
+Now let $a_{i,j}$ be the $j$th element of the vector $a_i$
+The dual problem can be written as 
+
+
+\begin{equation*}
+\begin{aligned}
+\mbox{ minimize } & w \cdot b + \h{w} \cdot \h{d} \\ 
+\mbox{ such that } & \\ 
+w_1 \begin{bmatrix} 1 & 0 & 0 \\ 0 & 0 & 0 \\ 0 & 0 & 0 \end{bmatrix} +  & w_2 \begin{bmatrix} 0 & 1 & 0 \\ 0 & 0 & 0 \\ 0 & 0 & 0 \end{bmatrix} + 
+ w_3 \begin{bmatrix} 1 & 1 & 0 \\ 1 & 1 & 0 \\ 0 & 0 & 0 \end{bmatrix} + 
+  \sum_{i=1}^{3} \h{w_i} \begin{bmatrix} a_{i,1}^2 & a_{i,1} a_{i,2} & - a_{i,1} \\  a_{i,1} a_{i,2} & a_{i,2}^2 & - a_{i,2} \\ - a_{i,1} & - a_{i,2}  & 1 \end{bmatrix} \succeq 0 
+\end{aligned}
+\end{equation*}
+
+
+Which is equivalent to: 
+
+
+\begin{equation*}
+\begin{aligned}
+\mbox{ minimize } & w \cdot b + \h{w} \cdot \h{d} \\ 
+\mbox{ such that } & \\ 
+& \begin{bmatrix} w_1 + w_3 + \sum_{i =1}^3 \h{w_i} a_{i,1}^2 &  w_3 +  \sum_{i =1}^3 \h{w_i} a_{i,1} a_{i,2} & - \sum_{i=1}^3 \h{w_i}a_{i,1}  \\   w_3 + \sum_{i =1}^3  \h{w_i} a_{i,1} a_{i,2} & w_2 + w_3 + \sum_{i=1}^3 \h{w_i} a_{i,2}^2 & - \sum_{i=1}^{3} \h{w_i} a_{i,2} \\ - \sum_{i=1}^{3} \h{w_i} a_{i,1} & - \sum_{i=1}^{3} \h{w_i} a_{i,2}   & \sum_{i=1}^3 \h{w_i} \end{bmatrix} \succeq 0 
+\end{aligned}
+\end{equation*}
+
+
+
+
+\rule{\textwidth}{1pt}
+
+\item[(b)] Suppose the true position of the sensor is $\bar{x}\in R^2$. Show that if 
+\[\bar{U}=(-\bar{x};1)(-\bar{x};1)^T,\]
+then it is an optimal slack matrix.
+
+
+\rule{\textwidth}{1pt}
+
+The primal matrix $\bar{Z}$ has the form: 
+\[ \bar{Z} = \begin{bmatrix} I & \bar{x} \\ \bar{x}^T & x^T x \end{bmatrix} = \begin{bmatrix} 1 & 0 &  \bar{x_1} \\  0 & 1 & \bar{x_2} \\ \bar{x_1} & \bar{x_2} & \bar{x^T} \bar{x} \end{bmatrix} \]
+
+Now from the complementarity condition, we know that if $\bar{Z} \bar{U} = \B{0}$, that $\bar{U}$ is optimal. The matrix $\bar{U}$ has the form 
+
+\[
+\bar{U} = \begin{bmatrix} \bar{x_1}^2 & \bar{x_1} \bar{x_2} & -\bar{x_1} \\ \bar{x_1} \bar{x_2} & \bar{x_2}^2 & - \bar{x_2} \\ - \bar{x_1} & - \bar{x_2} 1 \end{bmatrix}
+\]
+
+Multiplying these two matrices we find that 
+
+\begin{equation*}
+\begin{aligned}
+\bar{Z}\bar{U} &= \begin{bmatrix} 1 & 0 &  \bar{x_1} \\  0 & 1 & \bar{x_2} \\ \bar{x_1} & \bar{x_2} & \bar{x^T} \bar{x} \end{bmatrix} \begin{bmatrix} \bar{x_1}^2 & \bar{x_1} \bar{x_2} & -\bar{x_1} \\ \bar{x_1} \bar{x_2} & \bar{x_2}^2 & - \bar{x_2} \\ - \bar{x_1} & - \bar{x_2} 1 \end{bmatrix} = \begin{bmatrix} 0 & 0 & 0 \\ 0 & 0 & 0 \\ 0 & 0 & 0 \end{bmatrix}
+\end{aligned}
+\end{equation*}
+Thus proving $\bar{U}$ is optimal. 
+
+\rule{\textwidth}{1pt}
+
+\item[(c)] When is $\bar{U}=(-\bar{x};1)(-\bar{x};1)^T$ possible and the solution is unique?
+
+\rule{\textwidth}{1pt}
+
+The solution is unique when the complementarity condition holds. Noting that $\bar{U}$ is symmetric, and equating the stress matrix with the optimal, we have six equations and six unknowns. The equations are
+
+\begin{equation*}
+\begin{aligned}
+w_1 + w_3 + \sum_{i} a_{i,1}^2 \h{w_i} &= - \bar{x}_1^2 \\ 
+w_2 + w_3 + \sum_{i} a_{i,2}^2 \h{w_i} &= - \bar{x}_1^2 \\ 
+w_3 + \sum_{i} a_{i,1} a_{i,2} \h{w_i} &= - \bar{x}_1 \bar{x}_2 \\
+\sum_{i} \h{w}_i a_{i,1} = - \bar{x}_1 \\ 
+\sum_{i} \h{w}_i a_{i,2} = - \bar{x}_2 \\ 
+\sum_{i} \h{w}_i = -1
+\end{aligned}
+\end{equation*}
+
+Thus when the matrix 
+
+\begin{gather*}
+W = \begin{bmatrix} 1 & 0 & 1 & a_{1,1}^2  & a_{2,1}^2 & a_{3,1}^2 \\ 
+0 & 1 & 1 & a_{1,2}^2 & a_{2,2}^2 & a_{3,2}^2 \\ 
+0 & 0 & 1 & a_{1,2} a_{1,1} & a_{2,2} a_{2,1} & a_{3,2} a_{3,1} \\ 
+0 & 0 & 0 & a_{1,1}  & a_{2,1} & a_{3,1} \\ 
+0 & 0 & 0 & a_{1,2}  & a_{2,2} & a_{3,2} \\ 
+0 & 0 & 0 & 1  & 1 & 1 \\ 
+\end{bmatrix}
+b = \begin{bmatrix} -\bar{x}_1^2 \\ -\bar{x_1}^2 \\ -\bar{x_1}\bar{x_2} \\ - \bar{x_1} \\ -\bar{x_2} \\ -1\end{bmatrix}
+\end{gather*}
+
+W is of full rank, and $W \begin{bmatrix} w^T \\ \h{w}^T \end{bmatrix} = b$ is the solution optimal and unique. 
+
+
+
+
+\rule{\textwidth}{1pt}
+
+\item[(d)] Then explain/interpret the three optimal multipliers corresponding to the three distance equality constraints.
+
+\rule{\textwidth}{1pt}
+
+The three multipliers corresponding to the distance inequalities are the internal tensional force on edge $i,j$ of the network. The three
+optimal multipliers are such that all internal forces are balanced at every sensor point. 
+
+
+\rule{\textwidth}{1pt}
+\end{itemize}
+
+\item[4.] Consider convex cone (Lecture Note 4, slide 18)
+\[C=\{(t;x):\ t > 0,\ tc(x/t)\le 0,\ x\in R^2\},\]
+where $c(x)\in R$ is a convex function. Construct
+the dual cone of $C$ for each of the following $c(x)$:
+\begin{enumerate}
+\item[(a)] $c(x)=x_1^2+2x_2^2-2x_1x_2-1$ (ellipsoidal cone).
+
+
+\rule{\textwidth}{1pt}
+
+
+We have that $c(x) = x^T Q x - 1$, such that $x^T Q x = x_1^2 + 2x_2^2 - 2x_1 x_2$
+
+\begin{equation*}
+\begin{aligned}
+\begin{bmatrix} x_1 & x_2 \end{bmatrix} \begin{bmatrix} q_1 & q_2 \\ q_3 & q_4 \end{bmatrix} \begin{bmatrix} x_1 \\  x_2 \end{bmatrix} &= x_1^2 + 2x_2^2 - 2x_1 x_2 \\ 
+q_1 x_1^2 + (q_2 + q_3) x_1 x_2 + q_4 x_2^2 &=x_1^2 + 2x_2^2 - 2x_1 x_2 \\ 
+q_1 &= 1 \\ 
+q_4 &= 2 \\ 
+q_2 + q_3 &= -2 \\ 
+\end{aligned}
+\end{equation*}
+Thus we have 
+
+\begin{equation*}
+\begin{aligned}
+\phi(s) &= \inf_x s^{T}x \\ 
+\mbox{ such that: } & \\ 
+x^{T} Q x &\leq 1
+\end{aligned}
+\end{equation*}
+which has optimal solution $x = \frac{ -1 Q^{-1}}{||Q^{-1} s || }$. Inverting this quantity, it follows that $\phi(s) = - \sqrt{s^T Q^{-1} s}$. Yielding the
+dual cone 
+\[
+\B{K}^{*} = \{(\kappa, s): \kappa - \sqrt{s^T Q^{-1} s} \geq 0 \}
+\]
+
+\rule{\textwidth}{1pt}
+\item[(b)] $c(x)=e^{x_1}+e^{x_2}-1$ (exponential cone).
+
+
+\rule{\textwidth}{1pt}
+Consider $c(x) = \sum_{i}e^{x_i} -1$. It follows that 
+
+\begin{equation*}
+\begin{aligned}
+\phi(s) &= \inf_x s^T x = \sum_i s_i x_i \\ 
+\mbox{ Such That} & \\ 
+\sum_{i} e^{x_i} &< 1 \\ 
+\end{aligned}
+\end{equation*}
+Notice that if $s_i > 0$ then $\phi(s)$ is unbounded below, so we must have that $s_i \leq 0$ so 
+
+\[
+\B{K}^{*} = \{(s_1, s_2): s_1,s_2 \leq  0 \}
+\]
+
+
+\rule{\textwidth}{1pt}
+
+
+\item[(c)] (Optional) Prove that $tc(x/t)$ is a convex function if $c(.)$ is.
+
+
+\rule{\textwidth}{1pt}
+
+Now let $g(t,x) = t c(\frac{x}{t})$. We need to prove $g(t,x)$ is convex 
+
+\begin{equation*}
+\begin{aligned}
+g( \lambda_1 (x_1, t_1) + \lambda_2 (x_2, t_2)) &= [\lambda_1 t_1 + \lambda_2 t_2] c\big[ \frac{ \lambda_1 x_1 + \lambda_2 x_2}{\lambda_1 t_1 + \lambda_2 t_2 } \big]\\
+&=  [\lambda_1 t_1 + \lambda_2 t_2] c\big[ \frac{ \lambda_1 \frac{x_1}{t_1} t_1 + \lambda_2 \frac{x_2}{t_2}t_2} {\lambda_1 t_1 + \lambda_2 t_2 }\big]\\ 
+&\leq [\lambda_1 t_1 + \lambda_2 t_2] \bigg[ \frac{\lambda_1 t_1 }{\lambda_1 t_1 + \lambda_2 t_2} f(\frac{x_1}{t_1}) + \frac{\lambda_2 t_2 }{\lambda_1 t_1 + \lambda_2 t_2} f(\frac{x_2}{t_2}) \bigg] \\ 
+&= \lambda_1 t_1 f(\frac{x_1}{t_1}) + \lambda_2 t_2 f(\frac{x_2}{t_2}) \\ 
+&= \lambda_1 g(x_1, t_1) + \lambda_2 g(x_2, t_2) \\ 
+\end{aligned}
+\end{equation*}
+Thus the proof is complete. 
+
+
+\rule{\textwidth}{1pt}
+
+
+\end{enumerate}
+
+\item[5.] Consider the following parametric QCQP problem for a parameter $\kappa>0$:
+\begin{equation}\label{eq:qp}
+ \begin{array}{c@{\quad}l}
+   \min   & (x_1-1)^2+x_2^2 \\ [10pt]
+   \mbox{s.t.} & -x_{1} + \frac{x^2_{2}}{\kappa}  \geq 0 
+   \end{array}
+\end{equation}
+\begin{itemize}
+
+
+\item[(a)] Is $x=0$ a first-order KKT solution?
+ 
+ \rule{\textwidth}{1pt}
+
+Writing out the Lagrangian for the function above we have 
+
+\[
+L(x_1, x_2, \lambda) = (x_1 - 1)^2 + x_2^2 + \lambda [ x_1 - \frac{x_2^2}{\kappa}]
+\]
+with $\lambda \geq 0$. 
+Now the KKT conditions for the Lagrangian above are:
+\begin{equation*}
+\begin{aligned}
+2(x_1 - 1) + \lambda_1 &= 0 \\ 
+2 x_2 - \frac{2\lambda_1 x_2}{\kappa} = 0 \\ 
+\lambda_1 [ x_1 - \frac{x_2^2}{\kappa}] = 0 
+\end{aligned}
+\end{equation*}
+If $x_1 = x_2 = 0$ , for the KKT conditions to hold we must have that $\lambda_1 = 2$ 
+
+
+
+ \rule{\textwidth}{1pt}
+
+
+\item[(b)] Is $x=0$ a second-order KKT solution for some value of $\kappa$?
+
+\rule{\textwidth}{1pt}
+
+The second order conditions require the hessian to be positive definite on the tangent space. The tangent space is defined such that $T := \{y: y_1 = 0\}$, thus
+the subspace spanned by the second column of hessian is important. 
+
+
+\begin{equation*}
+\begin{aligned}
+\nabla_x^2(0,2) = \begin{bmatrix} 2 & 0 \\ 0 & 2 - \frac{4}{\kappa} \end{bmatrix} 
+\end{aligned}
+\end{equation*}
+
+Thus to find the eigenvalues of the matrix we have 
+
+\begin{equation*}
+\begin{aligned}
+det(\nabla_x^2(0,2) - \lambda I) = (2 - \lambda_1)( 2 - \frac{4}{\kappa} - \lambda_2) = 0
+\end{aligned}
+\end{equation*}
+Examining $ \lambda_2$ it must hold that $\lambda_2 > 0$, Thus e have that $ 2 - \frac{4}{\kappa} > 0 \rightarrow 2 > \frac{4}{\kappa}$. Thus, $\kappa > 2$. 
+
+
+\rule{\textwidth}{1pt}
+
+\end{itemize}
+
+\item[6.] Consider the SVM problem described in Lecture Note \#2:
+\[ 
+\begin{array}{rrl} 
+&\min &  \beta+\mu\|x\|^2\\ 
+&\mbox{s.t.}& a_i^Tx+x_0+\beta\ge 1,\ \forall i,\\ 
+& & b_j^Tx+x_0-\beta\le -1,\ \forall j,\\
+& & \beta \ge 0.
+\end{array} 
+\]
+\begin{itemize}
+\item[(a)] Write out the Lagrangian dual of the SVM problem.
+
+
+\rule{\textwidth}{1pt}
+
+
+The lagrangian of the function above  is 
+
+\begin{equation*}
+\begin{aligned}
+L(x, x_0, \beta, \lambda^a, \lambda^b, \lambda^{\beta}) = \beta + \mu ||x||^2 &- \sum_i \lambda_i^a (a_i^T x + x_0 + \beta - 1) -  \sum_j \lambda_j^b ( b_j^T x + x_0 - \beta + 1 ) - \lambda^{\beta} \beta \\ 
+y_i^{a} &\geq \mbox{ } \forall i \\ 
+y_j^{b} &\leq \mbox{ } \forall j \\ 
+y^{\beta} &\geq 0 \mbox{ } 
+\end{aligned}
+\end{equation*}
+
+The dual is defined as :
+
+\begin{equation*}
+\begin{aligned}
+g(\lambda^a, \lambda^b, \lambda^{\beta}) = \inf_{x, \beta, x_0} \{ L(x, x_0, \beta, \lambda^a, \lambda^b, \lambda^{\beta}) \}
+\end{aligned}
+\end{equation*}
+
+Differentiating with respect to $x, x_0, \beta$ and setting them to zero we have 
+\begin{equation*}
+\begin{aligned}
+\nabla_{\beta} L(x, x_0, \beta, \lambda^a, \lambda^b, \lambda^{\beta}) &= 1 - \sum_i \lambda_i^a - \sum_j \lambda_j^b - \lambda^\beta = 0 \\ 
+\lambda^\beta &= 1 - \sum_i \lambda_i^a - \sum_j \lambda_j^b  \\ 
+\nabla_{x} L(x, x_0, \beta, \lambda^a, \lambda^b, \lambda^{\beta}) &= 2 \mu x - \sum_i \lambda_i^a a_i - \sum_j \lambda_j^b b_j = 0  \\ 
+ x &= \frac{\sum_i \lambda_i^a a_i + \sum_j \lambda_j^b b_j}{2\mu} \\ 
+\nabla_{x_0} L(x, x_0, \beta, \lambda^a, \lambda^b, \lambda^{\beta}) &= - \sum_i \lambda_i^a   - \sum_j \lambda_j^b  = 0\\
+\sum_i \lambda_i^a  &=  - \sum_j \lambda_j^b 
+\end{aligned}
+\end{equation*}
+
+
+Plugging the optimal values back into $g$ we find
+
+\begin{equation*}
+\begin{aligned}
+g(\lambda^a, \lambda^b, \lambda^{\beta}) &= \beta + \mu||x||^2 - x_0(\sum_i \lambda_i^a + \sum_j \lambda_j^b) + \\ 
+& \sum_i \lambda_i^a - \sum_j \lambda_j^b
+- \beta( \sum_i \lambda_i^a - \sum_j \lambda_j^b ) - (\sum_j \lambda_j^b b_j^T + \sum_i \lambda_i^a a_i^T) x \\ 
+\end{aligned}
+\end{equation*}
+Notice that the terms in the $x_0$ cancel and that 
+
+\[
+0 = \beta[ \sum_j \lambda_j^b - \sum_i \lambda_i^a - \sum_j \lambda_j^b + \sum_i \lambda_i^a - 1 + 1]
+\]
+
+Thus 
+
+\begin{equation*}
+\begin{aligned}
+g(\lambda^a, \lambda^b, \lambda^{\beta}) &= \sum_i \lambda_i^a - \sum_j \lambda_j^b + u x^T x -  (\sum_j \lambda_j^b b_j^T + \sum_i \lambda_i^a a_i^T) x \\ 
+&= (1 - \lambda^{\beta}) + \mu x^T x - 2 x^Tx \mu \\ 
+&= (1 - \lambda^{\beta}) - \frac{1}{4 \mu} || \sum_{i}\lambda_i^a a^i + \sum_{i} \lambda_j b^j ||^2
+\end{aligned}
+\end{equation*}
+
+
+
+\rule{\textwidth}{1pt}
+
+
+\item[(b)] Suppose we have $6$ training solution in $R^2$: $a_1=(0;0),\ a_2=(1;0),\ a_3=(0;1)$ and $b_1=(0;0),\ b_2=(-1;0),\ b_3=(0;-1)$. Using the optimality conditions to find optimal solutions for $\mu=0$ and $\mu=10^{-5}$, respectively. Are the two optimal solutions unique for the given $\mu$?
+
+\rule{\textwidth}{1pt}
+
+I am slightly confused by what's being asked here, but I'll give it a shot. First lets look at it mathematically, when $\mu = 0$. When $ \mu = 0$ the primal optimization problem becomes:
+
+\[ 
+\begin{array}{rrl} 
+&\min &  \beta\\ 
+&\mbox{s.t.}& a_i^Tx+x_0+\beta\ge 1,\ \forall i,\\ 
+& & b_j^Tx+x_0-\beta\le -1,\ \forall j,\\
+& & \beta \ge 0.
+\end{array} 
+\]
+
+
+
+For our case lets break down the constraints set, we have 
+
+\begin{equation*}
+\begin{aligned}
+\mbox{min    } & \beta \\
+\mbox{ such that:} \\ 
+x_0 + \beta &\geq 1 \\ 
+x_1 + x_0 + \beta &\geq 1 \\ 
+x_2 + x_0 + \beta &\geq 1\\
+x_0 - \beta &\leq -1\\
+-x_1 + x_0 - \beta &\leq -1\\
+-x_2 + x_0 - \beta &\leq -1
+\end{aligned}
+\end{equation*}
+
+Now from the inequalities we see that $x_0 + \beta \geq 1$ and $x_0 - \beta \leq -1$. We want $\beta$ as small as possible and this to hold. It is fairly clear that beta attains a minimum while satisfying the constraint when $\beta$ is close to one and $x_0$ is close to zero, so we know that $x_0 \approx 0, \beta \approx 1$. 
+\par 
+ 
+Thus it must follow that $x_1, x_2 \geq 0$. Without the norm term, the SVM aims to find a separating hyperplane but does not care about minimizing the norm of the values, i.e. maximizing the margins, thus with these constraints we can see that there $x_1, x_2$ values are not unique since they  only require $x_1, x_2 \geq 0$. Intuitevly since we have eliminated the term with the norm, the SVM is just finding a separating hyperplane and not one that maximizes the margins. So it could draw one with $x_0 = 0, \beta = 1, x_1= 0, x_2 = 0$, or $x_0 = 0, \beta = 1, x_1 = 0, x_2 = 10$ or $x_0 = 0, \beta = 1, x_1 = 3, x_2 = 3$.  \par
+
+When $\mu > 0$, however, the optimization should find values that minimize the norm, i.e. ones where $x_1 = x_2$. My instinct says that it should set $x_1,x_2 = 0$, but from the numerical experiments it only does this when $\mu >> 0$.  For varying $\mu$ one can observe a trend in the hyperplane parameterization. As $\mu$ increases the hyperplane goes from $ \mu_0 = (4.7821, 4.7821)\rightarrow \mu_{10^{-5}} = (0.01851330, 0.01851330) \rightarrow \mu_{1000} = (3.76e^{-06} ,3.76e^{-06})$, indicating that it penalizes for the norm of the parameters. As the penalty $\mu$ gets higher, the unique minimizing norm$x_1 = x_2 = 0$, is chosen. 
+
+\begin{lstlisting}
+clear all
+close all
+
+% Problem 6(b)
+mu = [0, 10^-5, 1, 2, 10, 100,100];
+a = [0, 1, 0; 0 0, 1];
+b = [0,-1, 0; 0, 0,-1];
+
+
+%% Find optimal hyperplane for different Beta
+for j = 1:size(mu,2)
+    cvx_begin quiet
+    variable B
+    variable x1
+    variable x2
+    variable x0
+    mu(j)
+    opt = B + mu(j)*power(x1,2) + mu(j)*power(x2,2);
+    
+    minimize(opt);
+    subject to
+    
+    B >= 0;
+    
+    
+    x0 + B >=1
+    x1 + x0 + B >= 1
+    x2 + x0 + B >=1
+    
+    x0 - B <= -1
+    -x1 + x0 - B <= -1
+    -x2 + x0 - B <= -1
+    
+    B >= 0
+    cvx_end
+    
+    ex1{j} = x1;
+    ex2{j} = x2;
+    ex{j} = [x1, x2];e
+    ex0{j} = x0;
+    
+    eB{j} = B;
+end
+
+\end{lstlisting}
+
+
+
+
+
+% If i observe the result when I treat the values of $x_0, \beta$ as variables vs. constants, we will see different results. When $x_0$ is allowed to vary, i.e. it is a variable, the solution is the same for both values of $\mu$, as solved by CVX. Similarly, when the optimizer can choose $\beta$ or can choose both $x_0, \beta$, the solution is unique. However, when we treat $\beta$ or both parameters as constant, the values of $x, y$ are the same for $x_0 = [4, 7]$. Since the optimization yields the same result for varying $\beta, x_0$  for both $\mu$s,this implies the solution is not unique. 
+% % \begin{table}[!h]
+% \centering
+% \caption{SVM Optimization for $\mu = 0$}
+% \label{my-label}
+% \begin{tabular}{|l|l|l|l|}
+% Constants & Variables & x & y \\ 
+% $x_0$ and $\beta$ & - & NaN & NaN \\ 
+% $x_0$ & $\beta $ & 3.535 & 3.436 \\ 
+% $\beta$ & $x_0$ & 4.39 & 4.42 \\ 
+%  - & 3.75
+
+
+% % \end{tabular}
+% % \end{table}
+
+
+% % \begin{table}
+
+
+\rule{\textwidth}{1pt}
+
+\end{itemize}
+
+\item[7.] Find the Lagrangian dual of the barrier optimization problem where given parameter $\mu>0$:
+\[\begin{array}{rcl}
+\min          & c^Tx-\mu\sum_{j=1}^n\ln(x_j),\\
+\mbox{s.t.}& Ax  &= b\\
+                &  x    & > 0,
+\end{array}
+\]
+where we assume that the problem has an interior-point solution, and there exists a vector $y\in R^m$ such that $c-A^Ty>0$.
+
+What are the first-order KKT optimality conditions?
+
+
+\rule{\textwidth}{1pt}
+The Lagrangian of the problem above is
+
+\[
+L(x,y) = \sum_j (c_j - a_j^T y) x_j - \mu \sum_{j=1}^{n} \ln(x_j) + b^T y
+\]
+
+Now let us define the operator $x^{\div}$ as the element wise reciprocal operator such that $x_i^{\div} = \frac{1}{x_i}$ for all i. Notice that we don't need a multiplier for $x$ since a negative x would drive the objective to infinity. Also notice that it must hold that $(c_j - a_j^t y) > 0 \mbox{  } \forall j$ or the Lagrangian is unbounded from below.
+
+
+
+ Now we have 
+
+ \[
+g(y) = \inf_{x} L(x,y)
+ \]
+
+ Calculating the gradient with respect to $x$ 
+
+
+\begin{equation*}
+\begin{aligned}
+\nabla_x L(x,y) &= c - \mu x^{\div} - y^T A = 0 \\ 
+\frac{1}{\mu} [ c - y^T A] &= x^{\div} \\ 
+x_i = \frac{\mu}{c_i - a_j^T y}
+\end{aligned}
+\end{equation*}
+Thus:
+
+\begin{equation*}
+\begin{aligned}
+g(y) &= \sum_j (c_j - a_j^T y) \frac{\mu}{c_j - a_j^T} - \mu \sum_{j=1}^{n} \ln[\frac{\mu}{c_j - a_j^T y}] + b^T y
+&= \sum_{j} \mu[ 1 - \ln[\frac{u}{c_j - a_j^T y}]]  + b^T y
+\end{aligned}
+\end{equation*}
+
+The KKT conditions of the primal problem are:
+
+\begin{equation*}
+\begin{aligned}
+(1) (c_j - a_j^T y) - \frac{\mu}{x_j} &= 0 \mbox{ for all } j \\ 
+(2) y^T(Ax - b) &= 0 
+\end{aligned}
+\end{equation*}
+
+
+ 
+\rule{\textwidth}{1pt}
+
+
+
+
+
+\item[8.] Consider a generalized Arrow--Debreu equilibrium problem in which the market has $n$ agents and $m$ goods. Agent~$i$, $i=1,...,n$, has a bundle amount of $w_i=(w_{i1},w_{i2},\ldots,w_{im})\in R^m$ goods initially and has a linear utility function whose coefficients are $u_i=(u_{i1},u_{i2},\ldots,u_{im})>0\in R^m$.  The goal is to price each good so that the market clears. Note that, given the price vector $p=(p_1,p_2,\ldots,p_m) > 0$, agent $i$'s utility maximization problem is:
+$$
+\begin{array}{c@{\quad}l}
+   \mbox{maximize} & u_i^Tx_i \\
+   \mbox{subject to} & p^Tx_i\le p^Tw_i\\
+   & x_i\ge 0
+\end{array}
+$$
+\begin{itemize}
+\item[(a)] For a given $p\in R^m$, write down the optimality conditions for agent $i$'s utility maximization problem. Without loss of generality, you may fixed $p_m=1$ since
+the budget constraint are homogeneous in $p$.
+
+\rule{\textwidth}{1pt}
+
+
+The lagrangian for agent $i$'s utility function is 
+
+\[
+L(x, \lambda_1, \lambda_2) = u_i^T x_i + \lambda_1[p^Tx_i - p^T w_i] - \lambda_2^T x_i
+\]
+with $\lambda_1, \lambda_2 \geq 0$. The optimality conditions are thus
+
+\begin{equation*}
+\begin{aligned}
+(1) u_i + \lambda_1 p - \lambda_2 &= 0 \\
+(2) \lambda_1(p^T x_i - p^T w_i) &= 0 \\ 
+(3) \lambda_2^T x_i = 0
+\end{aligned}
+\end{equation*}
+
+\rule{\textwidth}{1pt}
+
+
+\item[(b)] (5pts.) Suppose that $p\in R^m$ and $x_i\in R^m$ satisfy the constraints:
+\begin{align*}
+\sum_{i=1}^n x_{i} &= \sum_{i=1}^nw_{i} \\
+\noalign{\medskip}
+\frac{u_i^Tx_i}{p^Tw_i}p_j &\geq u_{ij} && \forall i,j\\
+\noalign{\medskip} x_{ij}\geq 0, &\ p_j\ge 0 && \forall i,j
+\end{align*}
+for $i=1,\ldots,n$.  Show that $p$ is then an equilibrium price vector.
+
+\rule{\textwidth}{1pt}
+
+We must show that $p^T w_i = p^t x_i \mbox{  } \forall i$
+Multiplying both sides of constraint two by the sum of $x_{ij}$ over j we have
+
+\begin{equation*}
+\begin{aligned}
+\frac{u_i^T x_i}{p^T w_i} \sum_{j} p_j x_{ij} &\geq \sum_{j} u_{ij} x_{ij} \\ 
+\frac{u_i^T x_i}{p^T w_i} \sum_{j} p_j x_{ij} &\geq u_i^T x_i  \\ 
+\frac{1}{p^T w_i} \sum_{j} p_j x_{ij} &\geq 1 \\ 
+\sum_{j} p_j x_{ij} &\geq p^T w_i \\
+p^T x_i &\geq p^T w_i
+\end{aligned}
+\end{equation*}
+Now from the first constraint we have
+
+\[
+\sum_i w_i = \sum_i x_i
+\]
+Since $p \geq 0$
+\begin{equation*}
+\begin{aligned}
+\sum_i w_i &= \sum_i x_i \\ 
+p^T \sum_i w_i  &= p^T \sum_i x_i \\ 
+\sum_i p^T w_i  &= \sum_i p^T  x_i
+\end{aligned}
+\end{equation*}
+Now since we know that each element of $p^T x_i \geq p^T w_i$, the only way for the 
+equality to hold is if $p^Tw_i = p^T x_i \mbox{  } \forall i$. 
+
+
+
+\rule{\textwidth}{1pt}
+
+
+
+\item[(c)] For simplicity, assume that all $u_{ij}$ are positive so that all $p_j$ are positive.
+By introducing new variables $y_j=\log(p_j)$ for $j=1,...,m$, the conditions can be written as follows:
+$$
+\begin{array}{c@{\quad}l@{\quad}l}
+   \min & 0 \\
+   \noalign{\medskip}
+   \mbox{s.t.}& \sum_{i=1}^n x_{i}= \sum_{i=1}^nw_{i} \\
+   \noalign{\medskip}
+   & \log(u_i^Tx_i)-\log\left(\sum_{k=1}^mw_{ik}e^{y_k}\right)+y_j\geq \log(u_{ij}) & \forall i,j\\
+   \noalign{\medskip}
+   & x_{ij}\geq 0, & \forall i,j
+\end{array}
+$$
+Show that this problem is convex in $x_{ij}$ and $y_j$. (Hint: Use the fact that $\log\left(\sum_{k=1}^mw_{ik}e^{y_k}\right)$ is a convex
+function in the $y_k$'s.)
+
+\rule{\textwidth}{1pt}
+First notice that the first constraint set $ C_1:= \{ x_i: \sum_{i=1}^m x_i - \sum_{i=1}^n w_i = 0 \}$ is a hyperplane in $x_{i,j}$, and is thus convex. Now
+the second constraint $C_2 := \{ (x_i, y_j) \log(u_{ij}) - y_j - \log(\sum_{j} u_{ij} x_{ij}) + \log[\sum_{k} w_{ik} e^{y_k}]  \}$. The constraint set
+is a linear combination of two convex functions of $y_j \rightarrow (-y_j, \log[\sum_{k} w_{ik} e^{y_k}])$, and thus is convex in $y_j$. Now for $x_{ij}$,
+note that the function $\log{\frac{1}{x}}$ is convex in $x$ for $0 \leq x \leq \infty$. So, $- \log(\sum_{j} u_{ij} x_{ij}) = \log[\frac{1}{\sum_{j} u_{ij} x_{ij}}]$, which is convex in $x_{ij}$. Since the constraints set is the intersection of two convex sets of $x_{ij}, y_j$, the problem is convex in $x_{ij}, y_j$. 
+
+
+
+\rule{\textwidth}{1pt}
+
+
+\item[(d)] Consider the Fisher example on slide 23 of Lecture Note \#5 with two agents and two goods, where there is no fixed budgets. Rather, let
+\[w_1=(1;\ 0)\quad\mbox{and}\quad  w_2=(0;\ 1)\]
+that is, agent 1 brings in one unit good x and agent brings in one unit of good y. Find the Arrow--Debreu equilibrium prices, where you may assume $p_y=1$.
+
+Solving this in CVX yields that the price is equal to 2. 
+
+\rule{\textwidth}{1pt}
+
+\end{itemize}
+
+
+
+
+\item[9.] (20pts) Computation Team Work:
+See the attached report!
+
+
+
+
+
+\end{enumerate}
+
+
+\end{document}
+
+

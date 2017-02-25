@@ -1,0 +1,4 @@
+import sympy
+import sympytex
+sympytex.openout('CME307_PartnerWork')
+sympytex.endofdoc()

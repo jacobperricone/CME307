@@ -1,0 +1,633 @@
+\documentclass{article} % For LaTeX2e
+\usepackage{cos424,times}
+\usepackage{hyperref}
+\usepackage{url}
+\usepackage{graphicx}
+\usepackage{enumitem}
+\usepackage{wrapfig}
+% For LaTeX2e
+\usepackage{cos424,times}
+\usepackage{hyperref}
+\usepackage{url}
+\usepackage{graphicx}
+\usepackage{wrapfig}
+\usepackage{amsmath}
+\usepackage{enumitem}
+\usepackage{booktabs}
+% packages that allow mathematical formatting
+\usepackage{setspace}
+% package that allows you to change spacing
+\usepackage{comment}
+% text become 1.5 spaced
+
+\usepackage{fullpage}
+% package that specifies normal margins
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{listings}
+\usepackage{subfig}
+\usepackage{bbm}
+\usepackage{multirow}
+\usepackage{booktabs}
+
+\title{CME307 HW1}
+
+
+\author{
+Jacob Perricone\\
+Stanford University\\
+\texttt{jacobp2@stanford.edu} \\
+}
+
+\newcommand{\fix}{\marginpar{FIX}}
+
+\usepackage{xcolor}
+%\usepackage{mathbb}
+\usepackage{sympytex}
+\usepackage{color}
+\usepackage{sectsty}
+\sectionfont{\LARGE\underline}
+\subsectionfont{\underline\normalsize}
+\subsubsectionfont{\underline\normalsize\itshape}
+
+
+\definecolor{mygreen}{rgb}{0,0.6,0}
+\definecolor{mygray}{rgb}{0.5,0.5,0.5}
+\definecolor{mymauve}{rgb}{0.58,0,0.82}
+
+\lstset{ %
+backgroundcolor=\color{white},   % choose the background color; you must add \usepackage{color} or \usepackage{xcolor}
+basicstyle=\footnotesize,
+flexiblecolumns=true      % the size of the fonts that are used for the code
+breakatwhitespace=false,         % sets if automatic breaks should only happen at whitespace
+breaklines=true,                 % sets automatic line breaking
+captionpos=b,                    % sets the caption-position to bottom
+commentstyle=\color{mygreen},    % comment style
+deletekeywords={...},            % if you want to delete keywords from the given language
+    escapeinside={\%*}{*)},          % if you want to add LaTeX within your code
+    extendedchars=true,              % lets you use non-ASCII characters; for 8-bits encodings only, does not work with UTF-8
+    frame=single,                    % adds a frame around the code
+    keepspaces=true,                 % keeps spaces in text, useful for keeping indentation of code (possibly needs columns=flexible)
+    keywordstyle=\color{blue},       % keyword style
+    language=Matlab,                 % the language of the code
+    otherkeywords={*,...},           % if you want to add more keywords to the set
+    numbers=left,                    % where to put the line-numbers; possible values are (none, left, right)
+    numbersep=5pt,                   % how far the line-numbers are from the code
+    numberstyle=\tiny\color{mygray}, % the style that is used for the line-numbers
+    %rulecolor=\color{black},         % if not set, the frame-color may be changed on line-breaks within not-black text (e.g. comments (green here))
+    showspaces=false,                % show spaces everywhere adding particular underscores; it overrides 'showstringspaces'
+    showstringspaces=false,          % underline spaces within strings only
+    showtabs=false,                  % show tabs within strings adding particular underscores
+    stepnumber=2,                    % the step between two line-numbers. If it's 1, each line will be numbered
+    stringstyle=\color{mymauve},     % string literal style
+    tabsize=2,                     % sets default tabsize to 2 spaces
+    title=\lstname,
+    % Single frame around code                               % show the filename of files included with \lstinputlisting; also try caption instead of title
+    }
+    
+    \newcommand{\E}{{\mbox {\bf E}}}
+    \newcommand{\me}{\mathrm{e}}
+    \newcommand{\I}{\mathbbm{1}}
+    \newcommand{\R}{\mathbbm{R}}
+    \newcommand{\Q}{\mathbbm{Q}}
+    \newcommand{\Z}{\mathbb{Z}}
+    \newcommand{\N}{\operatorname{N}}
+    \newcommand{\C}{\operatorname{C}}
+    \newcommand{\f}[1][]{\hat{#1}}
+    \newcommand{\rev}[1]{\frac{1}{#1}}
+    % \newcommand{+binomial}[3][2]{(#2 + #3)^#1}
+    \newcommand{\prev}[1]{#1_{t-1}}
+    \newcommand{\nex}[1]{#1_{t+1}}
+    \newcommand{\now}[1]{#1_t}
+    \newcommand{\ttwo}[1]{\now{#1}^{2}}
+    \newcommand*{\dprime}{^{\prime\prime}\mkern-1.2mu}
+    \newcommand*{\tprime}{^{\prime\prime\prime}\mkern-1.2mu}
+    
+    \newcommand{\ptwo}[1]{\prev{#1^{2}}}
+    \newcommand{\h}[1]{\expandafter\hat#1}
+    \newcommand{\ti}[1]{\widetilde{#1}}
+    \newcommand{\B}[1]{\mathbf#1}
+    \newcommand{\ii}[1]{\mathit#1}
+    \newcommand{\that}[1]{\mathbf{\hat{#1}}}
+    \newcommand{\ttil}[1]{\mathbf{\tilde{#1}}}
+    \newcommand{\new}{\marginpar{NEW}}
+    \begin{document}
+    \newcommand{\argmin}{\operatornamewithlimits{argmin}}.
+    \maketitle
+    
+    
+    
+ \section{Problem 1}
+ \begin{enumerate}
+ \item Consider the feasible set $F := \{ x \in \R^n: Ax = b, x \geq 0 \}$
+ Where data matrix $A^{m \times n}$ and $b \in \R^m$. Prove that F is a convex set. 
+\\ 
+\rule{\textwidth}{1pt}
+
+To prove that $F$ is convex we must show that the point $z = \alpha x_1 + (1 - \alpha)
+x_2 \in F$ with $0 \leq  \alpha \leq 1$ and $x_1, x_2 \in F$.  Now since both $x_1, x_2 \in F$ and $ \alpha \geq 0$, 
+it follows that $x_1, x_2 \geq 0$ and thus $z \geq 0$. Now to prove $Az = b$,  notice: 
+\begin{gather*}
+Az = A[ \alpha x_1 + (1 - \alpha) x_ 2] \\ 
+Az = \alpha Ax_1 + (1- \alpha) A x_2  = \alpha b + (1- \alpha) b =  b
+\end{gather*}
+Thus $z \in F$ and $F$ is convex
+
+
+\rule{\textwidth}{1pt}
+\item Fix data matrix A and consider the b-data set for F defined above:
+\[
+B := \{ b \in \R^m: \mbox{F is not empty} \}
+\]
+\rule{\textwidth}{1pt}
+
+Choose $b_1, b_2 \in B$ s.t $b_1 \neq b_2$ and let $x_1, x_2$ be the corresponding points in $F$ with $Ax_i = b_i, i \in \{1, 2\}$. Now define $c = \alpha b_1 + (1 - \alpha) b_2$ where $0 \leq \alpha \leq 1$. Now for $B$ to be convex, $c \in B$, or, equivalently,  $\exists  z \in F$ s.t  $Az = c, z \geq 0$:
+
+\begin{equation*}
+\begin{aligned}
+c &= \alpha b_1 + (1 - \alpha) b_2  \\ 
+&= \alpha A x_1 + (1 - \alpha) A x_2  \\
+&= A( \alpha x_1 + (1 - \alpha)x_2) \\ 
+z &=  \alpha x_1 + (1 - \alpha)x_2 \in F \mbox{ by the convexity of F} \\ 
+c &= Az, z \in F
+\end{aligned}
+\end{equation*}
+Thus $ c \in B$ and $B$ is convex. 
+
+\rule{\textwidth}{1pt}
+\item Fix data matrix A and consider the linearly constrained convex minimization
+problem
+
+\begin{equation*}
+\begin{aligned}
+z(b) &:= \min f(x) \\ 
+& \mbox{ s.t }  Ax = b, x \geq 0
+\end{aligned}
+\end{equation*}
+where $f(x)$ is a convex function and the minimal value function $z(b)$ is an implicit function of b. Prove that $z(b)$ is a convex function of $b \in B$. 
+\rule{\textwidth}{1pt}
+
+Choose $b_1,  b_2$ be 2 solutions to the minimization problem above, and let $x_1^{*}, x_2^{*}$ be defined as  
+
+\begin{equation*}
+\begin{aligned}
+\min_x &f(x) \\ 
+\mbox{ s.t } Ax &= b_i, x \geq 0 \\
+ i \in \{1, 2\}
+\end{aligned}
+\end{equation*}
+i.e. the $x$ values where $f(x)$ attains a minimum for the optimization problem bounded by $b_i$.  Define: \[
+c = t b_1 + (1 -t) b_2 \] where $0 \leq t \leq 1$ 
+and $z = t x_1^{*} + (1 - t) x_2^{*}$. Since $f(x)$ is a convex function, 
+\[
+f(z) \leq t f(x_1^{*}) + (1 - t) f(x_2^{*}) 
+\]
+Now since $z(b_i) = f(x_i^{*}) $ by definition and $z(c) \leq f(x) \mbox{ } \forall \mbox{ } x: \{ Ax = c, x \geq 0\}$ by definition, convexity follows by:
+\begin{equation*}
+\begin{aligned}
+f(z) &\leq t f(x_1^{*}) + (1 - t) f(x_2^{*}) \\ 
+z(c) \leq f(z) &\leq t z(b_1) + (1 - t) z(b_2)
+\end{aligned}
+\end{equation*}
+\rule{\textwidth}{1pt}
+
+ \end{enumerate}
+
+ \section*{Problem 2}
+ Show that the the dual cone of the n-dimensional nonnegative orthant cone $\R_{+}^{n}$ is itself, that is 
+\[
+(\R_{+}^{n})^{*} = \R_{+}^{n}
+\]
+\rule{\textwidth}{1pt}
+
+It is clear that the nonnegative orthant $\R_{+}^{n} = \{ \B{x} \in \R^{n}: \B{x} \geq 0\}$ is a closed convex cone. The dual 
+orthant is defined as: $(\R_{+}^{n})^{*} := \{ \B{z}^T \B{x} \geq 0, \forall \B{x} \geq 0 \}$.This set clearly
+contains the nonnegative orthant: $\{\B{z} \in \R^{n}: \B{z} \geq 0\}$. Thus $ R_{+}^{n} \subset (\R_{+}^{n})^{*}$. It is also clear that
+the dual of the nonnegative orthant contains the nonnegative orthant and \textbf{nothing more}. To see this let $\B{z} \in \R^n$, with
+$z_i < 0$, for some i. Notice that $\B{z}^T \B{e_i} < 0$, where $e_i$ is the $i-th$ unit vector (which is a member of $(\R_{+}^n)$). Thus $z$ is not
+a member of the dual cone and no $\B{z}$ with a $z_i < 0$ is in $(\R_{+}^{n})^{*}$, thus $(\R_{+}^{n})^{*} \subset \R_{+}^{n}$.
+\rule{\textwidth}{1pt}
+\section*{Problem 3}
+Using Theorem 5 in Lecture Note 1 to prove that the linear system 
+\[
+A^T Ax = A^T b
+\]
+always has a solution x for any given matrix $A \in \R^{m \times n}$ and vector $b \in \R^m$. 
+\rule{\textwidth}{1pt}
+
+To show that the system above always has a solution, using Theorem 5 in the Notes we must show that the system 
+
+\begin{equation*}
+\begin{aligned}
+A^{T}A y = 0 & \quad  b^{T}A y \neq 0
+\end{aligned}
+\end{equation*}
+always does not have a solution. Now let us assume that $A^TAy = 0$, meaning that $Ay$ is in the span of A and as well orthogonal to A. Thus it must hold that
+$Ay = 0$. Now, we must have that $b^T A y \neq 0$, but $ b^T A y = b^T \h{0}  = 0$, Thus the system above never has a solution. 
+
+\rule{\textwidth}{1pt}
+\section*{Problem 4}
+Let $g_1, \hdots, g_m$ be a collection of concave functions on $\R^n$ such that 
+\[
+S = \{x: g_i(x) > 0, \mbox{ for } i=1, \hdots, m \} \neq 0
+\]
+Show that for any positive constant $\mu$ and any convex function $f$ on $\R^n$ the function 
+
+\[
+h(x) = f(x) - \mu \sum_{i=1}^{m} \log[g_i(x)]
+\]
+is convex over $S$. 
+
+\rule{\textwidth}{1pt}
+
+
+Take two points $x_1, x_2$ in S so that 
+\begin{gather*}
+h(x_1) = f(x_1) - \mu \sum_{i} \log[ g_i(x_1)] \\ 
+h(x_2) = f(x_2) - \mu \sum_{i} \log[ g_i(x_2)] \\ 
+\end{gather*}
+To prove convexity we have to show that for $0 \leq t \leq 1$, $h(tx_1 + (1 -t)x_2) \leq t h(x_1) + (1 - t)h(x_2)$. Now
+\[
+h(t x_1 + (1 - t)x_1) = f(t x_1 + (1 - t)x_2) - \mu \sum_i \log[g_i(tx_1 + (1-t)x_2)]
+\]
+By the convexity of f we know that 
+\[
+f(t x_1 + (1- t)x_2) \leq t f(x_1) + (1 - t)f(x_2)
+\]
+Thus 
+\[
+h(t x_1 + (1 - t)x_1) \leq t f(x_1) + (1 - t)f(x_2)- \mu \sum_i \log[g_i(tx_1 + (1-t)x_2)]
+\]
+Moving onto the the functions $g_i$. Now since $g_i$ is concave and log is monotonically increasing
+\begin{gather*}
+g_i(x_1 t + (1 - t)x_2) \geq g_i(x_1) t + (1 -t) g_i(x_2) \\ 
+\log[g_i(x_1 t + (1 - t)x_2)] \geq \log[g_i(x_1) t + (1 -t) g_i(x_2)]
+\end{gather*}
+Now by the concavity of the log function 
+\begin{equation*}
+\begin{aligned}
+\log[g_i(x_1 t + (1 - t)x_2)] &\geq \log[g_i(x_1) t + (1 -t) g_i(x_2)]  \\ 
+&\geq t \log[g_i(x_1)] + (1-t)\log[g_i(x_2)]
+\end{aligned}
+\end{equation*}
+Since the inequality applies for each term within the sum and $\mu > 0$, one concludes that
+\begin{gather*}
+- \mu \sum_{i} \log[g_i(tx_1 + (1-t)x_2)] \leq -\mu\bigg[ t \sum_{i} \log[g_i(x_1)] + (1 - t)\sum_i \log[g_i(x_2)] \bigg] 
+\end{gather*}
+Putting them all together we have that 
+\begin{equation*}
+\begin{aligned}
+h(t x_1 + (1 - t)x_1) &\leq t\big[f(x_1) - \mu \sum_i \log[g_i(x_1)]\big]  + (1 - t) \big[ f(x_2) - \mu \sum_i \log[g_i(x_2)] \big] \\ 
+&\leq t h(x_1) + (1 - t)h(x_2)
+\end{aligned}
+\end{equation*}
+and the proof is complete. 
+
+\rule{\textwidth}{1pt}
+\section*{Problem 5}
+Consider the min-risk portfolio management problem in Lecture Note 2. 
+
+\begin{equation*}
+\begin{aligned}
+\min & x^T V x \\ 
+\mbox{ s. t} & r^Tx \geq \mu, \\ 
+e^Tx = 1, x \geq0
+\end{aligned}
+\end{equation*}
+where data vector $r \in \R^n$ representing expected return of n stocks, and $V \in \R^{n \times n}$.
+representing co-variance matrix of n stocks, $\mu$ representing the desired return of an
+investment portfolio, and $e$ is the vector of all ones. The decision problem is to allocate
+a total 100$\%$ of asset to each stock to minimize the risk while keep the desired return.
+Thus $x_i, i = 1 \hdots, n$  represents the percentage of the total asset invested in stock i.
+
+\begin{enumerate}
+\item Now, suppose for simplicity the company's policy is to invest in each stock at one of the three levels:$ .05, .1, .2. $. 
+How to add constraints to enforce this policy. 
+\rule{\textwidth}{1pt}
+
+Define 3 binary variables $y_{i1}, y_{i2}, y_{i3}$ and let $x_i = .05 y_{i1} + .1 y_{i2} + .2 y_{i3}$ and $\sum_{j} y_{ij} \leq 1$.
+To enforce binary variables, add the constraint that $y_{ij}^2 - y_{ij} = 0$. Thus the added constraints are 
+
+\begin{equation*}
+\begin{aligned}
+x_i &= .05 y_{i1} + .1 y_{i2} + .2 y_{i3} \\ 
+\sum_{j}y_{ij} &\leq 1 \mbox{  for } i \in 1, \hdots, n \\ 
+y_{ij}^2 - y_{ij} &= 0 \mbox{ for } i \in 1, \hdots, n \mbox{ and } j \in 1, 2, 3
+\end{aligned}
+\end{equation*}
+\rule{\textwidth}{1pt}
+\item Suppose that the company also does not want to invest in more than 20 stocks.
+How to add constraints to enforce this additional policy?
+
+\rule{\textwidth}{1pt}
+
+Simply add the constraint  below to the ones above:
+
+\begin{gather*}
+\sum_{i} \sum_{j} y_{ij} \leq 20 
+\end{gather*}
+\rule{\textwidth}{1pt}
+\end{enumerate}
+\section*{Problem 6}
+Consider the SOCP problem described in in Lecture Note 3:
+
+\begin{equation*}
+\begin{aligned}
+\min  & 2 x_1 + x_2 + x_3 \\ 
+\mbox{ s.t } & x_1 + x_2 + x_3 = 1 \\ 
+& x_1 - \sqrt{x_2^2 + x_3^2} \geq 0
+\end{aligned}
+\end{equation*}
+
+\begin{enumerate}
+\item Show that the feasible region is a convex set. 
+
+\rule{\textwidth}{1pt}
+
+It suffices to show that each constraint is a convex set. Then, we know that the intersection of any two convex sets is convex. 
+The first constraint $x_1 + x_2 + x_3 = 1$ is a hyperplane in $\R^3$. It is  well known that hyperplanes are convex, thus, for future
+reference, I will prove this in $\R^n$. A hyperplane  $\R^n$ is defined by $H := \{ x: a^Tx = c, a, x \in \R^n\}$. Now choose $x^1, x^2 \in H$. and 
+define $z = (1 - t)x^1 + t x^2, 0 \leq t \leq 1$. We must prove that $z \in H$. Note that:
+
+\begin{equation*}
+\begin{aligned}
+z &= \sum_{i=1}^{n} a_i (1 - t)x_i^1 + t x_2^i  \\ 
+&= \sum_{i=1}^n a_i x_1^i (1-t) + \sum_{i=1}^{n} a_i x_2^i t \\ 
+&= (1-t)a^T x_1 + t a^T x_2 = (1 - t)c + t c = c \in H
+\end{aligned}
+\end{equation*}
+Now the second constraint is an ice-cream cone in $\R^3$. Generally an icecream cone is define as the set
+
+\begin{gather*}
+C = \{ (x, r) \in \R^{n-1} \times \R: ||x||_2 \leq r \}
+\end{gather*}
+To prove $C$ is convex, choose $x_1, x_2 \in C$ and as always let $z = t x_1  + (1 - t) x_2, t \in [0,1]$. One can see using 
+the triangle inequality 
+\begin{equation*}
+\begin{aligned}
+||z|| &= ||t x_1 + (1 - t) x_2 ||_2 \\ 
+&\leq t||x_1||_2 + (1 -t) ||x_2||_2 \\ 
+&\leq t r + (1 -t)r  \\ 
+&= r
+\end{aligned}
+\end{equation*}
+thus $z \in C$, so $C$ is convex and the intersection of the two is convex. 
+
+\rule{\textwidth}{1pt}
+\item  Try to find a minimizer of the problem and “argue” why it is a minimizer.
+\rule{\textwidth}{1pt}
+\begin{equation*}
+\begin{aligned}
+\min \mbox{ } & 2 x_1 + x_2 + x_3 \\ 
+\mbox{ s.t } &  x_1 + x_2 + x_3 = 1 \\ 
+ & x_1 - \sqrt{x_2^2 + x_3^2} & \geq 0
+\end{aligned}
+\end{equation*}
+Now notice that the optimization problem above can be rewritten as 
+\begin{equation*}
+\begin{aligned}
+\min 1 + x_1 \\ 
+x_1 + x_2 + x_3 = 1 \\ 
+x_1 \geq \sqrt{x_2^2 + x_3^2} 
+\end{aligned}
+\end{equation*}
+
+Now we want to minimize $x_1$, which can be accomplished by minimizing $x_1 = \sqrt{x_2^2 + x_3^2}$. Now thinking about this as a triangle we have
+that 
+\begin{equation*}
+\begin{aligned}
+x_2 &= x_1 \cos{\theta} \\ 
+x_3 &= x_1 \sin{\theta}
+\end{aligned}
+\end{equation*}
+Thus the constraint can be reformulated so that 
+
+\[
+x_1 + x_2 + x_3 = 1 = x_1 + x_1 \cos{\theta} + x_1 \sin{\theta}
+\]
+Taking the derivatives $\theta$ we have
+
+\begin{gather*}
+0 = x_1' + x_1' \cos{\theta} - x_1 \sin{\theta} + x_1 \sin{\theta} + x_1 \cos{\theta}
+\end{gather*}
+Now, setting $x_1' = 0$ and noting that $x_1 \neq 0$. Thus 
+\begin{equation*}
+\begin{aligned}
+ -x_1 \sin{\theta} + x_1 \cos{\theta}  &= 0\\
+ x_1 (\cos{\theta} - \sin{\theta}) &=  0
+\end{aligned}
+\end{equation*}
+Thus $\sin{\theta} = \cos{\theta} \rightarrow \theta = \frac{\pi}{4}$. 
+
+Now plugging in we have:
+\begin{equation*}
+\begin{aligned}
+x_1 + x_2 + x_3 &= 1\\ 
+x_1 + x_1 \cos{\frac{\pi}{4}} + x_1 \sin{\frac{\pi}{4}} &= 1 \\ 
+x_1( 1+ \sqrt{2}) = 1 \\ 
+x_1 = \sqrt{2} - 1
+\end{aligned}
+\end{equation*}
+Thus $x_2 = x_3 = 1 - \frac{\sqrt{2}}{2}$
+
+\rule{\textwidth}{1pt}
+\end{enumerate}
+
+
+
+\section*{Problem 7}
+Prove that the set  $C := \{ Ax : x \geq 0 \in \R^n\}$ is closed and convex cone. 
+\rule{\textwidth}{1pt}
+It is pretty obvious that the set $C$ is convex since taking $x_1, x_2 \in C$, we have that $z = tx_1 + (1 - t)x_2, t \in [0,1] \in C$. Now to prove that it is closed,
+recall Caratheodory’s theorem, which states that a polyhedral cone can be generated by a set of basic directional vectors. 
+Specifically, Caratheodory's theorem states that for $A \in \R^{m \times n}$ where $n > m$, any $b$ in the the polyhedral cone $C = \{ Ax:  x\geq0 \}$ can be 
+written as a linear combination of linearly independent vectors in the vector space of A.  Formally, for any $b \in C$
+\begin{gather*}
+b = \sum_{j=1}^{d} a_{j_i} x_{j_i}, x_{j_i} \geq 0 \forall i
+\end{gather*}
+for some linearly independent vectors $a_{j_1}, \hdots, a_{j_d}$ chosen from $a_1, \hdots, a_n$.
+
+
+More generally, the proof can be rephrased as, for any $a_1 \hdots a_n$ vectors in a real vector space
+$V$, if x is a linear combination of the $a_i$ with non-negative coefficients, then
+x is a linear combination with non-negative coefficients of a linearly independent
+subset of the $a_i$. The cone generated by the vectors $a_1, \hdots, a_n$, is defined as all positive linear combinations
+of the vectors $a_i, i = 1, \hdots, n$. I would like to derive this theorem for educational purposes, so I am going to go through a proof, even though
+the notes assume we can use them. First let $S = \{ a_1, \hdots, a_n \}$ be a finite subset of a vector space $X$. The convex cone $C$ generated by 
+$S$ is given by
+
+\[
+C = \{ \sum_{i=1}^{m} \lambda_i a_i, \lambda_i \geq 0  \forall i \}
+\] 
+In other words,  the convex cone, C,  generated by $S$ is the smallest convex cone that includes S. 
+Now set a $x \in C$ so that $x = \sum_{i=1}^{k}\lambda_i a_i $. We must prove that there is a linearly independent subset $L$ of $S$ such that 
+for non-negative constants $\alpha_l: l  \in L$ so that $ x = \sum_{l \in L} \alpha_l l$. Now only $\lambda_i > 0$ matter (we  can just drop $\lambda_i = 0$ terms). If $S$ is linearly independent, we are done. Otherwise, we know that there exists scalars $\theta_1, \hdots , \theta_n$, that are all not zero, such that
+$\sum_{i=1}^{n} \theta_i a_i = 0$. If all $\theta_i$ are negative, just multiply by -1. Now let $\psi = \max \{ \frac{\theta_i}{\lambda_i}: i=1,  \hdots, n\}$. Thus we have $\psi > 0, \lambda_i \geq \frac{\theta_i}{\psi}$ for all i and that for some $i: \lambda_i = \frac{\theta_i}{\psi}$. Then $x$ can be represented as 
+
+\[
+x= \sum_{i=1}^{n} \lambda_i a_i = \sum_{i=1}^{n} ( \lambda_i - \frac{\theta_i}{\psi}) a_i
+\]
+
+Implying that $x$ can be rewritten as a linear combination of non-negative coefficients with one of them being zero. Thus if $S$ is not linearly independent, one can 
+write $x$ as a linear combination of positive coefficients of $n-1$ vectors of $S$. We can repeat this process until all the vectors are linearly independent.  This completes the proof of caratheodory's theorem. Now, assume that a sequence $\{y_n\}$ in K satisfies that $y_n \rightarrow y \in X$, that is it converges in our vector space. Since the collection of linearly independent subsets of S is a finite set, by the discussion above we can find a linearly independent subset of S, $\{ v_1, \hdots, v_k\} \in S, k \leq n$, and a subsequence $\{y_n\}$ such that
+
+\[
+y_n = \sum_{i=1}^{k} \lambda_i^n v_i
+\]
+with all $\lambda_i^n$ non-negative. Now it follows that since the linear span of $\{ v_1, \hdots, v_k\} \in S$, call it $Y$,  is a closed vector subspace of $X$, then  there exists $\lambda_1, \hdots, \lambda_k, \lambda_i \geq 0$ such that $y = \sum_{i=1}^{K} \lambda_i v_i$. Now for each $y  \in Y$, let $||y|| = \sum_{i=1}^{m}|\lambda_i|$. Now since $Y$ is closed:
+\begin{gather*} 
+|| y_n - y|| = || \sum_{i=1}^{k} \lambda_i^n v_i - \sum_{i=1}^{k} \lambda_i v_i = \sum_{i=1}^{k} |\lambda_i^n - \lambda| \to 0
+\end{gather*}  
+so that $\lambda_i^n \to \lambda_i$ for all i. Hence $ y \in K$ and thus $K$ is closed. 
+% Now since $y_n \rightarrow y \in X$, we must show that $\exists \mbox{  } \lambda_1, \hdots \lambda_k$ such that $x = \sum_{i=1}^{k} \lambda_i v_i$, i.e. that x is in the linear span of $\{ v_1, \hdots, a_k\} \in S \subset K$. 
+% The linear span, $\Lambda$,  of $\{ v_1, \hdots, a_k\}$ is a closed vector subspace of $X$, so $y \in \Lambda$ or $\exists \lambda_1, \hdots, \lambda_k$ so that $y = \sum_{i=1}^{k} \;any $x = \sum_{i=1}^{k} \lambda_i v_i \in Y$. Now  Now by the proof above there exists    is then closed vector subspace Then for each $n$, let $x_n = \sum_{i=1}^{k} \sigma_i^n \
+
+\rule{\textwidth}{1pt}
+
+\section*{Problem 8}
+
+\begin{enumerate}
+\item Prove Gordon's Lemma  that exactly one of the two systems has a solution  
+
+\begin{equation*}
+\begin{aligned}
+Ax &> 0 \\ 
+y^{T}A = 0 , &y \geq 0, y \neq 0
+\end{aligned}
+\end{equation*}
+\rule{\textwidth}{1pt}
+Let $A \in \R^{m \times n}, x \in \R^n, b, y \in \R^{m}$. We can then rewrite $Ax >0$
+
+\begin{equation*}
+\begin{aligned}
+0 & = A(x' - x \dprime ) - s , \quad s, x', x \dprime \geq 0 \\ 
+&= Ax' - A x \dprime - s \\ 
+&= \begin{bmatrix} A & -A  & - I \end{bmatrix} \begin{bmatrix} x' \\ x\dprime  \\ s\end{bmatrix}
+\end{aligned}
+\end{equation*}
+Now let $A' =\begin{bmatrix} A & -A  & - I \end{bmatrix}$ and $z' =\begin{bmatrix} x' \\ x\dprime  \\ s\end{bmatrix}$. The system above then becomes
+\[
+A' z' = b, z' \geq 0
+\]
+
+which is identically to the system in farkas lemma. Now we must show $A^T y = 0, y \neq 0, y \geq 0$, is equivalent to  the alternative system $(-A'^T y \geq 0, b^T y > 0)$ given farkas lemma. Substituting in $A'$ yields
+\begin{equation*}
+\begin{aligned}
+\begin{bmatrix} -A^T & A^T  & I \end{bmatrix} y' & \geq 0  \\ 
+-A^T y' &\geq 0  \\ 
+A^T y' &\geq 0  \\ 
+y' &\geq 0 \\ 
+b^T y' & >  0
+\end{aligned}
+\end{equation*}
+Since both $-A^T y' \geq 0$ and $A^{T} y' \geq 0$ it follows that $A^T y' = 0$. Also since $y' \geq 0$, and $b^{T} y' > 0$, it follows that $y' \neq 0$. Thus setting $y' = y$, the alternative system above can be rewritten as 
+\[
+A^Ty = 0, y \geq 0, y \neq 0
+\]
+
+Thus we have two alternative system pairs and by Farkas lemma only one can have a solution
+\rule{\textwidth}{1pt}
+\item Stiemke's theorem: Prove exactly one of the two below has a solution:
+
+\begin{gather*}
+i) \quad Ax \geq 0, Ax \neq 0 \\ 
+ii) \quad A^T y = 0, y > 0 
+\end{gather*}
+\rule{\textwidth}{1pt}
+Let $A \in \R^{m \times n}, x \in \R^n, b, y \in \R^{m}$. Assume  that $Ax \geq 0$ and $Ax \neq 0$. Thus $Ax > 0$. Following from above we have in part 1. We can rewrite $Ax > 0$ as:
+
+\begin{equation*}
+\begin{aligned}
+0 & = A(x' - x \dprime ) - s , \quad s, x', x \dprime \geq 0 \\ 
+&= Ax' - A x \dprime - s \\ 
+&= \begin{bmatrix} A & -A  & - I \end{bmatrix} \begin{bmatrix} x' \\ x\dprime \\ s\end{bmatrix}
+\end{aligned}
+\end{equation*}
+Now let $A' =\begin{bmatrix} A & -A  & - I \end{bmatrix}$ and $z' =\begin{bmatrix} x' \\ x\dprime \\ s\end{bmatrix}$. The system above then becomes
+\[
+A' z' = b, z' \geq 0
+\]
+
+which is identically to the system in farkas lemma.
+
+Now we must show $A^T y = 0, y > 0$, is equivalent to  the alternative system $(-A'^T y \geq 0, b^T y > 0)$ given farkas lemma. Substituting in $A'$ yields
+\begin{equation*}
+\begin{aligned}
+\begin{bmatrix} -A^T & A^T  & I \end{bmatrix} y' & \geq 0  \\ 
+-A^T y' &\geq 0  \\ 
+A^T y' &\geq 0  \\ 
+y' &\geq 0 \\ 
+b^T y' & >  0
+\end{aligned}
+\end{equation*}
+Since both $-A^T y' \geq 0$ and $A^{T} y' \geq 0$ it follows that $A^T y' = 0$. Also since $y' \geq 0$, and $b^{T} y' > 0$, it follows that $y' \neq 0$, so we can just constrain $y' > 0$. Thus setting $y' = y$, the alternative system above can be rewritten as 
+\[
+A^Ty = 0, y >0
+\]
+
+Thus we have two alternative system pairs and by Farkas lemma only one can have a solution
+\rule{\textwidth}{1pt}
+\item Gale's Theorem: Prove only one of the following has a solution
+
+
+\begin{gather*}
+i) \quad Ax \leq b \\ 
+ii) \quad A^T y = 0, y^T b < 0 , y \geq 0
+\end{gather*}
+\rule{\textwidth}{1pt}
+Rewriting the inequality $Ax \leq b$ as:
+
+\begin{equation*}
+\begin{aligned}
+A(x' - x \dprime) + s &= b  x', x \dprime, s \geq 0\\ 
+Ax' - Ax \dprime + s &= b 
+\end{aligned}
+\end{equation*}
+Now suppose that $A = B^T$, where $B \in \R^{n \times m}$, we can then rewrite the system above as
+\begin{gather*}
+\begin{bmatrix} B^T  & -B^T & I \end{bmatrix}  \begin{bmatrix} x' \\ x\dprime \\ s \end{bmatrix} = b
+\end{gather*}
+Let $A' = \begin{bmatrix} B^T  & -B^T & I \end{bmatrix} $ and $z' = \begin{bmatrix} x' \\ x\dprime \\ s \end{bmatrix}$. The system can then be reformulated as:
+\[
+A' z' = b, z' \geq 0
+\]
+
+which is identical to one of the systems in Farkas lemma. Now we must $A^T y = 0, y^T b < 0, y \geq 0$, can be written using the alternative system $(-A'^T y \geq 0, b^T y > 0)$ in farkas lemma. Substituting in $A'$ yields
+
+\begin{equation*}
+\begin{aligned}
+\begin{bmatrix} -B^T  & B^T & -I\end{bmatrix} y' & \geq 0  \\ 
+-B y' &\geq 0  \\ 
+B y' &\geq 0  \\ 
+-y' &\geq 0 \\
+b^T y' & >  0
+\end{aligned}
+\end{equation*}
+Since both $-B y' \geq 0$ and $B^T y' \geq 0$ it follows that $B y' = 0$. Now suppose that $-y' = y$, the alternative system above can be rewritten as 
+\begin{equation*}
+\begin{aligned}
+By &= 0 \\ 
+y &\leq 0 \\ 
+b^T y &< 0 
+\end{aligned}
+\end{equation*}
+Substituting $A = B^T$ gives:
+
+\begin{equation*}
+\begin{aligned}
+A^Ty &= 0 \\ 
+y &\geq 0 \\ 
+b^T y &< 0 
+\end{aligned}
+\end{equation*}
+Thus we have two alternative system pairs and by Farkas lemma only one can have a solution
+\rule{\textwidth}{1pt}
+\end{enumerate}
+
+\section*{Problem 9}
+See group type up submitted by Weronicka. 
+
+\end{document}
+
+
