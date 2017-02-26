@@ -1,5 +1,3 @@
 function [ val ] = grad( x, a, d )
-val = -4*(norm(a(:, 1) - x)^2 - d(1)^2) * (a(:, 1) - x) ...
-    -4*(norm(a(:, 2) - x)^2 - d(2)^2) * (a(:, 2) - x) ...
-    -4*(norm(a(:, 3) - x)^2 - d(3)^2) * (a(:, 3) - x);
+val = -4*sum((repmat(dot(a-x, a-x) - d.^2, 2, 1) .* (a-x))')';
 end
