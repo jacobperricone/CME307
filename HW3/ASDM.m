@@ -86,8 +86,13 @@ function [x, x0] = ASDM(f, df, x_initial, x0_intial, a, b,BETA, MAX_ITER, TOL, d
     end
     
     figure(); 
+    subplot(2, 1, 1)
     plot(1:iter, gvals, 'LineWidth',2); grid on;
     title('Norm Gradient of Objective Function ASDM'); xlabel('Iteration'); ylabel('g(x)');
+    
+    subplot(2, 1, 2)
+    plot(1:iter, fvals, 'LineWidth',2); grid on;
+    title('Objective Function ASDM'); xlabel('Iteration'); ylabel('g(x)');
     
     
 
