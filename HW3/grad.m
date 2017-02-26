@@ -1,3 +1,5 @@
 function [ val ] = grad( x, a, d )
-val = sum( repmat(- 4*(diag((a - repmat([1;0], 1, size(a,2)))'*(a - repmat([1;0], 1, size(a,2)))) - b.^2)', 2, 1).*(a - repmat([1;0], 1, size(a,2))),2)
+val = -4*(norm(a(:, 1) - x)^2 - d(1)^2) * (a(:, 1) - x) ...
+    -4*(norm(a(:, 2) - x)^2 - d(2)^2) * (a(:, 2) - x) ...
+    -4*(norm(a(:, 3) - x)^2 - d(3)^2) * (a(:, 3) - x);
 end
