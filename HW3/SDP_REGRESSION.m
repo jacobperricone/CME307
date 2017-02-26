@@ -1,10 +1,12 @@
-function [X_final, X] = SDP_REGRESSION(f, df, A,X0,mu,x_true,TOL, MAX_ITER, ALPHA,a, debug)
+function [X_final, X] = SDP_REGRESSION(f, df, A,X0,mu,x_true,TOL, MAX_ITER, ALPHA,a, debug, type)
 
 
 X_prev = X0;
 iter = 1;
 fvals = [];
+gvals = [];
 fvals(iter) = f(A,X0, mu);
+gvals(iter) = norm(df(A,X0,mu));
 x_init = X_prev(end,1:2);
 delta_f = 1000;
 delta_x = 1000;
@@ -42,7 +44,7 @@ while iter < MAX_ITER
     X_new = X_prev - alpha*df(A,X_prev,mu);
     
     fvals(iter) = f(A,X_new, mu);
-    
+    gvals(iter) = norm(df(A,X_new,mu));
     
     
     norm_grad = norm(df(A,X_new, mu),2);
@@ -55,8 +57,7 @@ while iter < MAX_ITER
         disp(sprintf('-----------------------Iteration: %d--------------------------------', iter));
         disp('     x_1        x_2        Z     f(x)     delta_F   delta_x   NORMGRAD   x_true_1  x_true_2 ')
         disp([  X_new(end,1), X_new(end,2),X_new(end,end), fvals(iter), delta_f, delta_x, norm_grad, x_true(1), x_true(2)])
-        
-        
+          
         
     end
     
@@ -64,15 +65,18 @@ while iter < MAX_ITER
 end
 
 X_final = X_prev(end,1:2);
-X = X_prev
+X = X_prev;
 
 
 
-figure();
-subplot(2,1,1)
+fig = figure();
+subplot(3,1,1)
 plot(1:iter, fvals, 'LineWidth',2); grid on;
-title(strcat({'Objective Function when mu = '}, num2str(mu)) ); xlabel('Iteration'); ylabel('F(x)');
-subplot(2,1,2)
+title(strcat({'Objective Function when mu = '}, num2str(mu), {' (descent = '} , type,')' )); xlabel('Iteration'); ylabel('F(x)');
+subplot(3,1,2)
+plot(1:iter, gvals, 'LineWidth',2); grid on;
+title(strcat({'Gradient Function when mu = '}, num2str(mu), {' (descent = '} , type,')' ) ); xlabel('Iteration'); ylabel('G(x)');
+subplot(3,1,3)
 tmp = a;
 tmp(:,4) = tmp(:,1);
 plot(tmp(1,:), tmp(2,:))
@@ -80,11 +84,14 @@ hold on
 plot(x_true(1), x_true(2),'-*b','MarkerSize',10)
 plot(X_final(1),X_final(2),'-or','MarkerSize',10)
 plot(x_init(1),x_init(2),'-*g','MarkerSize',10)
-title(strcat({'Estimated Location when mu = '}, num2str(mu)))
+title(strcat({'Estimated Location when mu = '}, num2str(mu),{' (descent = '}, type,')' ))
 xlabel('X_1')
 ylabel('X_2')
 legend('Convex Hull','True Point', 'Estimate', 'Initial Point')
 hold off
+
+save_string = [pwd strcat('/FIGURES/Problem8/HW1FIGURE_', type, '_', num2str(mu),'.png')]
+saveas(fig, save_string)
 
 
 

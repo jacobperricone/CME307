@@ -1,3 +1,11 @@
+%%
+% Author: Jacob Perricone
+% Description: Implements the Accelerate Steepest Descent Method on an initial point x0_initial, x_initial
+% for classifying two sets of points a and b
+% f: function to optimize over
+% df: gradient function
+%%
+
 function [x, x0] = ASDM(f, df, x_initial, x0_intial, a, b,BETA, MAX_ITER, TOL, debug)
 
 
@@ -16,6 +24,15 @@ function [x, x0] = ASDM(f, df, x_initial, x0_intial, a, b,BETA, MAX_ITER, TOL, d
     gvals = [];
     fvals(iter) = f(x,x0, a,b);
     gvals(iter) = norm(df(x,x0,a,b));
+
+    norm_grad = 10000
+    delta_f = 10000;
+    delta_x = 10000;
+    alpha = 10000;
+    
+    
+    lambda_prev = (1 + (1 + 4*lambda_prev^2)^(.5))/2;
+
     
     progress = @(iter,x,x0, fvals, delta_f,delta_x, lambda, alpha) fprintf('\n------------------ASDM iter = %d:------------------\n (x = %s, x_0=%f, F(x)=%f delta_F = %f,delta_x = %f, lambda= %f, alpha = %f) \n -------------------------------------------- \n ' , ...
     iter, mat2str(x,6),num2str(x0), fvals, delta_f, delta_x, lambda, alpha);
@@ -28,13 +45,7 @@ function [x, x0] = ASDM(f, df, x_initial, x0_intial, a, b,BETA, MAX_ITER, TOL, d
             
     end
     
-    norm_grad = 10000
-    delta_f = 10000;
-    delta_x = 10000;
-    alpha = 10000;
-    
-    
-    lambda_prev = (1 + (1 + 4*lambda_prev^2)^(.5))/2;
+
     while iter < MAX_ITER 
         if abs(norm_grad) < TOL
             disp(sprintf('----GRADIENT NORM IS BELOW TOLERANCE CONVERGENCE OF FUNCTION AFTER %d ITERATIONS-----', iter))
@@ -56,7 +67,6 @@ function [x, x0] = ASDM(f, df, x_initial, x0_intial, a, b,BETA, MAX_ITER, TOL, d
         iter = iter + 1;
         lambda_new = (1 + (1 + 4*lambda_prev^2)^(.5))/2;
         alpha = (1 - lambda_prev)/(lambda_new);
-        disp(alpha)
         
         x_hat_new = x_cat_prev - (1/BETA)*df(x,x0, a, b);
         x_cat_new = (1 - alpha)*x_hat_new + alpha*x_hat_prev;
@@ -71,8 +81,6 @@ function [x, x0] = ASDM(f, df, x_initial, x0_intial, a, b,BETA, MAX_ITER, TOL, d
         delta_x = norm(x_cat_new - x_cat_prev, 2);
         norm_grad = norm(df(x,x0,a,b),2); 
         
-        
-
         
         if debug
             disp(sprintf('-----------------------Iteration: %d--------------------------------', iter));

@@ -1,3 +1,12 @@
+%%
+% Author: Jacob Perricone
+% Description: Implements the Steepest Descent Method on an initial point x0_initial, x_initial
+% for classifying two sets of points a and b
+% f: function to optimize over
+% df: gradient function
+%%
+
+
 function [x, x0] = SDM(f, df, x_initial, x0_intial, a, b,ALPHA, MAX_ITER, TOL, debug)
 
 
@@ -9,10 +18,9 @@ x_cat_prev = [x; x0];
 
 iter = 1;
 fvals = [];
-fvals(iter) = f(x,x0, a,b);
 gvals = [];
 gvals(iter) = norm(df(x,x0,a,b));
-
+fvals(iter) = f(x,x0, a,b);
 
 
 delta_f = 1000;
@@ -49,7 +57,6 @@ while iter < MAX_ITER
     x_cat_new = x_cat_prev - ALPHA*df(x,x0, a, b);
     
     x = x_cat_new(1:end-1);
-    
     x0 = x_cat_new(end);
     
     fvals(iter) = f(x,x0, a, b);

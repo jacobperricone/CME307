@@ -1,9 +1,19 @@
+%%
+% Author: Jacob Perricone
+% Description: Implements the Conjugate Gradient Method on an initial point x0_initial, x_initial
+% for classifying two sets of points a and b
+% f: function to optimize over
+% df: gradient function
+%%
 function [x, x0] = CGD(f, df, x_initial, x0_intial, a, b, MAX_ITER, TOL, debug)
 
 
 
+    % save initial coordinates
     x = x_initial;
     x0 = x0_intial;
+
+
     x_cat_prev = [x;x0];
     g_prev = df(x,x0,a,b);
     d_prev = -g_prev;
@@ -11,25 +21,24 @@ function [x, x0] = CGD(f, df, x_initial, x0_intial, a, b, MAX_ITER, TOL, debug)
     iter = 1;
     fvals = [];
     gvals = [];
+
+
+    fvals(iter) = f(x,x0, a,b);
+    gvals(iter) = norm(df(x,x0,a,b));
+    norm_grad = 10000
     
     progress = @(iter,x,x0, delta_f,delta_x, i) fprintf('------------------CGD iter = 6%d:------------------\n (x = %s, x_0=%s, F(x)=%f delta_F = %f,delta_x = %f, i= %f) \n -------------------------------------------- \n ' , ...
     iter, mat2str(x,2),num2str(x0),  f(x,x0, a, b), delta_f, delta_x, i);
 
-    fvals(iter) = f(x,x0, a,b);
-    gvals(iter) = norm(df(x,x0,a,b));
-    i = 1; 
-    
-    
-   
-   
+
     if debug
             disp(sprintf('-----------------------Iteration: %d--------------------------------', iter));
             disp('     x_1        x_2        x_0     f(x)     delta_F   delta_x,  gradF i ')
             disp([  x(1), x(2), x0, fvals(iter), NaN,  NaN, 1])
             
     end
-    
-    norm_grad = 10000
+    i = 1; 
+
     
     while i < 3
          
@@ -109,14 +118,7 @@ function [x, x0] = CGD(f, df, x_initial, x0_intial, a, b, MAX_ITER, TOL, debug)
             
         end
         
-        
-        iter = iter + 1;
-
-        
-        
-      
-      
-            
+        iter = iter + 1;     
  
     end
     

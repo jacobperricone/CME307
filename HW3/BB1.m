@@ -1,10 +1,21 @@
+%%
+% Author: Jacob Perricone
+% Description: Implements the Barzilai-Borwein Method on an initial point x0_initial, x_initial
+% for classifying two sets of points a and b
+% f: function to optimize over
+% df: gradient function
+%%
 function [ x, x0 ] = BB1(f, df, x_initial, x0_intial, a, b, MAX_ITER, TOL, debug, one)
 
+
+% get initial data
 x = x_initial;
 x0 = x0_intial;
 
+% concatenate the two
 x_cat_prev = [x; x0];
 
+% iteration one
 iter = 1;
 fvals = [];
 gvals = [];
@@ -12,18 +23,16 @@ fvals(iter) = f(x,x0, a,b);
 gvals(iter) = norm(df(x,x0,a,b));
 
 
-
+% Find the first objective values and deltas
 x_initial = [0;0;0];
-
 delta_x = x_cat_prev
 delta_g = df(x,x0,a,b) - df(x_initial(1:end-1), x_initial(end), a, b)
 
 
 
 
-delta_f = 1000;
 
-
+%% print 
 if debug
     disp(sprintf('-----------------------Iteration: %d--------------------------------', iter));
     disp('     x_1        x_2        x_0     f(x)   change_F  delta_x1  delta_x2   delta_x0   delta_g1  deltag2   deltag3   alpha ')
@@ -31,7 +40,8 @@ if debug
     
 end
 
-
+% initialize randomly
+delta_f = 1000;
 norm_grad = 100000;
 change_x = 100000;
 alpha = 1000000;
@@ -58,28 +68,33 @@ while iter < MAX_ITER
     end
     
     
-    
+    % increment iteration
     iter = iter + 1;
     
+    % two different alphas
     alpha_k_1 = (delta_x'*delta_g)/(delta_g'*delta_g);
     alpha_k_2 = (delta_x'*delta_x)/(delta_x'*delta_g);
     
-    
+
+    % if one, use gradient info
     if one
         alpha = alpha_k_1
     else
         alpha = alpha_k_2
     end
     
+    % descend
     x_cat_new = x_cat_prev - alpha*df(x,x0, a, b);
-    x = x_cat_new(1:end-1);
-    
+
+    % save new values
+    x = x_cat_new(1:end-1);    
     x0 = x_cat_new(end);
     
+    % save function and gradient values
     fvals(iter) = f(x,x0, a, b);
     gvals(iter) = norm(df(x,x0,a,b));
     
-    
+    % calculate change stuff
     delta_f = fvals(iter) - fvals(iter - 1);
     change_x = norm(x_cat_new - x_cat_prev,2);
     norm_grad = norm(df(x,x0,a,b),2);
@@ -103,7 +118,7 @@ end
 figure();
 subplot(2,1,1)
 plot(1:iter, gvals, 'LineWidth',2); grid on;
-title('Objective Function BB'); xlabel('Iteration'); ylabel('f(x)');
+title('Gradient Function BB'); xlabel('Iteration'); ylabel('f(x)');
 
 subplot(2, 1, 2)
 plot(1:iter, fvals, 'LineWidth',2); grid on;
