@@ -101,8 +101,13 @@ while iter < MAX_ITER
 end
 
 figure();
+subplot(2,1,1)
 plot(1:iter, gvals, 'LineWidth',2); grid on;
-title('Objective Function BB'); xlabel('Iteration'); ylabel('F(x)');
+title('Objective Function BB'); xlabel('Iteration'); ylabel('f(x)');
+
+subplot(2, 1, 2)
+plot(1:iter, fvals, 'LineWidth',2); grid on;
+title('Objective Function BB with Regularization'); xlabel('Iteration'); ylabel('F(x)');
 
 
 
