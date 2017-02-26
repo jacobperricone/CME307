@@ -9,7 +9,7 @@ for k=1:2
     norm_SPD = zeros(size(X_1));
     norm_SPD_Rand= zeros(size(X_1));
 %%
-    noise = rand(1) - 1;
+    noise = rand(1);
     A= [1, 0, 1; 0, 1,1; 0,0,0] ;
     for j=1:size(X_1, 1)
         for l=1:size(Y_1,1)
