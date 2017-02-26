@@ -121,11 +121,15 @@ function [x, x0] = CGD(f, df, x_initial, x0_intial, a, b, MAX_ITER, TOL, debug)
     end
     
     
-   
-    
     figure(); 
+    subplot(2,1,1)
     plot(1:iter, gvals, 'LineWidth',2); grid on;
-    title('Objective Function CCD'); xlabel('Iteration'); ylabel('F(x)');
+    title('Norm Gradient of Objective Function CCD'); xlabel('Iteration'); ylabel('g(x)');
+    
+    subplot(2,1,2)
+    plot(1:iter, fvals, 'LineWidth',2); grid on;
+    title('Objective Function CCD with Regularization'); xlabel('Iteration'); ylabel('F(x)');
+
     
     
 
