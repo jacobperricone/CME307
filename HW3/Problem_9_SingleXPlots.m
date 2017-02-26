@@ -5,7 +5,7 @@ a = [1, -1, 0; 0, 0, 2];
 alpha = .001;
 
 for k=1:2
-    [X_1, Y_1] = meshgrid(linspace(-1.5, 1.5,5)',linspace(-.5,2.5,5)');
+    [X_1, Y_1] = meshgrid(linspace(-1.5, 1.5,50)',linspace(-.5,2.5,50)');
     norm_SPD = zeros(size(X_1));
     norm_SPD_Rand= zeros(size(X_1));
 %%
