@@ -1,3 +1,5 @@
+%% Function for Problem 9
+
 function [x] = XsForPlots( idx, a, d, A, ALPHA)
 
 if idx == 1
