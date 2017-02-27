@@ -48,7 +48,7 @@ while iter < MAX_ITER
     gvals(iter) = norm(df(A,X_new,mu));
     
     
-    norm_grad = norm(df(A,X_new, mu),2);
+    norm_grad = norm(df(A,X_new, mu));
     delta_f = fvals(iter) - fvals(iter - 1);
     
     delta_x = norm(X_new - X_prev,2);
@@ -73,6 +73,8 @@ x2_final = X_prev(end,1:2);
 
 
 fig = figure();
+
+
 
 subplot(3,1,1)
 plot(1:iter, fvals, 'LineWidth',2); grid on;

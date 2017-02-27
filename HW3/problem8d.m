@@ -79,35 +79,35 @@ for i=1:5
 end
 %%
     
-x1_true = [-.8;.1];
-x2_true = [0; 1.95];
+x1_true = [.8;.1];
+x2_true = [0; 1.8];
 
-x1_initial = [-.6; .4];
-x2_intial = [0; 1.8];
+x1_initial = [.8; .3];
+x2_initial = [0; 1.5];
 
 b(1:2) = (pdist2(x1_true', a(:,1:2)')').^2;
 b(3:4) = (pdist2(x2_true', a(:,2:3)')').^2;
 b(5) = (pdist2(x2_true', x1_true')').^2;
 
 X = eye(4,4);
-X(end-1:end,1:2) = [x1_initial,x2_intial]';
-X(1:2, end-1:end) = [x1_initial,x2_intial];
-X(end,end) = 6.5
+X(end-1:end,1:2) = [x1_initial,x2_initial]';
+X(1:2, end-1:end) = [x1_initial,x2_initial];
+X(end,end) = 3.5
 
 f = @(A,X,mu)(.5*norm(squeeze(sum(dot(A, repmat(X,1,1,size(A,3))))) - b,2)^2 - mu*log(det(X)))
 df_affine = @(A,X,mu)(X*sum(A .* repmat(reshape(squeeze(sum(dot(A,repmat(X,1,1, size(A,3))))) - b,1,1,size(A,3)),4,4,1),3)*X - mu*X)
 df_reg = @(A,X,mu)(sum(A .* repmat(reshape(squeeze(sum(dot(A,repmat(X,1,1, size(A,3))))) - b,1,1,size(A,3)),4,4,1),3) - mu*inv(X))
 
-
+mus = linspace(0,10e-4,2)
 %%
-ALPHA = .05;
-MAX_ITER = 1000000;
-TOL = 1.e-10;
+ALPHA = .05
+MAX_ITER = 100000;
+TOL = 1.e-6;
 x_true = horzcat(x1_true,x2_true);
 %%
 X_final = zeros(size(mus,2),2,1)
 for i=1:size(mus,2)
-[tmp1, tmp2,tmp3] = SDP_REGRESSION_HW2(f, df_reg, A,X,mus(i),x_true,TOL, MAX_ITER, 1/ALPHA,a,1, 'No Scaling')
+[tmp1, tmp2,tmp3] = SDP_REGRESSION_HW2(f, df_reg, A,X,mus(i),x_true,TOL, MAX_ITER, 1/ALPHA,a,0, 'No Scaling')
 [tmp1, tmp2,tmp3] = SDP_REGRESSION_HW2(f, df_affine, A,X,mus(i),x_true,TOL, MAX_ITER, 1/ALPHA,a,1, 'Affine Scaling');
 
 end
