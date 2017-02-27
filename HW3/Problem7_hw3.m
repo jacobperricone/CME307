@@ -15,7 +15,7 @@ for k = 1:2
     gradL = @(x) A' * (A * x - b)- mu(k) * diag(1 ./ x) * e;
     gradLsc = @(x) x.^2 .* (A' * (A * x - b)) - mu(k) .* x;
 
-    [X_1, Y_1] = meshgrid(linspace(1, 10,50)',linspace(1,10,50)');
+    [X_1, Y_1] = meshgrid(linspace(1, 10,30)',linspace(1,10,30)');
     errorL = zeros(size(X_1,1), size(Y_1,1));
     errorLsc = zeros(size(X_1,1), size(Y_1,1));
 
@@ -71,7 +71,7 @@ for k = 1:2
     colorbar
     view(-30,30); camlight; axis image
 
-    title(strcat('Magntitude of x''s Error for the Standrad SGD with mu=', num2str(mu(k))), 'FontSize', 10)
+    title(strcat('Magntitude of x''s Error for the Scaled SGD with mu=', num2str(mu(k))), 'FontSize', 10)
     xlabel('Value of x_1')
     ylabel('Value of x_2')
     zlabel('Error')
@@ -84,7 +84,7 @@ for k = 1:2
     colorbar
     view(-30,30); camlight; axis image
 
-    title('Value of the Objective Function for the Standrad SGD', 'FontSize', 10)
+    title('Value of the Objective Function for the Scaled SGD', 'FontSize', 10)
     xlabel('Value of x_1')
     ylabel('Value of x_2')
     zlabel('Cost')
