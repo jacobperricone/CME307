@@ -25,8 +25,8 @@ gvals(iter) = norm(df(x,x0,a,b,mu));
 
 % Find the first objective values and deltas
 x_initial = [0;0;0];
-delta_x = x_cat_prev
-delta_g = df(x,x0,a,b,mu) - df(x_initial(1:end-1), x_initial(end), a, b,mu)
+delta_x = x_cat_prev;
+delta_g = df(x,x0,a,b,mu) - df(x_initial(1:end-1), x_initial(end), a, b,mu);
 
 
 
@@ -78,9 +78,9 @@ while iter < MAX_ITER
 
     % if one, use gradient info
     if one
-        alpha = alpha_k_1
+        alpha = alpha_k_1;
     else
-        alpha = alpha_k_2
+        alpha = alpha_k_2;
     end
     
     % descend
@@ -134,10 +134,9 @@ title(strcat({'Objective Function BB Method: '}, s));
 
 xlabel('Iteration'); ylabel('F(x)');
 
-save_string = [pwd strcat('/FIGURES/Problem5/BB1', '_', s,'.png')]
+save_string = [pwd strcat('/FIGURES/Problem5/BB2', '_', s,'.png')];
 saveas(fig, save_string)
 
 
 
 end
-

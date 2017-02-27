@@ -77,9 +77,9 @@ while iter < MAX_ITER
 end
 
 if mu
-    s = 'With Regularization';
+    s = 'With_Regularization';
 else
-    s = 'No Regularization';
+    s = 'No_Regularization';
 end
 
 

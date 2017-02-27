@@ -44,7 +44,7 @@ df_reg = @(A,X,mu)(sum(A .* repmat(reshape(squeeze(sum(dot(A,repmat(X,1,1, size(
 %%
 
 % Define alpha
-ALPHA = .005;
+ALPHA = .01;
 MAX_ITER = 50000;
 TOL = 1.e-10;
 
@@ -53,9 +53,9 @@ TOL = 1.e-10;
 X_final_reg = zeros(size(mus,2),2,1)
 X_final_affine = zeros(size(mus,2),2,1)
 for i=1:size(mus,2)
-    [tmp, tmp1] = SDP_REGRESSION(f, df_reg, A,X,mus(i),x_true,TOL, MAX_ITER, 1/ALPHA,a,1, 'No Scaling');
+    [tmp, tmp1] = SDP_REGRESSION(f, df_reg, A,X,mus(i),x_true,TOL, 500000, 1/ALPHA,a,0, 'No Scaling');
     X_final_reg(i,:,1) = tmp
-    [tmp, tmp1] = SDP_REGRESSION(f, df_affine, A,X,mus(i),x_true,TOL, MAX_ITER, 1/ALPHA,a,1, 'Affine Scaling');
+    [tmp, tmp1] = SDP_REGRESSION(f, df_affine, A,X,mus(i),x_true,TOL, MAX_ITER, 1/ALPHA,a,0, 'Affine Scaling');
     X_final_affine(i,:,1) = tmp
 end
 
@@ -79,10 +79,10 @@ for i=1:5
 end
 %%
     
-x1_true = [.8;.1];
+x1_true = [-.8;.1];
 x2_true = [0; 1.95];
 
-x1_initial = [.8; .4];
+x1_initial = [-.6; .4];
 x2_intial = [0; 1.8];
 
 b(1:2) = (pdist2(x1_true', a(:,1:2)')').^2;
@@ -95,19 +95,21 @@ X(1:2, end-1:end) = [x1_initial,x2_intial];
 X(end,end) = 6.5
 
 f = @(A,X,mu)(.5*norm(squeeze(sum(dot(A, repmat(X,1,1,size(A,3))))) - b,2)^2 - mu*log(det(X)))
-df = @(A,X,mu)(X*sum(A .* repmat(reshape(squeeze(sum(dot(A,repmat(X,1,1, size(A,3))))) - b,1,1,size(A,3)),4,4,1),3)*X - mu*X)
+df_affine = @(A,X,mu)(X*sum(A .* repmat(reshape(squeeze(sum(dot(A,repmat(X,1,1, size(A,3))))) - b,1,1,size(A,3)),4,4,1),3)*X - mu*X)
+df_reg = @(A,X,mu)(sum(A .* repmat(reshape(squeeze(sum(dot(A,repmat(X,1,1, size(A,3))))) - b,1,1,size(A,3)),4,4,1),3) - mu*inv(X))
 
 
 %%
-ALPHA = .1;
+ALPHA = .05;
 MAX_ITER = 1000000;
 TOL = 1.e-10;
 x_true = horzcat(x1_true,x2_true);
 %%
 X_final = zeros(size(mus,2),2,1)
 for i=1:size(mus,2)
-[tmp1, tmp2,tmp3] = SDP_REGRESSION_HW2(f, df, A,X,mus(i),x_true,TOL, MAX_ITER, 1/ALPHA,a,1);
-X_final(i,:,1) = tmp
+[tmp1, tmp2,tmp3] = SDP_REGRESSION_HW2(f, df_reg, A,X,mus(i),x_true,TOL, MAX_ITER, 1/ALPHA,a,1, 'No Scaling')
+[tmp1, tmp2,tmp3] = SDP_REGRESSION_HW2(f, df_affine, A,X,mus(i),x_true,TOL, MAX_ITER, 1/ALPHA,a,1, 'Affine Scaling');
+
 end
 
 %%

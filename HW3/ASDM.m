@@ -94,9 +94,9 @@ function [x, x0] = ASDM(f, df, x_initial, x0_intial, a, b,BETA, MAX_ITER, TOL, d
     end
     
 if mu
-    s = 'With Regularization';
+    s = 'With_Regularization';
 else
-    s = 'No Regularization';
+    s = 'No_Regularization';
 end
 
 

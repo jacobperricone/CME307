@@ -124,9 +124,9 @@ while i < 3
 end
 
 if mu
-    s = 'With Regularization';
+    s = 'With_Regularization';
 else
-    s = 'No Regularization';
+    s = 'No_Regularization';
 end
 
 

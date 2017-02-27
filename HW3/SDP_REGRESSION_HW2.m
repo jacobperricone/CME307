@@ -1,4 +1,4 @@
-function [x1_final,x2_final, X] = SDP_REGRESSION_HW2(f, df, A,X0,mu,x_true,TOL, MAX_ITER, ALPHA,a, debug, type)
+function [x1_final,x2_final, X_prev] = SDP_REGRESSION_HW2(f, df, A,X0,mu,x_true,TOL, MAX_ITER, ALPHA,a, debug, type)
 
 
 X_prev = X0;
@@ -72,17 +72,18 @@ x2_final = X_prev(end,1:2);
 
 
 
+fig = figure();
 
-figure();
 subplot(3,1,1)
 plot(1:iter, fvals, 'LineWidth',2); grid on;
-title(strcat({'Objective Function when mu = '}, num2str(mu),{'  (descent = '}, type,')' )) ; 
+num2str(mu)
+title(strcat({'Objective Function when mu = '}, num2str(mu), {' (descent = '} , type,')' ));
 xlabel('Iteration'); ylabel('F(x)');
 
 subplot(3,1,2)
-plot(1:iter, fvals, 'LineWidth',2); grid on;
+plot(1:iter, gvals, 'LineWidth',2); grid on;
 title(strcat({'Gradient Function when mu = '}, num2str(mu) ,{'  (descent = '}, type,')' )); 
-xlabel('Iteration'); ylabel('F(x)');
+xlabel('Iteration'); ylabel('G(x)');
 
 
 subplot(3,1,3)
@@ -96,11 +97,15 @@ plot(x1_final(1),x1_final(2),'-or','MarkerSize',10)
 plot(x2_final(1),x2_final(2),'-og','MarkerSize',10)
 plot(x_init1(1),x_init1(2),'-xr','MarkerSize',10)
 plot(x_init2(1),x_init2(2),'-xg','MarkerSize',10)
-title(strcat({'Estimated Location when mu = '}, num2str(mu)),{' (descent = '}, type,')' )
+title(strcat({'Estimated Location when mu = '}, num2str(mu),{' (descent = '}, type,')' ))
 xlabel('X_1')
 ylabel('X_2')
-legend('Convex Hull','X_1 True Point', 'X_2 True Point', 'X_1 Estimate', 'X_2 Estimate', 'X_1 Initial Point', 'X_2 Initial Point')
+legend('Convex Hull','X_1 True Point', 'X_2 True Point', 'X_1 Estimate', 'X_2 Estimate', 'X_1 Initial Point', 'X_2 Initial Point', 'Orientation', 'Horizontal', 'Location', 'southoutside')
 hold off
+
+ set(fig, 'Position', [100, 100, 1049, 895]);
+save_string = [pwd strcat('/FIGURES/Problem8/HW2FIGURE_', type, '_', num2str(mu),'.png')]
+saveas(fig, save_string)
 
 
 
