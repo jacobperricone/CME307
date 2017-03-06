@@ -9,10 +9,10 @@ beta = [.1, 1, 10];
 
 for i=1:3
     % Without the objective function.
-    ADMM(0, beta(i), 20, A)
+    ADMM(0, beta(i), 100, A)
     
     % With the objective function.
-    ADMM(1, beta(i), 20, A)
+    ADMM(1, beta(i), 100, A)
 end
 
 
@@ -24,9 +24,9 @@ end
 for i=1:3
     
     % Without the objective function and with permuation.
-    PermADMM(0, beta(i), 20, A) 
+    PermADMM(0, beta(i), 100, A) 
     
     % With objective function and permuation.
-    PermADMM(1, beta(i), 20, A) 
+    PermADMM(1, beta(i), 100, A) 
   
 end
