@@ -72,7 +72,7 @@ s = generate_s_points_two(npoints);
 
 p = [6,12];
 pname = {'six', 'twelve'};
-cutoffs = [0,-10];
+cutoffs = [0,-45];
 cname = {'zero', 'negTen'};
 
 

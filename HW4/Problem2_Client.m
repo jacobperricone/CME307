@@ -12,7 +12,7 @@ mu = [0, 10^-5];
 x_initial = [.5;1.25];
 x0_initial= .124;
 ALPHA = .05;
-MAX_ITER = 2500;
+MAX_ITER = 25090;
 TOL = .000001;
 
 f = @(x,x0,  a, b) sum(log(1 + exp(-a'*x - x0))) + sum(log(1 + exp(b'*x + x0)));
@@ -71,72 +71,72 @@ hessian = @(x,x0,a,b)(sum(z(x,x0,a).*tmpa,3) + sum(zbar(x,x0,b).*tmpb,3));
 
 figure()
 subplot(2,1,1)
-plot(1:iter_N, fvals_N)
+loglog(1:iter_N, fvals_N)
 hold on
-plot(1:iter_DFP, fvals_DFP)
+loglog(1:iter_DFP, fvals_DFP)
 hold on
-plot(1:iter_SDM, fvals_SDM)
+loglog(1:iter_SDM, fvals_SDM)
 hold on
-plot(1:iter_ASDM, fvals_ASDM)
+loglog(1:iter_ASDM, fvals_ASDM)
 hold on
-plot(1:iter_CGD, fvals_CGD)
+loglog(1:iter_CGD, fvals_CGD)
 hold on
-plot(1:iter_BB, fvals_BB)
+loglog(1:iter_BB, fvals_BB)
 legend('Newton', 'DFP', 'SDM', 'ASDM', 'CGD','BB')
-title('Function Value vs. Iteration')
-xlabel('Iteration')
-ylabel('f(x)')
+title('Function Value vs. Iteration (LogSpace)')
+xlabel('$\log[\mbox{Iteration}]$','Interpreter', 'LaTex')
+ylabel('$\log[f(x)]$', 'Interpreter', 'LaTex')
 
 subplot(2,1,2)
-plot(1:iter_N, gvals_N)
+loglog(1:iter_N, gvals_N)
 hold on
-plot(1:iter_DFP, gvals_DFP)
+loglog(1:iter_DFP, gvals_DFP)
 hold on
-plot(1:iter_SDM, gvals_SDM)
+loglog(1:iter_SDM, gvals_SDM)
 hold on
-plot(1:iter_ASDM, gvals_ASDM)
+loglog(1:iter_ASDM, gvals_ASDM)
 hold on
-plot(1:iter_CGD, gvals_CGD)
+loglog(1:iter_CGD, gvals_CGD)
 hold on
-plot(1:iter_BB, gvals_BB)
+loglog(1:iter_BB, gvals_BB)
 legend('Newton', 'DFP', 'SDM', 'ASDM', 'CGD','BB')
-title('Norm Gradient Value vs. Iteration')
-xlabel('Iteration')
-ylabel('g(x)')
+title('Norm Gradient Value vs. Iteration (LogSpace)')
+xlabel('$\log[\mbox{Iteration}]$','Interpreter', 'LaTex')
+ylabel('$\log[g(x)]$', 'Interpreter', 'LaTex')
 
 %%
 figure()
 subplot(3,1,1)
-plot(1:iter_N, fvals_N)
+loglog(1:iter_N, fvals_N)
 hold on
-plot(1:iter_DFP, fvals_DFP)
+loglog(1:iter_DFP, fvals_DFP)
 hold on
 legend('Newton', 'DFP')
-title('Function Value vs. Iteration')
-xlabel('Iteration')
-ylabel('f(x)')
+title('Function Value vs. Iteration (LogSpace)')
+xlabel('$\log[\mbox{Iteration}]$','Interpreter', 'LaTex')
+ylabel('$\log[f(x)]$', 'Interpreter', 'LaTex')
 
 subplot(3,1,2)
-plot(1:iter_N, gvals_N)
+loglog(1:iter_N, gvals_N)
 hold on
-plot(1:iter_DFP, gvals_DFP)
+loglog(1:iter_DFP, gvals_DFP)
 hold on
 legend('Newton', 'DFP')
-title('Norm Gradient Value vs. Iteration')
-xlabel('Iteration')
-ylabel('g(x)')
-
+title('Norm Gradient Value vs. Iteration (LogSpace)')
+xlabel('$\log[\mbox{Iteration}]$','Interpreter', 'LaTex')
+ylabel('$\log[g(x)]$', 'Interpreter', 'LaTex')
 
 
 subplot(3,1,3)
-plot(1:iter_N, hvals_N)
+loglog(1:iter_N, hvals_N)
 hold on
-plot(1:iter_DFP, hvals_DFP)
+loglog(1:iter_DFP, hvals_DFP)
 hold on
 legend('Newton', 'DFP')
-title('Norm Hessian Value vs. Iteration')
-xlabel('Iteration')
-ylabel('F(x)')
+title('Norm Hessian Value vs. Iteration (LogSpace)')
+xlabel('$\log[\mbox{Iteration}]$','Interpreter', 'LaTex')
+ylabel('$\log[F(x)]$', 'Interpreter', 'LaTex')
+
 
 
 

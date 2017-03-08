@@ -1,9 +1,10 @@
-\documentclass{article} % For LaTeX2e
+\documentclass[answers]{exam} % For LaTeX2e
 \usepackage{cos424,times}
 \usepackage{hyperref}
 \usepackage{url}
 \usepackage{graphicx}
 \usepackage{enumitem}
+\usepackage{tikz}
 \usepackage{wrapfig}
 % For LaTeX2e
 \usepackage{cos424,times}
@@ -31,8 +32,15 @@
 \usepackage{bbm}
 \usepackage{multirow}
 \usepackage{booktabs}
+\makeatletter
+\def\app@exe{\immediate\write18}
+\def\listDir#1{%
+  \app@exe{ls #1/*.m | xargs cat >> \jobname.tmp}%
+  \lstinputlisting{\jobname.tmp}
+  \AtEndDocument{\app@exe{rm -f #1/\jobname.tmp}}}
+\makeatother
 
-\title{MATH238 HW3}
+\title{CME307 HW4}
 
 
 \author{
@@ -131,11 +139,12 @@ deletekeywords={...},            % if you want to delete keywords from the given
 
 
     \begin{document}
-    \newcommand{\pr}{\operatornamewithlimits{(t)}}.
+        \newcommand{\pr}{\operatornamewithlimits{(t)}}.
     \newcommand{\prm}{\operatornamewithlimits{(t-1)}}.
     \setlength{\abovedisplayskip}{5pt}
 \setlength{\belowdisplayskip}{5pt}
     \newcommand{\argmin}{\operatornamewithlimits{argmin}}.
+
     \maketitle
     
 
@@ -152,6 +161,7 @@ Recall the (local) second-order (SO) and scaled second-order (SSO) Lipschitz con
 Find parameter $\beta$ values (or upper bounds)  of (SOLC) and (SSOLC) for each of the following scalar functions:
 \begin{itemize}
 \item[(a)] $f(x)=\frac{1}{3}x^3+x$, $x>0$
+\begin{framed}
 We have 
 \begin{equation*}
 \begin{aligned}
@@ -182,10 +192,10 @@ For the SSOLC condition we have
 \end{equation*}
 
 
-
+\end{framed}
 
 \item[(b)] $f(x)=\log(x)$, $x>0$.
-
+\begin{framed}
 We have 
 \begin{equation*}
 \begin{aligned}
@@ -209,16 +219,20 @@ SOLC condition
 Thus there is no upperbound since we can set $x$ arbitrarily close to zero, causing   $\beta$ to be aribtrarily large
 
 
-Iin the SSOLC condition we have
+In the SSOLC condition we have
 
 \begin{equation*}
 \begin{aligned}
 || \frac{ x d^2}{x^2(x +d)} || &\leq \beta || \frac{d^2}{x^2} || \\ 
 || \frac{ x }{(x +d)} || &\leq \beta  \\ 
 || \frac{ 1}{1 + x^{-1} d} || &\leq \beta  \\ 
+\leq \frac{1}{ 1 - || x^{-1} d|| }&\leq \beta  \\ 
+\lim_{|| x^{-1} d|| \to 0 } \frac{1}{ 1 - || x^{-1} d|| } &= 1\\
+\lim_{|| x^{-1} d|| \to \frac{1}{2} } \frac{1}{ 1 - || x^{-1} d|| } &= 2 \\ 
+\mbox{ Thus: } & \\ 
+2 &\leq \beta 
 \end{aligned}
 \end{equation*}
-Thus  since $x^{-1}d$ is bounded above by $.5$,  $\frac{ 1}{1 + x^{-1} d}  \geq \frac{2}{3}$, indicating that $\frac{ 2}{3} \leq \beta$. Now if $|| x^{-1} d||$ goes to zero, then  $||\frac{ 1}{1 + x^{-1} d}||  = 1$. Therefore the tighter bound is that $  1 \leq \beta$.
 
 
 
@@ -227,8 +241,9 @@ Thus  since $x^{-1}d$ is bounded above by $.5$,  $\frac{ 1}{1 + x^{-1} d}  \geq 
 
 
 
+\end{framed}
 \item[(c)] $f(x)=\log(1+e^{-x})$, $x> 0$
-
+\begin{framed}
 
 We have 
 \begin{equation*}
@@ -287,6 +302,8 @@ We have that the third derivative is equal to
 \]
 
 Plotting the third derivative in matlab, one can see that it is periodic, with a range of $[\frac{-1}{6 \sqrt{3}}, \frac{1}{6 \sqrt{3}}]$. Thus, we can establish the bound $  \frac{1}{6 \sqrt{3}} \leq \beta$. 
+
+
 % Now notice that 
 
 % Since $f$ is a scalar value function, d and x are scalars, thus $||d|| = |d|$ and $||d||^2 = d^2$. we have that
@@ -323,10 +340,10 @@ Plotting the third derivative in matlab, one can see that it is periodic, with a
 \lim_{d \to 0}  |\frac{ x^{3} e^{-x}( e^{-d} - 1)(1 + e^{-x}) - dx^3 (1 + e^{-x -d})}{ d^2 ( 1 + e^{-x - d} )(1 + e^{-x})^2}| &= \infty \\ 
 \end{aligned}
 \end{equation*}
-Thus there exists no bound for $\beta$ in both SOLC, and SSOLC. 
+Thus there exists no bound for $\beta$ in the SSOLC. 
 
 
-
+\end{framed}
 \end{itemize}
 
 
@@ -352,7 +369,7 @@ Or to minimize the log-logistic-loss
 Write down the Hessian matrix funtion of $\B{x}, x_0$
 
 
-\rule{\textwidth}{1pt}
+\begin{framed}
 
 Let $f(x,x_0)$ be the log-logistic loss function. 
 \begin{equation*}
@@ -366,7 +383,7 @@ Let $f(x,x_0)$ be the log-logistic loss function.
 Let us define $\z = -\a_i^T \x - x_0 $ and $\bar{\z} =  \a_i^T \x + x_0$. We have that 
 \begin{equation*}
 \begin{aligned}
-\nabla_{x_j, x_k} &= \sum_{i, c_i=1} a_{ij} a_{ik} [\frac{\exp[\z]}{ 1+ \exp[\z]}  - \frac{ \exp[\z]}{(1 + \exp[\z])^2}] + \sum_{i, c_i = -1} a_{ij} a_{ik} [\frac{\exp[\bar{\z}]}{ 1+ \exp[\bar{\z}]} - \frac{ \exp[\bar{\z}] }{(1 + \exp[\bar{\z}])^2}] \\ 
+\nabla_{x_j, x_k} &= \sum_{i, c_i=1} a_{ij} a_{ik} [\frac{\exp[\z]}{ 1+ \exp[\z]}  - \frac{ \exp[2 \z]}{(1 + \exp[\z])^2}] + \sum_{i, c_i = -1} a_{ij} a_{ik} [\frac{\exp[\bar{\z}]}{ 1+ \exp[\bar{\z}]} - \frac{ \exp[ 2 \bar{\z}] }{(1 + \exp[\bar{\z}])^2}] \\ 
 &= \sum_{i, c_i=1} a_{ij} a_{ik} \frac{\exp[\z]}{(1 + \exp[\z])^2} +  \sum_{i, c_i=-1} a_{ij} a_{ik} \frac{\exp[\bar{\z}]}{(1 + \exp[\bar{\z}])^2}\\ 
 \nabla_{x_j, x_0} &= \sum_{i, c_i=1} a_{ij}  \frac{\exp[\z]}{(1 + \exp[\z])^2} +  \sum_{i, c_i=-1} a_{ij} \frac{\exp[\bar{\z}]}{(1 + \exp[\bar{\z}])^2} \\ 
 \nabla_{x_0, x_0} &= \sum_{i, c_i=1} \frac{\exp[\z]}{(1 + \exp[\z])^2} +  \sum_{i, c_i=-1}  \frac{\exp[\bar{\z}]}{(1 + \exp[\bar{\z}])^2}
@@ -375,7 +392,7 @@ Let us define $\z = -\a_i^T \x - x_0 $ and $\bar{\z} =  \a_i^T \x + x_0$. We hav
 
 Thus the $i, j, (i,j) \in \{ 0, \hdots, n \}$ element of the hessian matrix is given by the equations above 
 \\
-\rule{\textwidth}{1pt}
+\end{framed}
 
 \item (b) (Computation Team Work) Apply any Quasi-Newton (e.g., slide 18 of Lecture
 13 or L $\&$Y Chapter 10) and Newton methods to solve the problem using the
@@ -398,7 +415,7 @@ each other and with the previous methods used in HW3.
 \begin{itemize}
 \item[(a)] What is the analytic center of the feasible region with the logarithmic barrier function
 
-
+\begin{framed}
 The analytic center is found by minimizing 
 
 \[
@@ -423,10 +440,10 @@ x_3 &= \frac{1}{3}
 \end{aligned}
 \end{equation*}
 
-
+\end{framed}
 \item[(b)] Find the central path $\x(\mu) = (x_1(\mu), x_2(\mu), x_3(\mu))$. 
 
-
+\begin{framed}
 The minimization problem is of the form 
 
 \begin{equation*}
@@ -487,7 +504,9 @@ x_1(\mu) = x_2(\mu) &= \frac{3 \mu + 1 -  \sqrt{9\mu^2 -2  \mu + 1}} { 4} \\
 x_3 (\mu) &= 1 - \frac{3 \mu + 1 -  \sqrt{9\mu^2 -2  \mu + 1}} { 4}
 \end{aligned}
 \end{equation*}
+\end{framed}
 \item[(c)] Whos that as $\mu$ decreases to $0$, $ \x(\mu)$ converges to the unique optimal solution. 
+\begin{framed}
 We see that the 
 \[
 \lim_{\mu \to 0} x_{1,2}(\mu) = 0
@@ -495,7 +514,7 @@ We see that the
 
 Thus, the optimal solution corresponds to $x_1, x_2 = 0, x_3 = 1$, which is the smallest value the objective function can take while
 still satisfying the constraint set. 
-
+\end{framed}
 
 
 \item[(d)] (Computational Team Work) Draw $\x$ part of the the primal-dual potential function level sets 
@@ -512,7 +531,41 @@ and
 \]
 respectively in the primal feasible region (on a plane).
 
+
+\item[(e)] Do everything with $f(x) = x_1$
+\begin{framed}
+For part $a$ the analytic center remains the same. Now we have
+
+\begin{equation*}
+\begin{aligned}
+\min_{x_1} \quad & x_1 - \mu \log[x_1] - \mu \log[x_2] -  \mu \log[1 - x_1 - x_2] \\ 
+\end{aligned}
+\end{equation*}
+Differentiating with respect to $x_1, x_2$ we have 
+
+\begin{equation*}
+\begin{aligned}
+\nabla_{x_1} \rightarrow 1 - \frac{\mu}{x_1} + \frac{\mu}{1 - x_1 - x_2} &= 0 \\ 
+\nabla_{x_2} \rightarrow \frac{\mu}{x_2} + \frac{\mu}{1 - x_1 - x_2} &= 0 \\
+\end{aligned}
+\end{equation*}
+
+
+Solving this system of equations we have
+
+
+\begin{equation*}
+\begin{aligned}
+x_2(\mu) = x_3(\mu) &= \frac{1 - x_1(\mu)}{2} \\ 
+x_1 (\mu) &= \frac{ 1 + 3 \mu - \sqrt{ 9 \mu^2 + 2\mu + 1}}{2}
+\end{aligned}
+\end{equation*}
+
+Thus as $\mu \to 0$, the optimal solution becomes $x_1 = 0, x_2 = x_3 = \frac{1}{2}$
+\end{framed}
 \end{itemize}
+
+
 
 
 \section*{ Problem 4}
@@ -532,7 +585,7 @@ Let $(\x(\mu), \y( \mu), \s(\mu))$ be the central path of 5.9. Then prove
 \begin{itemize}
 \item[(a)] The central path point $(\x(\mu), \y(\mu), \s(\mu))$ is bounded for $0 < \mu \leq \mu^{0}$ and any given $0 < \mu^{0} < \infty$. 
 
-
+\begin{framed}
 We have that $(\x(\mu^{0}) - \x(\mu))^{\top} ( \s(\mu^{0})  - \s(\mu))^{\top} = 0$.
  
 Thus
@@ -549,7 +602,7 @@ Thus
 
 Thus $\x(\mu)$, $\s(\mu)$ are bounded. Since the KKT condition of the barrier porblems require that $\s = -A^{T}\y + \nabla f(\x)^{T}$, it follows that since $\s(\mu)$ is bounded, $\y(\mu)$ must be bounded as well.
 
-
+\end{framed}
 \item[(b)] For $ 0 < \mu' < \mu$ 
 \[
 \cc^{\top} \x(\mu') \leq \cc^{\top} \x(\mu) \mbox{  and } \b^{\top} \y(\mu') \geq \b^{\top} \y(\mu)
@@ -561,7 +614,7 @@ Furthermore if $\x(\mu') \neq  \x(\mu)$ and $\y(\mu') \neq y(\mu)$,
 \cc^{\top} \x(\mu') < \cc^{\top} \x(\mu) \mbox{  and } \b^{\top} \y(\mu') > \b^{\top} \y(\mu)
 \]
 
-
+\begin{framed}
 Now we know that for a given $(\mu', \mu$) that 
 
 
@@ -679,7 +732,7 @@ Or in the strict case that:
 
 
 
-
+\end{framed}
 \end{itemize}
 \section*{Problem 5}
 
@@ -693,7 +746,7 @@ Prove that if $\B{D} \in \S^n$ and $|D|_{\infty} < 1$. Then
 \[
 \mbox{trace}(\B{D}) \geq \log[ \mbox{det}(I + \B{D}) \geq \mbox{trace}(\B{D}) - \frac{|D|^2}{2( 1 - |\B{D}|_{\infty})}]
 \]
-
+\begin{framed}
 We know that the $\mbox{trace}(\B{D}) = \sum_{j} \lambda_j$ where $\lambda_j$ is the jth eigenvalue of the matrix D. Furthermore we know that since $\B{D}$ is PSD, that it can be diagonalized so that $ \mbox{det}(I + \B{D}) =  \mbox{det}(X( I + \Sigma) X^{-1}) =\mbox{det}(I + \Sigma) = \prod_{j} (1 + \lambda_j)$ where $\Sigma $ is a diagonal matrix of eigenvalues $\lambda_j$. Thus we have that 
 
 \begin{equation*}
@@ -731,6 +784,8 @@ which in matrix forms indicates that
 &= \mbox{trace}(D) - \frac{|D|^2}{2 (1 - |\B{D}|_{\infty})}
 \end{aligned}
 \end{equation*}
+
+\end{framed}
 \section*{Problem 6}
 Optimization with log-sum-exponential functions arises from smooth approximation
 for non-smooth optimization. Consider the non-smooth optimization problem:
@@ -742,6 +797,7 @@ given $\a_i \in \R^{n}, b_i \in \R$.
 
 \begin{itemize}
 \item[(a)] Derive an equivalent LP problem and write down its dual. 
+\begin{framed}
 Let $A$ be a matrix of vectors $\a_i$. and $\b$ be a vector of $b_i$`s. The primal optimization problem becomes 
 \begin{equation*}
 \begin{aligned}
@@ -761,6 +817,7 @@ The dual is then
 & y  \succeq 0
 \end{aligned}
 \end{equation*}
+\end{framed}
 \item[(b)]Suppose we approximate the objective function $\max_{1\leq i \leq m}(\a_i^{\top} \x + b_i)$ with a smooth function and consider the optimization:
 
 \[
@@ -772,7 +829,7 @@ Then $z_1$ and $z_2$ be the optimal values of the two formulations, prove that
 0 \leq z_2 - z_1 \leq \log(m)
 \]
 
-
+\begin{framed}
 Suppose that $z^{*}$ is  dual optimal for the dual general approximated program
 
 \begin{equation*}
@@ -803,7 +860,7 @@ z_1 \geq z_2 + \sum_{j}z_j^{*} \log[z_j^*] \geq z_2 + \log(m)
 Furthermore it holds that 
 
 \[
-\max_{i}(a_i^T x + b_i) \leq log[\sum_{i} e^{a_i^T x + b_i}]
+\max_{i}(a_i^T x + b_i) \leq \log[\sum_{i} e^{a_i^T x + b_i}]
 \]
 
 To prove this, let $r \in \R^m$ and let $m = \max_i r$
@@ -827,8 +884,10 @@ z_2 - \log(m) \leq z_1 \leq z_2
 \]
 
 and the proof is complete. 
+\end{framed}
 \item[(c)]  Suppose we use a different function for approximation:
 
+\begin{framed}
 \[
 \min_{\x} \frac{1}{\gamma} \log \big(  \sum_{i=1}^{m} \exp[\gamma(\a_i^{\top} \x +  b_i)] \big)
 \]
@@ -923,8 +982,24 @@ and therefore that
 
 Now, notice, as  $\gamma \to \infty$, then $z_3 \to z_1$. 
 
-
+\end{framed}
 \end{itemize}
+
+\section*{Code}
+\lstinputlisting{ADMM.m}
+\lstinputlisting{DFP.m}         
+\lstinputlisting{Newton.m}      
+\lstinputlisting{Problem2_Client.m} 
+\lstinputlisting{Problem7.m}        
+\lstinputlisting{evaluate_candidacy.m}  
+\lstinputlisting{generate_s_points_two.m}
+\lstinputlisting{CVXSolZ.m}     
+\lstinputlisting{Hw4Problem8.m}     
+\lstinputlisting{PermADMM.m}        
+\lstinputlisting{Problem3_Client.m} 
+\lstinputlisting{choose_alpha.m}        
+\lstinputlisting{generate_s_points.m}   
+\lstinputlisting{generate_x_points.m}
 \end{document}
 
 

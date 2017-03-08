@@ -6,11 +6,11 @@ idx =[1, 0; -1, 0; 0, 1; 0, -1];
 
 DMethods_error_C = [];
 DMethods_error_V = [];
-for i = 1:3
+for i = 1:4
 %   
     Methods_error_C = [];
     Methods_error_V = [];
-    [X_1, Y_1] = meshgrid(linspace(-1.5, 1.5,20)',linspace(-.5,2.5,20)');
+    [X_1, Y_1] = meshgrid(linspace(-1.5, 2.5,7)',linspace(-.5,2.5,7)');
     
     Cx1_error_SDP = zeros(size(X_1,1), size(Y_1,1));
     Cx2_error_SDP = zeros(size(X_1,1), size(Y_1,1));
@@ -31,7 +31,7 @@ for i = 1:3
             x1_center = [0,1];
             dist_x1_center = pdist2(x1_center, a(:,1:2)');
         
-            x1_vertex = [.95,.05];
+            x1_vertex = [.75,.35];
             dist_x1_vertex = pdist2(x1_vertex, a(:,1:2)');
         
             x2 = [X_1(j,l),Y_1(j,l)];
@@ -60,7 +60,7 @@ for i = 1:3
             Ctotal_error_SDP(j,l) = Cx1_error_SDP(j,l) +  Cx2_error_SDP(j,l);
             Cdistance(j,l) = dhat_center;
                 
-            Methods_error_C = [Methods_error_C, Cx1_error_SDP(j,l) +  Cx2_error_SDP(j,l)];    
+            Methods_error_C = [Methods_error_C, log(Cx1_error_SDP(j,l) +  Cx2_error_SDP(j,l))];    
                 
             d = [dist_x1_vertex(1), dist_x1_vertex(2), dist_x2(1), ...
                 dist_x2(2), dhat_vertex];
@@ -87,7 +87,7 @@ for i = 1:3
             Vtotal_error_SDP(j,l) = Vx1_error_SDP(j,l) +  Vx2_error_SDP(j,l);
             Vdistance(j,l) = dhat_vertex;
             
-            Methods_error_V = [Methods_error_V, Vx1_error_SDP(j,l) +  Vx2_error_SDP(j,l)];
+            Methods_error_V = [Methods_error_V, log(Vx1_error_SDP(j,l) +  Vx2_error_SDP(j,l))];
         
         end
     end
@@ -96,16 +96,16 @@ for i = 1:3
     %%
     idx =[1, 0; -1, 0; 0, 1; 0, -1];
     col = idx(i,:);
-    if col(1) == 1 || col(2) == 0
+    if i == 1
         addinfo = ' Objective is to Minimize C\cdot Z + tr(Z).';
     
-    elseif col(1) == -1 col(2) == 0
+    elseif i == 2
         addinfo = ' Objective is to Minimize C\cdot Z - tr(Z).';
     
-    elseif col(1) == 0 || col(2) == 1
+    elseif i == 3
         addinfo = ' Objective is to Minimize C\cdotZ + (d_{13} + d_{21})^2';
     
-    else
+    elseif i == 4
         addinfo = ' Objective is to Minimize C\cdot Z - (d_{13} + d_{21})^2';
     end
     
@@ -211,7 +211,7 @@ for i = 1:3
     view(-30,30); camlight; axis image
 
 
-    title(strcat('Magntitude of X_1 Error with X_1 Fixed at (x = .95, y = .05) in Hull', addinfo), 'FontSize', 10)
+    title(strcat('Magntitude of X_1 Error with X_1 Fixed at (x = .75, y = .35) in Hull', addinfo), 'FontSize', 10)
     xlabel('X Data')
     ylabel('Y Data')
     zlabel('Error')
@@ -242,7 +242,7 @@ for i = 1:3
     view(-30,30); camlight; axis image
 
 
-    title(strcat('Magntitude of X_2 Error with X_1 Fixed at (x = .95,y = .05 ) in Hull', addinfo), 'FontSize', 10)
+    title(strcat('Magntitude of X_2 Error with X_1 Fixed at (x = .75,y = .35 ) in Hull', addinfo), 'FontSize', 10)
     xlabel('X Data')
     ylabel('Y Data')
     zlabel('Error')
@@ -272,7 +272,7 @@ for i = 1:3
     view(-30,30); camlight; axis image
 
 
-    title(strcat('Magntitude of Total Error with X_1 Fixed at (x = .95,y = .05) in Hull', addinfo), 'FontSize', 10)
+    title(strcat('Magntitude of Total Error with X_1 Fixed at (x = .75,y = .35) in Hull', addinfo), 'FontSize', 10)
     xlabel('X Data')
     ylabel('Y Data')
     zlabel('Error')
@@ -303,8 +303,27 @@ hold on
 plot(1:length(DMethods_error_C(2, :)), DMethods_error_C(2, :))
 hold on
 plot(1:length(DMethods_error_C(3, :)), DMethods_error_C(3, :))
+hold on
+plot(1:length(DMethods_error_C(4, :)), DMethods_error_C(4, :))
 title('Differences Across Methods in Estimating Fixed X = (0, 1)')
-legend('With tr(Z)', 'With -tr(Z)', 'With (d_{13} + d_{21})^2')
+legend('With tr(Z)', 'With -tr(Z)', 'With (d_{13} + d_{21})^2', 'With -(d_{13} + d_{21})^2')
+xlabel('Number of Iterations')
+ylabel('Log Error')
+hold off
+
+figure()
+nbins = 30;
+histogram(DMethods_error_C(1, :), nbins, 'FaceColor', 'r')
+hold on 
+histogram(DMethods_error_C(2, :), nbins, 'FaceColor', 'g')
+hold on
+histogram(DMethods_error_C(3, :), nbins, 'FaceColor', 'c')
+hold on
+histogram(DMethods_error_C(4, :), nbins, 'FaceColor', 'y')
+title('Log Error for Different Methods when X is Fixed at (0,1)')
+legend('With tr(Z)', 'With -tr(Z)', 'With (d_{13} + d_{21})^2', 'With -(d_{13} + d_{21})^2')
+xlabel('Quantiles')
+ylabel('Counts')
 hold off
 
 figure()
@@ -313,5 +332,24 @@ hold on
 plot(1:length(DMethods_error_V(2, :)), DMethods_error_V(2, :))
 hold on
 plot(1:length(DMethods_error_V(3, :)), DMethods_error_V(3, :))
-title('Differences Across Methods in Estimating Fixed X = (.95, .05)')
-legend('With tr(Z)', 'With -tr(Z)', 'With (d_{13} + d_{21})^2')
+hold on
+plot(1:length(DMethods_error_V(4, :)), DMethods_error_V(4, :))
+title('Differences Across Methods in Estimating Fixed X = (.75,.35)')
+legend('With tr(Z)', 'With -tr(Z)', 'With (d_{13} + d_{21})^2', 'With -(d_{13} + d_{21})^2')
+xlabel('Number of Iterations')
+ylabel('Log Error')
+hold off
+
+figure()
+histogram(DMethods_error_V(1, :), nbins, 'FaceColor', 'r')
+hold on 
+histogram(DMethods_error_V(2, :), nbins, 'FaceColor', 'g')
+hold on
+histogram(DMethods_error_V(3, :), nbins, 'FaceColor', 'c')
+hold on
+histogram(DMethods_error_V(4, :), nbins, 'FaceColor', 'y')
+title('Log Error for Different Methods when X is Fixed at (.75,.35)')
+legend('With tr(Z)', 'With -tr(Z)', 'With (d_{13} + d_{21})^2', 'With -(d_{13} + d_{21})^2')
+xlabel('Quantiles')
+ylabel('Counts')
+hold off

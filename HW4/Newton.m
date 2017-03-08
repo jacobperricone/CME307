@@ -57,7 +57,7 @@ function [x, x0,iter, fvals, gvals, hvals] = Newton(f, df, hessian,x_initial, x0
         iter = iter + 1;
         
         
-        x_cat_new = x_cat_prev - ALPHA*(hessian(x,x0,a,b)\df(x,x0,a,b));
+        x_cat_new = x_cat_prev - (hessian(x,x0,a,b)\df(x,x0,a,b));
         
              
         x = x_cat_new(1:end-1);

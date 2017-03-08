@@ -1,10 +1,12 @@
-function [ ] = PermADMM(idx, beta, iter, A)
+function [normAx] = PermADMM(idx, beta, iter, A)
 
 x1(1) = rand(1);
 x2(1) = rand(1);
 x3(1) = rand(1);
 y(:, 1) = rand(3,1);
 syms x_1 x_2 x_3
+
+normAx(1) = norm(A*[x1(1), x2(1), x3(1)]', 2);
 
 for k=1:iter
     order = randperm(3,3);
@@ -90,7 +92,10 @@ for k=1:iter
             
     end
 
+    normAx(k+1)= norm(A*[x1(k+1), x2(k+1), x3(k+1)]', 2);
 end
+
+
 
 if idx == 0
     add = ' without objective function';
@@ -98,16 +103,24 @@ else
     add = ' with objective function';
 end
 
+
 figure()
 subplot(3,1,1)
 plot(1:k+1, x1, '*', 1:k+1, zeros(1, k+1), '-')
 title(strcat('Permuation based estimate of x_1 with beta=', num2str(beta), add))
+xlabel('Iterations')
+ylabel('x_1')
 
 subplot(3,1,2)
 plot(1:k+1, x2, '*', 1:k+1, zeros(1, k+1), '-')
-title(strcat('Permuation based estimate of x_1 with beta=', num2str(beta), add))
+title(strcat('Permuation based estimate of x_2 with beta=', num2str(beta), add))
+xlabel('Iterations')
+ylabel('x_2')
 
 subplot(3,1,3)
 plot(1:k+1, x3, '*', 1:k+1, zeros(1, k+1), '-')
-title(strcat('Permuation based estimate of x_1 with beta=', num2str(beta), add))
+title(strcat('Permuation based estimate of x_3 with beta=', num2str(beta), add))
+xlabel('Iterations')
+ylabel('x_3')
+
 hold off
