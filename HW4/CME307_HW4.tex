@@ -1,0 +1,932 @@
+\documentclass{article} % For LaTeX2e
+\usepackage{cos424,times}
+\usepackage{hyperref}
+\usepackage{url}
+\usepackage{graphicx}
+\usepackage{enumitem}
+\usepackage{wrapfig}
+% For LaTeX2e
+\usepackage{cos424,times}
+\usepackage{hyperref}
+\usepackage{url}
+\usepackage{graphicx}
+\usepackage{amsmath,amssymb,latexsym}
+\usepackage{wrapfig}
+\usepackage{amsmath}
+\usepackage{enumitem}
+\usepackage{booktabs}
+% packages that allow mathematical formatting
+\usepackage{setspace}
+% package that allows you to change spacing
+\usepackage{comment}
+% text become 1.5 spaced
+
+\usepackage{fullpage}
+% package that specifies normal margins
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{listings}
+\usepackage{subfig}
+\usepackage{bbm}
+\usepackage{multirow}
+\usepackage{booktabs}
+
+\title{MATH238 HW3}
+
+
+\author{
+Jacob Perricone\\
+Stanford University\\
+\texttt{jacobp2@stanford.edu} \\
+}
+
+\newcommand{\fix}{\marginpar{FIX}}
+
+\usepackage{xcolor}
+%\usepackage{mathbb}
+\usepackage{sympytex}
+\usepackage{color}
+\usepackage{sectsty}
+\sectionfont{\LARGE\underline}
+\subsectionfont{\underline\normalsize}
+\subsubsectionfont{\underline\normalsize\itshape}
+
+
+\definecolor{mygreen}{rgb}{0,0.6,0}
+\definecolor{mygray}{rgb}{0.5,0.5,0.5}
+\definecolor{mymauve}{rgb}{0.58,0,0.82}
+
+\lstset{ %
+backgroundcolor=\color{white},   % choose the background color; you must add \usepackage{color} or \usepackage{xcolor}
+basicstyle=\tiny,
+flexiblecolumns=true      % the size of the fonts that are used for the code
+breakatwhitespace=false,         % sets if automatic breaks should only happen at whitespace
+breaklines=true,                 % sets automatic line breaking
+captionpos=b,                    % sets the caption-position to bottom
+commentstyle=\color{mygreen},    % comment style
+deletekeywords={...},            % if you want to delete keywords from the given language
+    escapeinside={\%*}{*)},          % if you want to add LaTeX within your code
+    extendedchars=true,              % lets you use non-ASCII characters; for 8-bits encodings only, does not work with UTF-8
+    frame=single,                    % adds a frame around the code
+    keepspaces=true,                 % keeps spaces in text, useful for keeping indentation of code (possibly needs columns=flexible)
+    keywordstyle=\color{blue},       % keyword style
+    language=Python,                 % the language of the code
+    otherkeywords={*,...},           % if you want to add more keywords to the set
+    numbers=left,                    % where to put the line-numbers; possible values are (none, left, right)
+    numbersep=5pt,                   % how far the line-numbers are from the code
+    numberstyle=\tiny\color{mygray}, % the style that is used for the line-numbers
+    %rulecolor=\color{black},         % if not set, the frame-color may be changed on line-breaks within not-black text (e.g. comments (green here))
+    showspaces=false,                % show spaces everywhere adding particular underscores; it overrides 'showstringspaces'
+    showstringspaces=false,          % underline spaces within strings only
+    showtabs=false,                  % show tabs within strings adding particular underscores
+    stepnumber=2,                    % the step between two line-numbers. If it's 1, each line will be numbered
+    stringstyle=\color{mymauve},     % string literal style
+    tabsize=2,                     % sets default tabsize to 2 spaces
+    title=\lstname,
+    % Single frame around code                               % show the filename of files included with \lstinputlisting; also try caption instead of title
+    }
+    
+    \newcommand{\E}{{\mbox {\bf E}}}
+    \newcommand{\me}{\mathrm{e}}
+    \newcommand{\I}{\mathbbm{1}}
+    \newcommand{\R}{\mathbbm{R}}
+    \newcommand{\Q}{\mathbbm{Q}}
+    \newcommand{\Z}{\mathbb{Z}}
+    \newcommand{\N}{\operatorname{N}}
+    \newcommand{\C}{\operatorname{C}}
+    \newcommand{\f}[1][]{\hat{#1}}
+    \newcommand{\rev}[1]{\frac{1}{#1}}
+    \newcommand{\plusbinomial}[3][2]{(#2 + #3)^#1}
+    \newcommand{\prev}[1]{#1_{t-1}}
+    \newcommand{\nex}[1]{#1_{t+1}}
+    \newcommand{\now}[1]{#1_t}
+    \newcommand{\ttwo}[1]{\now{#1}^{2}}
+    \newcommand*{\dprime}{^{\prime\prime}\mkern-1.2mu}
+    \newcommand*{\tprime}{^{\prime\prime\prime}\mkern-1.2mu}
+    
+    \newcommand{\ptwo}[1]{\prev{#1^{2}}}
+    % \newcommand{\h}[1]{\expandafter\hat#1}
+    \newcommand{\ti}[1]{\widetilde{#1}}
+    \newcommand{\B}[1]{\mathbf{#1}}
+    
+    \newcommand{\dat}[2]{\frac{\partial #1}{\partial #2}}
+    \newcommand{\datt}[2]{\frac{\partial^2 #1}{\partial #2^2}}
+    \newcommand{\h}[1]{\hat{#1}}
+    \newcommand{\ttil}[1]{\mathbf{\tilde{#1}}}
+    \newcommand{\new}{\marginpar{NEW}}
+    \renewcommand\a{{\bf a}}
+\renewcommand\b{{\bf b}}
+\newcommand\z{{\bf z}}
+\newcommand\x{{\bf x}}
+\newcommand\e{{\bf e}}
+\newcommand\cc{{\bf c}}
+\newcommand\hh{{\bf h}}
+\renewcommand\a{{\bf a}}
+\renewcommand\b{{\bf b}}
+\renewcommand\d{{\bf d}}
+\newcommand\y{{\bf y}}
+\newcommand\s{{\bf s}}
+
+
+
+    \begin{document}
+    \newcommand{\pr}{\operatornamewithlimits{(t)}}.
+    \newcommand{\prm}{\operatornamewithlimits{(t-1)}}.
+    \setlength{\abovedisplayskip}{5pt}
+\setlength{\belowdisplayskip}{5pt}
+    \newcommand{\argmin}{\operatornamewithlimits{argmin}}.
+    \maketitle
+    
+
+\section*{Problem 1}
+Recall the (local) second-order (SO) and scaled second-order (SSO) Lipschitz conditions (LC):
+ \[
+ \mbox{SOLC}: || \nabla f(\x+\d)-\nabla f(\x)-\nabla^2 f(\x)\d || \leq \beta||\d||^2, \mbox{where } ||\d|| \leq .5
+ \]
+ and
+ \[
+ \mbox{SSOLC}: || X(\nabla f(\x+\d)-\nabla f(\x)-\nabla^2 f(\x)\d)|| \leq \beta | \d^2 \nabla^2 f(\x)d| , \mbox{where } ||X^{-1}\d|| \leq .5
+ \]
+
+Find parameter $\beta$ values (or upper bounds)  of (SOLC) and (SSOLC) for each of the following scalar functions:
+\begin{itemize}
+\item[(a)] $f(x)=\frac{1}{3}x^3+x$, $x>0$
+We have 
+\begin{equation*}
+\begin{aligned}
+\nabla f(x) &= x^2 + 1 \\
+\nabla^2 f(x) &= 2x
+\end{aligned}
+\end{equation*}
+
+Then the SOLC condition is 
+
+\begin{equation*}
+\begin{aligned}
+|| (x + d)^2 - x^2 - 2xd || &\leq \beta ||d||^2 \\ 
+|| d^2 || &\leq \beta ||d||^2 \\ 
+1 &\leq \beta \\ 
+\end{aligned}
+\end{equation*}
+Noticing that in the scalar case, the norm can be replaced by an absolute value,
+so $\beta = 1$ holds.
+
+For the SSOLC condition we have
+
+\begin{equation*}
+\begin{aligned}
+|| x d^2 || &\leq 2 \beta ||2xd^2|| \\ 
+\frac{1}{2} \leq \beta
+\end{aligned}
+\end{equation*}
+
+
+
+
+\item[(b)] $f(x)=\log(x)$, $x>0$.
+
+We have 
+\begin{equation*}
+\begin{aligned}
+\nabla f(x) &= \frac{1}{x} \\
+\nabla^2 f(x) &= - \frac{1}{x^2}
+\end{aligned}
+\end{equation*}
+
+
+
+
+SOLC condition 
+\begin{equation*}
+\begin{aligned}
+|| \frac{1}{x +d} - \frac{1}{x} + \frac{1}{x^2} || &\leq \beta ||d|| \\ 
+|| \frac{-d}{x(x +d)} + \frac{1}{x^2} || &\leq \beta ||d|| \\ 
+|| \frac{d^2}{x^2(x +d)} || &\leq \beta ||d|| \\ 
+|| \frac{1}{x^2(x +d)}  || &\leq \beta \\ 
+\end{aligned}
+\end{equation*}
+Thus there is no upperbound since we can set $x$ arbitrarily close to zero, causing   $\beta$ to be aribtrarily large
+
+
+Iin the SSOLC condition we have
+
+\begin{equation*}
+\begin{aligned}
+|| \frac{ x d^2}{x^2(x +d)} || &\leq \beta || \frac{d^2}{x^2} || \\ 
+|| \frac{ x }{(x +d)} || &\leq \beta  \\ 
+|| \frac{ 1}{1 + x^{-1} d} || &\leq \beta  \\ 
+\end{aligned}
+\end{equation*}
+Thus  since $x^{-1}d$ is bounded above by $.5$,  $\frac{ 1}{1 + x^{-1} d}  \geq \frac{2}{3}$, indicating that $\frac{ 2}{3} \leq \beta$. Now if $|| x^{-1} d||$ goes to zero, then  $||\frac{ 1}{1 + x^{-1} d}||  = 1$. Therefore the tighter bound is that $  1 \leq \beta$.
+
+
+
+
+
+
+
+
+\item[(c)] $f(x)=\log(1+e^{-x})$, $x> 0$
+
+
+We have 
+\begin{equation*}
+\begin{aligned}
+\nabla f(x) &= \frac{-e^{-x}}{1 + e^{-x}} \\
+\nabla^2 f(x) &= \frac{e^{-x}}{1 + e^{-x}} + \frac{e^{-2x}}{ (1 + e^{-x})^2} \\ 
+&= \frac{e^{-x}}{(1 + e^{-x})^2} \\ 
+\end{aligned}
+\end{equation*}
+
+Let $\sigma(x) = \frac{e^{-x}}{1 + e^{-x}}$ Then 
+
+\begin{equation*}
+\begin{aligned}
+\nabla f(x) &= - \sigma(x) \\
+\nabla^2 f(x) &= \sigma(x) (1 - \sigma(x)) \\
+\end{aligned}
+\end{equation*}
+
+For the SOLC condition we have
+
+
+\begin{equation*}
+\begin{aligned}
+|| \frac{\nabla f(x+ d)}{d^2} - \frac{\nabla f(x)}{d^2} - \frac{\nabla^2 f(x)}{d} || &\leq \beta \\ 
+\end{aligned}
+\end{equation*}
+Now by the mean value theorem we know that  $\exists  \psi \in [x, x + d]$ such that 
+
+\[
+\nabla^2 f(\psi)  = \frac{ \nabla f(x + d) - \nabla f(x)}{d}
+\]
+
+THus we have 
+
+\[
+|| \frac{\nabla^2 f(\psi) - \nabla^2 f(x)}{d} || \leq \beta
+\]
+
+Applying the MVT again we can write for some $\mu \in [x, \psi]$, 
+
+\[
+\nabla^3 f( \mu) \approx \frac{\nabla^2 f(\psi) - \nabla^2 f(x)}{d}
+\]
+
+There fore the original inequality reduces too:
+
+\[
+|| \nabla^3 f(\mu) || \leq \beta
+\]
+
+We have that the third derivative is equal to
+
+\[
+\nabla^3 f(x) = \frac{e^{x}( 1- e^{x})}{( 1 + e^{x})^3}
+\]
+
+Plotting the third derivative in matlab, one can see that it is periodic, with a range of $[\frac{-1}{6 \sqrt{3}}, \frac{1}{6 \sqrt{3}}]$. Thus, we can establish the bound $  \frac{1}{6 \sqrt{3}} \leq \beta$. 
+% Now notice that 
+
+% Since $f$ is a scalar value function, d and x are scalars, thus $||d|| = |d|$ and $||d||^2 = d^2$. we have that
+
+% \[
+% \frac{|1 - e^{d}|}{ d^2 |e^{d} + e^{-x}|}  +  \frac{|d|}{d^2(1 + e^{-x})^2} \leq \beta 
+% \]
+% Since $e$ is positive, we can drop the absolute values around the $e$, thus
+
+% \begin{equation*}
+% \begin{aligned}
+% \frac{|1 - e^d|}{d^2 (e^{d} + e^{-x})} + \frac{1}{|d| (1 + e^{-x})^2} \leq \beta \\ 
+% \lim_{x \to \infty}\frac{|1 - e^d|}{d^2 (e^{d} + e^{-x})} + \frac{1}{|d| (1 + e^{-x})^2} &= \frac{|1 - e^{d}|}{d^2 e^{d}} + \frac{1}{d} \\ 
+% \lim_{d \to 0} \frac{|1 - e^{d}|}{d^2 e^{d}} + \frac{1}{d} &= \infty
+% \end{aligned} 
+% \end{equation*}
+% Where the last line comes from $\lim_{d \to 0} \frac{1}{d} = \infty$ and $\lim_{d \to 0} \frac{|1 - e^{d}|}{d^2 e^{d}}  = \lim_{d \to 0} \frac{e^d}{2d e^{d} + d^2 e^{d}} = \lim_{d \to 0} \frac{1}{2d + d^2} = \infty$. In the case were $x \to 0$. we have
+
+% \[
+% \lim_{x \to 0}\frac{|1 - e^d|}{d^2 (e^{d} + e^{-x})} + \frac{1}{|d| (1 + e^{-x})^2} = \frac{|1 - e^{d}|}{d^2 (e^{d} + 1)} + \frac{1}{4|d|} 
+% \]
+
+% Thus $\lim_{d \to 0} \frac{|1 - e^{d}|}{d^2 (e^{d} + 1)} + \frac{1}{4|d|}  = \infty$. Therefore the $\beta$ cannot be bounded.
+
+
+ In the SSOLC case we have
+
+
+\begin{equation*}
+\begin{aligned}
+|| \frac{-x}{1 + e^{-x -d}} + \frac{ x}{1 + e^{-x}} - \frac{dx}{( 1 + e^{-x})^2} &\leq \beta |\frac{-d}{x^2} | \\ 
+||\frac{ x^{3} e^{-x}( e^{-d} - 1)(1 + e^{-x}) - dx^3 (1 + e^{-x -d})}{ d^2 ( 1 + e^{-x - d} )(1 + e^{-x})^2}|| &\leq \beta \\ 
+\lim_{x \to \infty, d \neq 0}  |\frac{ x^{3} e^{-x}( e^{-d} - 1)(1 + e^{-x}) - dx^3 (1 + e^{-x -d})}{ d^2 ( 1 + e^{-x - d} )(1 + e^{-x})^2}| &= \infty \\ 
+\lim_{d \to 0}  |\frac{ x^{3} e^{-x}( e^{-d} - 1)(1 + e^{-x}) - dx^3 (1 + e^{-x -d})}{ d^2 ( 1 + e^{-x - d} )(1 + e^{-x})^2}| &= \infty \\ 
+\end{aligned}
+\end{equation*}
+Thus there exists no bound for $\beta$ in both SOLC, and SSOLC. 
+
+
+
+\end{itemize}
+
+
+\section*{Problem 2}
+In Logistic Regression, we like to determine $x_0$ and $\x$ to maximize
+\[
+\left(\prod_{i,c_i=1}\frac{1}{1+\exp(-\a_i^T\x-x_0)}\right)
+\left(\prod_{i,c_i=-1}\frac{1}{1+\exp(\a_i^T\x+x_0)}\right).
+\]
+which is equivalent to maximize the log-likelihood probability
+\[
+-\sum_{i,c_i=1}\log\left(1+\exp(-\a_i^T\x-x_0)\right)-\sum_{i,c_i=-1}\log\left(1+\exp(\a_i^T\x+x_0)\right).
+\]
+Or to minimize the log-logistic-loss
+\[
+\sum_{i,c_i=1}\log\left(1+\exp(-\a_i^T\x-x_0)\right)+\sum_{i,c_i=-1}\log\left(1+\exp(\a_i^T\x+x_0)\right).
+\]
+
+
+\begin{itemize}
+
+\item[(a)]
+Write down the Hessian matrix funtion of $\B{x}, x_0$
+
+
+\rule{\textwidth}{1pt}
+
+Let $f(x,x_0)$ be the log-logistic loss function. 
+\begin{equation*}
+\begin{aligned}
+\nabla f(\x,x_0)_{x_j} &= \sum_{i,c_i = 1} \frac{-a_{ij} \exp[ -\a_i^T \x - x_0 ]}{ 1 + \exp[ -\a_i^T \x - x_0 ]} + \sum_{i, c_i = -1} \frac{a_{ij} \exp[ \a_i^T \x + x_0 ]}{ 1 + \exp[ \a_i^T \x + x_0 ]}  \mbox{  } \forall j \\
+\nabla f(\x,x_0)_{x_0} &= \sum_{i,c_i = 1} \frac{- \exp[ -\a_i^T \x - x_0 ]}{ 1 + \exp[ -\a_i^T \x - x_0 ]} + \sum_{i, c_i = -1} \frac{ \exp[ \a_i^T \x + x_0 ]}{ 1 + \exp[ \a_i^T \x + x_0 ]} \\  
+\end{aligned}
+\end{equation*}
+
+
+Let us define $\z = -\a_i^T \x - x_0 $ and $\bar{\z} =  \a_i^T \x + x_0$. We have that 
+\begin{equation*}
+\begin{aligned}
+\nabla_{x_j, x_k} &= \sum_{i, c_i=1} a_{ij} a_{ik} [\frac{\exp[\z]}{ 1+ \exp[\z]}  - \frac{ \exp[\z]}{(1 + \exp[\z])^2}] + \sum_{i, c_i = -1} a_{ij} a_{ik} [\frac{\exp[\bar{\z}]}{ 1+ \exp[\bar{\z}]} - \frac{ \exp[\bar{\z}] }{(1 + \exp[\bar{\z}])^2}] \\ 
+&= \sum_{i, c_i=1} a_{ij} a_{ik} \frac{\exp[\z]}{(1 + \exp[\z])^2} +  \sum_{i, c_i=-1} a_{ij} a_{ik} \frac{\exp[\bar{\z}]}{(1 + \exp[\bar{\z}])^2}\\ 
+\nabla_{x_j, x_0} &= \sum_{i, c_i=1} a_{ij}  \frac{\exp[\z]}{(1 + \exp[\z])^2} +  \sum_{i, c_i=-1} a_{ij} \frac{\exp[\bar{\z}]}{(1 + \exp[\bar{\z}])^2} \\ 
+\nabla_{x_0, x_0} &= \sum_{i, c_i=1} \frac{\exp[\z]}{(1 + \exp[\z])^2} +  \sum_{i, c_i=-1}  \frac{\exp[\bar{\z}]}{(1 + \exp[\bar{\z}])^2}
+\end{aligned}
+\end{equation*}
+
+Thus the $i, j, (i,j) \in \{ 0, \hdots, n \}$ element of the hessian matrix is given by the equations above 
+\\
+\rule{\textwidth}{1pt}
+
+\item (b) (Computation Team Work) Apply any Quasi-Newton (e.g., slide 18 of Lecture
+13 or L $\&$Y Chapter 10) and Newton methods to solve the problem using the
+data in HW2 for SVM (may or may not with regulation), randomly generate data
+sets, and/or benchmark data sets you can find. Compare the two methods with
+each other and with the previous methods used in HW3.
+\end{itemize}
+
+
+\section*{Problem Three} Consider the LP problem 
+
+\begin{equation*}
+\begin{aligned}
+\min_x  f(x) &= x_1 + x_2 \\ 
+\mbox{ Such that }:&  x_1 + x_2 + x_3 = 1 \\ 
+&(x_1, x_2, x_3) \geq 0
+\end{aligned}
+\end{equation*}
+
+\begin{itemize}
+\item[(a)] What is the analytic center of the feasible region with the logarithmic barrier function
+
+
+The analytic center is found by minimizing 
+
+\[
+\min_{x_i} -\log(x_1) - \log(x_2) - \log(1 - x_1  - x_2 )
+\]
+
+Taking the derivative with respect to $x_1, x_2$ we have
+\begin{equation*}
+\begin{aligned}
+2x_1 &= 1 - x_2 \\ 
+2x_2 &= 1 - x_1 \\ 
+\end{aligned}
+\end{equation*}
+where the substitution $x_3 = 1 - x_1 - x_2$ was made.
+Solving the system of equations:
+
+\begin{equation*}
+\begin{aligned}
+x_1 &= \frac{1}{3} \\ 
+x_2 &= \frac{1}{3}\\ 
+x_3 &= \frac{1}{3} 
+\end{aligned}
+\end{equation*}
+
+
+\item[(b)] Find the central path $\x(\mu) = (x_1(\mu), x_2(\mu), x_3(\mu))$. 
+
+
+The minimization problem is of the form 
+
+\begin{equation*}
+\begin{aligned}
+\min_{x_1, x_2} \quad & x_1 + x_2 - \mu \log[x_1] - \mu \log[x_2] -  \mu \log[1 - x_1 - x_2] \\ 
+\end{aligned}
+\end{equation*}
+Differentiating with respect to $x_1, x_2$ we have 
+
+\begin{equation*}
+\begin{aligned}
+\nabla_{x_1} \rightarrow 1 - \frac{\mu}{x_1} + \frac{\mu}{1 - x_1 - x_2} &= 0 \\ 
+\nabla_{x_2} \rightarrow 1 - \frac{\mu}{x_2} + \frac{\mu}{1 - x_1 - x_2} &= 0 \\
+\end{aligned}
+\end{equation*}
+
+Adding these two equations together, we have that $x_1 = x_2$. Thus:
+
+\begin{equation*}
+\begin{aligned}
+\nabla_x \rightarrow 1 - \frac{\mu}{x} + \frac{\mu}{1 - 2x} &= 0 \\ 
+x(1 - 2x) - \mu(1 - 2x) + \mu x &= 0 \\ 
+2x^2 - x( 3 \mu + 1) + \mu &= 0\\ 
+x = \frac{3 \mu + 1 \pm \sqrt{9\mu^2 -2  \mu + 1}} { 4} 
+\end{aligned}
+\end{equation*}
+
+Now noting that as $\lim_{\mu \to \infty}$ must converge to the analytic center we can eliminate the plus, so that 
+
+\[
+x = \frac{3 \mu + 1 -  \sqrt{9\mu^2 -2  \mu + 1}} { 4} 
+\]
+
+To check the accuracy, lets take the limit as $\mu \to \infty$
+
+\begin{equation*}
+\begin{aligned}
+\lim_{\mu \to \infty} \frac{3 \mu + 1 -  \sqrt{9\mu^2 -2  \mu + 1}} { 4} &= \frac{1}{4}\lim_{\mu \to \infty} 3 \mu + 1 -  \sqrt{9\mu^2 -2  \mu + 1} \\ 
+&= \frac{1}{4}[ \lim_{\mu \to \infty} (3x -  \sqrt{9\mu^2 -2  \mu + 1}) + 1] \\ 
+&= \frac{1}{4}[\lim_{\mu \to \infty} \frac{2 \mu -1}{3 \mu   +  \sqrt{9\mu^2 -2  \mu + 1}} + 1] \\ 
+&= \frac{1}{4}[ 2 \lim_{\mu \to \infty} \frac{\mu}{3 \mu   +  \sqrt{9\mu^2 -2  \mu + 1}} + 1] \\ 
+&= \frac{1}{4}[ 2 \lim_{\mu \to \infty} \frac{1}{3    +  \frac{\sqrt{9\mu^2 -2  \mu + 1}}{\mu}} + 1] \\ 
+&= \frac{1}{4}[ 2 \lim_{\mu \to \infty} \frac{1}{3    +  \frac{\sqrt{9\mu^2 -2  \mu + 1}}{\mu}} + 1] \\ 
+&= \frac{1}{4}[ 2  \frac{1}{ \lim_{\mu \to \infty} (3    +  \frac{\sqrt{9\mu^2 -2  \mu + 1}}{\mu}}) + 1] \\ 
+&= \frac{1}{4}[   \frac{2}{ \lim_{\mu \to \infty} ( \sqrt{ \frac{9\mu^2 -2  \mu}{\mu^2}}) + 3} + 1] \\ 
+&= \frac{1}{4}[   \frac{2}{ \sqrt{\lim_{\mu \to \infty}  \frac{9\mu^2 -2  \mu}{\mu^2}}  + 3}  + 1] \\ 
+&= \frac{1}{4}[   \frac{2}{ \sqrt{\lim_{\mu \to \infty} (9 - \frac{2}{\mu})}  + 3}  + 1] \\ 
+&= \frac{1}{4}[   \frac{2}{ \sqrt{\lim_{\mu \to \infty} (9 - \frac{2}{\mu})}  + 3}  + 1] \\ 
+&= \frac{1}{4}[   \frac{4}{3}]  = \frac{1}{3}
+\end{aligned}
+\end{equation*}
+
+Thus 
+
+\begin{equation*}
+\begin{aligned}
+x_1(\mu) = x_2(\mu) &= \frac{3 \mu + 1 -  \sqrt{9\mu^2 -2  \mu + 1}} { 4} \\ 
+x_3 (\mu) &= 1 - \frac{3 \mu + 1 -  \sqrt{9\mu^2 -2  \mu + 1}} { 4}
+\end{aligned}
+\end{equation*}
+\item[(c)] Whos that as $\mu$ decreases to $0$, $ \x(\mu)$ converges to the unique optimal solution. 
+We see that the 
+\[
+\lim_{\mu \to 0} x_{1,2}(\mu) = 0
+\]
+
+Thus, the optimal solution corresponds to $x_1, x_2 = 0, x_3 = 1$, which is the smallest value the objective function can take while
+still satisfying the constraint set. 
+
+
+
+\item[(d)] (Computational Team Work) Draw $\x$ part of the the primal-dual potential function level sets 
+
+\[
+\phi_6(\x, \s) \leq 0 \quad \mbox{ and } \phi_6(\x,\s) \leq -10 
+\]
+
+and 
+
+
+\[
+\phi_{12}(\x, \s) \leq 0 \quad \mbox{ and } \phi_{12}(\x,\s) \leq -10 
+\]
+respectively in the primal feasible region (on a plane).
+
+\end{itemize}
+
+
+\section*{ Problem 4}
+Questions (a) and (b) of Problem 7, Section 5.9 in textbook 
+
+\textbf{Hint:} Use the fact that for any feasible pair $(\x,\y,\s)
+$ of LP, 
+
+\[
+(\x - \x(\mu))^{T}(\s - \s(\mu)) = 0
+\]
+the optimality of the central path solutions. 
+
+
+Let $(\x(\mu), \y( \mu), \s(\mu))$ be the central path of 5.9. Then prove 
+
+\begin{itemize}
+\item[(a)] The central path point $(\x(\mu), \y(\mu), \s(\mu))$ is bounded for $0 < \mu \leq \mu^{0}$ and any given $0 < \mu^{0} < \infty$. 
+
+
+We have that $(\x(\mu^{0}) - \x(\mu))^{\top} ( \s(\mu^{0})  - \s(\mu))^{\top} = 0$.
+ 
+Thus
+
+\[
+\sum_{j}^{n} (\s(\mu^{0})_j \x(\mu)_j  + \x(\mu^{0})_j \s(\mu)_j ) = n(\mu^0 + \mu) \leq 2 n \mu^{0}
+\]
+
+Thus 
+
+\[
+\sum_{j}^{n} ( \frac{ \x(\mu)_j}{\x(\mu^{0})_j} + \frac{\s(\mu)_j}{\s(\mu^0)_j}) \leq 2n
+\]
+
+Thus $\x(\mu)$, $\s(\mu)$ are bounded. Since the KKT condition of the barrier porblems require that $\s = -A^{T}\y + \nabla f(\x)^{T}$, it follows that since $\s(\mu)$ is bounded, $\y(\mu)$ must be bounded as well.
+
+
+\item[(b)] For $ 0 < \mu' < \mu$ 
+\[
+\cc^{\top} \x(\mu') \leq \cc^{\top} \x(\mu) \mbox{  and } \b^{\top} \y(\mu') \geq \b^{\top} \y(\mu)
+\]
+
+Furthermore if $\x(\mu') \neq  \x(\mu)$ and $\y(\mu') \neq y(\mu)$,
+
+\[
+\cc^{\top} \x(\mu') < \cc^{\top} \x(\mu) \mbox{  and } \b^{\top} \y(\mu') > \b^{\top} \y(\mu)
+\]
+
+
+Now we know that for a given $(\mu', \mu$) that 
+
+
+\[
+\cc^{\top} \x(\mu) - \mu \sum_{j} \log[\x(\mu)_j] \leq \cc^{\top} \x(\mu') - \mu \sum_{j} \log[\x(\mu')_j] 
+\]
+Since $\x(\mu)$ minimizes $\cc^{\top} \x(\mu) - \mu \sum_{j} \log[\x(\mu)_j]$ for a given $\mu$. Similarly we know that
+
+
+\[
+\cc^{\top} \x(\mu') - \mu' \sum_{j} \log[\x(\mu')_j] \leq \cc^{\top} \x(\mu) - \mu' \sum_{j} \log[\x(\mu)_j] 
+\]
+
+Adding together these two equations 
+
+\[
+(\mu - \mu') \sum_{j} \log[\x(\mu')_j] \leq (\mu - \mu') \sum_{j} \log[\x(\mu)]
+\]
+
+Thus 
+
+\[
+\sum_{j} \log[\x(\mu')_j] \leq \sum_{j} \log[\x(\mu)_j]
+\]
+
+Therefore we have that 
+
+\[
+\cc^{\top} \x(\mu') - \cc^{\top} \x(\mu) \leq u'[ \sum_j \log[\x(\mu')_j] - \sum_j \log[\x(\mu)_j]]  
+\]
+Plugging in the inequality that $\sum_{j} \log[\x(\mu')_j] - \sum_{j} \log[\x(\mu)_j] \leq 0$ we have that 
+
+\[
+\cc^{\top} \x(\mu') - \cc^{\top} \x(\mu) \leq u'[ \sum_j \log[\x(\mu')_j] - \sum_j \log[\x(\mu)_j]] \leq 0
+\]
+
+And thus that:
+
+\[
+\cc^{\top} \x(\mu') \leq \cc^{\top} \x(\mu)
+\]
+
+Now if $\x(\mu') \neq \x(\mu)$ the inequalities become strict so that 
+
+
+\[
+\sum_{j} \log[\x(\mu')_j]  < \sum_{j} \log[\x(\mu)_j]
+\]
+
+
+Thus that 
+
+\[
+\cc^{\top} \x(\mu')  < \cc^{\top} \x(\mu)
+\]
+
+In the dual case we have that for a given $\mu$, $\y(\mu)$ maximizes 
+
+
+\[
+\b^{\top} \y(\mu)  + \mu \sum_{j=1}^{n} \log[\s(\mu)_j]
+\]
+
+Thus for any $\mu'$ it must hold that 
+
+
+\begin{equation*}
+\begin{aligned}
+\b^{\top} \y(\mu)  + \mu \sum_{j=1}^{n} \log[\s(\mu)_j] &\geq \b^{\top} \y(\mu')  + \mu \sum_{j=1}^{n} \log[\s(\mu')_j] \\
+\b^{\top} \y(\mu')  + \mu' \sum_{j=1}^{n} \log[\s(\mu')_j] &\geq \b^{\top} \y(\mu)  + \mu' \sum_{j=1}^{n} \log[\s(\mu
+)_j] 
+\end{aligned}
+\end{equation*}
+
+Adding the two equation, we have
+
+\begin{equation*}
+\begin{aligned}
+(\mu - \mu') \sum_{j=1}^{n} \log[\s(\mu)_j]  &\geq  (\mu - \mu') \sum_{j=1}^{n} \log[\s(\mu')_j] \\ 
+ \sum_{j=1}^{n} \log[\s(\mu)_j]  &\geq   \sum_{j=1}^{n} \log[\s(\mu')_j]
+\end{aligned}
+\end{equation*}
+
+Now in the case $\y(\mu) \neq \y(\mu')$ then the inequalities are strict, so that 
+
+\begin{equation*}
+\begin{aligned}
+\b^{\top} \y(\mu)  + \mu \sum_{j=1}^{n} \log[\s(\mu)_j] &> \b^{\top} \y(\mu')  + \mu \sum_{j=1}^{n} \log[\s(\mu')_j] \\
+\b^{\top} \y(\mu')  + \mu' \sum_{j=1}^{n} \log[\s(\mu')_j] &> \b^{\top} \y(\mu)  + \mu' \sum_{j=1}^{n} \log[\s(\mu
+)_j] \\ 
+\sum_{j=1}^{n} \log[\s(\mu)_j]  &>  \sum_{j=1}^{n} \log[\s(\mu')_j]
+\end{aligned}
+\end{equation*}
+
+Continuing we have that 
+
+
+\begin{equation*}
+\begin{aligned}
+\b^{\top} \y(\mu')  - \b^{\top} \y(\mu)   & \geq    \mu' [ \sum_{j=1}^{n} \log[\s(\mu')_j]  -  \sum_{j=1}^{n} \log[\s(\mu)_j] ] \geq 0 \\
+\end{aligned}
+\end{equation*}
+Therefore 
+
+\[
+\b^{\top} \y(\mu')  \geq \b^{\top} \y(\mu)   
+\]
+
+
+Or in the strict case that:
+
+\[
+\b^{\top} \y(\mu')  >  \b^{\top} \y(\mu')
+\]
+
+
+
+
+\end{itemize}
+\section*{Problem 5}
+
+Problem 12, Section 6.8, the text book L$\&$Y, where for any given symmetric matrix $D,|D|^2$, is the sum of all its eigenvalue squares, and $|D|_{\infty}$ is its largest absolute eigenvalue.
+
+\textbf{Hint}: $det(I + D)$ equals the produt of the eigenvalues of $I + D$ Then the proof follows from Taylor expansion. 
+
+
+Prove that if $\B{D} \in \S^n$ and $|D|_{\infty} < 1$. Then 
+
+\[
+\mbox{trace}(\B{D}) \geq \log[ \mbox{det}(I + \B{D}) \geq \mbox{trace}(\B{D}) - \frac{|D|^2}{2( 1 - |\B{D}|_{\infty})}]
+\]
+
+We know that the $\mbox{trace}(\B{D}) = \sum_{j} \lambda_j$ where $\lambda_j$ is the jth eigenvalue of the matrix D. Furthermore we know that since $\B{D}$ is PSD, that it can be diagonalized so that $ \mbox{det}(I + \B{D}) =  \mbox{det}(X( I + \Sigma) X^{-1}) =\mbox{det}(I + \Sigma) = \prod_{j} (1 + \lambda_j)$ where $\Sigma $ is a diagonal matrix of eigenvalues $\lambda_j$. Thus we have that 
+
+\begin{equation*}
+\begin{aligned}
+\mbox{trace}(\B{D}) &= \sum_j \lambda_j \\ 
+\log[ \mbox{det} (I + \B{D}) ] &= \log[\prod_{j} ( 1 + \lambda_j)] = \sum_{j} \log( 1 + \lambda_j)
+\end{aligned}
+\end{equation*}
+Since $\max \lambda_j \leq 1$, we know that $ \log( 1 + \lambda_j) \leq \lambda_j \mbox{ } \forall j$. Therefore
+\[
+\mbox{trace}(\B{D}) = \sum_j \lambda_j \geq  \log[ \mbox{det}(I + \B{D}) = \sum_{j} \log( 1 + \lambda_j)
+\]
+Now for a given $j$ we have the taylor expansion
+
+\begin{equation*}
+\begin{aligned}
+\log(1 + \lambda_j) = \lambda_j - \frac{1}{2}\frac{\lambda_j^2}{(1 +c_j)^2}
+\end{aligned}
+\end{equation*}
+For some $c \in (0, \lambda_j]$ since $\lambda_j < 1$. Now, we know that each $c_j$ is in the radius of $0, \max_{j} |\lambda_j|$. Thus we have that 
+
+\[
+\frac{1}{(1 + c_j)^2} \leq \frac{1}{ 1 - \max_{j} |\lambda_j|}
+\]
+Thus it follows that 
+
+\[
+\log(1 + \lambda_j) \geq \lambda_j - \frac{\lambda_j^2}{ 2( 1 - \max_{j} |\lambda_j| )}
+\]
+which in matrix forms indicates that 
+
+\begin{equation*}
+\begin{aligned}
+\log[ \mbox{det}(I + \B{D})] &= \sum_j \log[ 1 + \lambda_j] \geq \sum_{j } \lambda_j - \frac{\lambda_j^2}{ 2( 1 - \max_{j} |\lambda_j| )} \\ 
+&= \mbox{trace}(D) - \frac{|D|^2}{2 (1 - |\B{D}|_{\infty})}
+\end{aligned}
+\end{equation*}
+\section*{Problem 6}
+Optimization with log-sum-exponential functions arises from smooth approximation
+for non-smooth optimization. Consider the non-smooth optimization problem:
+
+\[
+\min_{\x} \max_{1\leq i < m} (\a_i^{\top} \x + b_i)
+\]
+given $\a_i \in \R^{n}, b_i \in \R$. 
+
+\begin{itemize}
+\item[(a)] Derive an equivalent LP problem and write down its dual. 
+Let $A$ be a matrix of vectors $\a_i$. and $\b$ be a vector of $b_i$`s. The primal optimization problem becomes 
+\begin{equation*}
+\begin{aligned}
+\min_{z} & \quad  z \\ 
+\mbox{ such that}: & \\ 
+& Ax + b \preceq z \B{1}
+\end{aligned}
+\end{equation*}
+The dual is then 
+
+\begin{equation*}
+\begin{aligned}
+\max_{y} & \quad  \b^{T} y \\ 
+\mbox{ such that}: & \\ 
+& A^T y = 0 \\ 
+& \B{1}^{T}y = 1\\ 
+& y  \succeq 0
+\end{aligned}
+\end{equation*}
+\item[(b)]Suppose we approximate the objective function $\max_{1\leq i \leq m}(\a_i^{\top} \x + b_i)$ with a smooth function and consider the optimization:
+
+\[
+\min_{x} \log\big[ \sum_{i=1}^{m} \exp(\a_i^{\top} \x + b_i \big]
+\]
+Then $z_1$ and $z_2$ be the optimal values of the two formulations, prove that 
+
+\[
+0 \leq z_2 - z_1 \leq \log(m)
+\]
+
+
+Suppose that $z^{*}$ is  dual optimal for the dual general approximated program
+
+\begin{equation*}
+\begin{aligned}
+\max \quad & b^T z - \sum_{j}z_i \log[z_i] \\ 
+\mbox{Such that: } & \\ 
+& A^T  z = 0 \\ 
+& \B{1}^{T}z = 1\\ 
+& z \succeq 0
+\end{aligned}
+\end{equation*}
+In this case we have that $z^*$ is also feasible for the dual of the piecwise linear formulation, that has objective value:
+\[
+b^T z = z_2 + \sum_{j} z_j^{*} \log[z_j^{*}]
+\]
+
+Furthermore from the concavity of the log we have that 
+
+\[
+\sum_{j} z_j \log[\frac{1}{z_j}] \leq \log[\sum_{j} 1] = \log{m}
+\]
+Thus we have that 
+
+\[
+z_1 \geq z_2 + \sum_{j}z_j^{*} \log[z_j^*] \geq z_2 + \log(m)
+\]
+
+Furthermore it holds that 
+
+\[
+\max_{i}(a_i^T x + b_i) \leq log[\sum_{i} e^{a_i^T x + b_i}]
+\]
+
+To prove this, let $r \in \R^m$ and let $m = \max_i r$
+
+\begin{equation*}
+\begin{aligned}
+\log[\sum_{i} \exp(r_i)] &= \log[\sum_i \frac{\exp(m)}{\exp(m)} \exp(r_i)] \\ 
+&= \log[ \exp(m) \sum_{i} \frac{1}{\exp(m)} \exp(r_i) ] \\ 
+&= m + \log(\sum_i \exp(r_i - m) ) \\ 
+\log[\sum_{i} \exp(r_i)]  &\geq m
+\end{aligned}
+\end{equation*}
+
+Therefore we have that $z_1 \leq z_2$. Combining the inequalities yields
+
+\[
+z_2 - \log(m) \leq z_1 \leq z_2
+\]
+\[
+0 \leq z_2 - z_1 \leq \log(m)
+\]
+
+and the proof is complete. 
+\item[(c)]  Suppose we use a different function for approximation:
+
+\[
+\min_{\x} \frac{1}{\gamma} \log \big(  \sum_{i=1}^{m} \exp[\gamma(\a_i^{\top} \x +  b_i)] \big)
+\]
+
+for some $\gamma > 0$. Suppose the optimal value is $z_3$ derivat a bound for $z_3 - z_1$ similar as above. What happens as $\gamma \to \infty$. 
+
+
+
+This problem can be reformulated as:
+
+\begin{equation*}
+\begin{aligned}
+\min_{\x} \quad &\frac{1}{\gamma} \log \big(  \sum_{i=1}^{m} \exp[\gamma(y_i)] \big) \\ 
+\mbox{ Such that:} & \\ 
+Ax + b &= y
+\end{aligned}
+\end{equation*}
+
+Forming the Lagrangian we have
+
+\[
+L(x,y,\lambda) = \frac{1}{\gamma} \log \big(  \sum_{i=1}^{m} \exp[\gamma(y_i)] \big) + \lambda^T(Ax + b - y)
+\]
+
+Now notice that the lagrangian is unbounded below as a function of x unless $A^{T} \lambda =0$. We are aiming to minimize the lagragian,
+or equivalently to maximize the conjugate function:
+
+\begin{gather*}
+c(\lambda) = \sup_{y}\{ \lambda^Ty - \log \big(  \sum_{i=1}^{m} \exp[y_i] \big) \}
+\end{gather*}
+
+Thus we see that if $\lambda_k < 0$, setting $y_k = c, y_i = 0 \forall i \neq k$ then $\lim_{c \to - \infty}$ of the expression goes $- \infty.$, Thus $\lambda_k > 0$. Similarly if $\lambda \succeq 0$, and $\B{1}^T \lambda \neq 1$, then, we can have $y = c \B{1}$ to find that
+
+\[
+\lim_{t \to \infty} \lambda^{T}y - \log[\sum_{i} \exp(y_i)] = \lim_{t \to \infty} c \B{1}^{T} \lambda - \log(m) - c
+\]
+which goes to infinity or negative infinity depending on $\B{1}^T z - 1$. 
+
+Taking the derivative with respect to $y$ and setting it equal to zero we have
+
+\[
+\lambda_i = \frac{e^{y_i}}{ \sum_{j} e^{x_j}}
+\]
+
+Plugging this back into $g(\lambda)$ we have $g^*(\lambda) = \sum_{i} y_i \log[y_i]$
+
+In summary we have that the conjugate function equals:
+
+\begin{gather*}
+c(\lambda) = \begin{cases}\sum_{i} y_i \log[y_i] \mbox{  if } \lambda \succeq 0 \mbox{ and } \B{1}^T \lambda = 1 \\ 
+0 \mbox{ otherwise } \end{cases}
+\end{gather*}
+
+The lagrangian dual function can be given for $\lambda \succeq  0, \B{1}^{T}\lambda = 1, A^{T}\lambda = 0$. 
+\[
+g(\lambda) = b^{T} \lambda - \frac{1}{\gamma}\sum_{i} \lambda_i \log[\lambda_i]
+\]
+So that the dual problem can be formulated as:
+
+\begin{equation*}
+\begin{aligned}
+\max_{\lambda} \quad & b^T \lambda - \frac{1}{\gamma} \sum_{i} \lambda_i \log[\lambda_i] \\ 
+\mbox{such that: }  A^{T} \lambda &= 0 \\ 
+\B{1}^{T}\lambda &= 1 \\ 
+\end{aligned}
+\end{equation*}
+
+Let $z_3$ be an optimal solution to the optimization above. We then know that $z_3$ is also feasible for the dual of the piecewise
+linear formulation, which has objective value 
+
+\[
+b^T \lambda = z_3 +   \frac{1}{\gamma} \sum_{i} \lambda_i^{*} \log(z_i^*)
+\]
+
+Thus we have that
+
+\[
+z_1 \geq  z_3 +   \frac{1}{\gamma} \sum_{i}\lambda_i^{*} \log(z_i^*) \geq z_3 -  \frac{1}{\gamma} \log[m]
+\]
+Furthermore it follows as in the previous formulation that $z_3 \geq z_1$.
+It thus follows that 
+
+\[
+z_3 - \frac{1}{\gamma} \log[m] \leq z_1 \leq z_3 
+\]
+and therefore that
+
+\[
+0 \leq z_3 - z_1 \leq \frac{1}{\gamma} \log[m]
+\]
+
+
+Now, notice, as  $\gamma \to \infty$, then $z_3 \to z_1$. 
+
+
+\end{itemize}
+\end{document}
+
+
+
+

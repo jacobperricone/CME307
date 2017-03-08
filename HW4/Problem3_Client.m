@@ -37,8 +37,12 @@ outputs6 = squeeze(p6(1,:,:))
 points6 = p6(2:4,:,:)
 
 figure()
-subplot(2,1,1)
-
+scatter3(points6(1,points6(1,:,1) > 0,1),points6(2, points6(2,:,1)> 0,1), points6(3,points6(3,:,1) > 0,1),'r')
+hold on
+scatter3(points6(1,points6(1,:,2) > 0,2),points6(2, points6(2,:,2)> 0,2), points6(3,points6(3,:,2) > 0,2),'b')
+legend('Less Than Zero', 'Less Than -10')
+title('$\psi_{6}(\mathbf{x},\mathbf{s})$','Interpreter', 'LaTex', 'fontsize', 18)
+xlabel('x_1'); ylabel('x_2'); zlabel('x_3')
 
 %%
 p12 = Values(:,:, 3:4)
@@ -47,3 +51,10 @@ points12 = p12(2:4,:,:)
 
 
 
+figure()
+scatter3(points12(1,points12(1,:,1) > 0,1),points12(2, points12(2,:,1)> 0,1), points12(3,points12(3,:,1) > 0,1),'r')
+hold on
+scatter3(points12(1,points12(1,:,2) > 0,2),points12(2, points12(2,:,2)> 0,2), points12(3,points12(3,:,2) > 0,2),'b')
+legend('Less Than Zero', 'Less Than -10')
+title('$\psi_{12}(\mathbf{x},\mathbf{s})$','Interpreter', 'LaTex','fontsize', 18)
+xlabel('x_1'); ylabel('x_2'); zlabel('x_3')
