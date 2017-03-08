@@ -1,0 +1,27 @@
+clear all
+close all
+
+
+npoints = 10000
+x = generate_x_points(npoints)
+s = generate_s_points(npoints)
+
+
+p = [6,12]
+pname = {'six', 'twelve'}
+cutoffs = [0,-1];
+cname = {'zero', 'negTen'};
+
+
+
+Values = zeros(2, npoints, 4)
+
+for i=1:size(p,2)
+    for j=1:size(cutoffs,1)
+        [out, point] = evaluate_candidacy(x,s,p(i), cutoffs(j));
+        Values(:,:,i+j) = v
+    end
+    
+  
+    
+end

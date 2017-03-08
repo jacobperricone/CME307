@@ -1,0 +1,220 @@
+\documentclass[12pt,letterpaper]{article}
+\usepackage{latexsym}
+\usepackage[english, activeacute]{babel}
+\usepackage{amssymb,amsmath,amsthm}
+%\usepackage{epsf}
+\usepackage{epsfig}
+%\usepackage[active]{srcltx}
+%\usepackage{fullpage}
+%\usepackage[dvips]{graphicx}
+%\DeclareGraphicsExtensions{.eps} \graphicspath{{images/}}
+\linespread{1.3}
+\parskip 1ex  \parindent 0ex
+%\voffset -15mm
+\oddsidemargin -0mm \topmargin 0mm \headheight 0pt \headsep 0pt
+\textwidth 6.5in \textheight 9in %\marginparsep 0pt \marginparwidth 0pt
+\renewcommand{\baselinestretch}{1.3}
+\newtheorem{prop}{Proposition}
+\newtheorem{Cor}{Corollary}
+\newtheorem{lema}{Lemma}
+\renewcommand\a{{\bf a}}
+\renewcommand\b{{\bf b}}
+\renewcommand\d{{\bf d}}
+\newcommand\x{{\bf x}}
+\newcommand\y{{\bf y}}
+\newcommand\s{{\bf s}}
+
+\begin{document}
+\pagestyle{empty}
+\def \NATUR{ I \hspace*{-0.8ex} N}
+\def \REALES{ I \hspace*{-0.8ex} R}
+\renewcommand{\labelenumi}{\alph{enumi})}
+\renewcommand{\labelenumii}{\roman{enumii})}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\hspace*{-4mm} {\includegraphics[bb=0 0 482 723, height=2.3cm]{}}
+\hspace{-6mm}
+\begin{tabular}{lcr}
+CME 307 / MS\&E 311 & \hspace{3in} & Winter 2016-2017 \\ Optimization & & Feb 24, 2017 \\
+Prof. Yinyu Ye & & Due Thursday March 9 5pm
+\end{tabular}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\bigskip
+
+\begin{center}
+{\large \bf Homework Assignment 4 \\  Discuss Session Friday March 10 in Class}
+\end{center}
+%\vfill
+
+%{}
+
+\bigskip
+
+{\textbf{Reading.}} Read selected sections in Luenberger and Ye's {\sl Linear
+and Nonlinear Programming Fourth Edition} Chapters 5, 6, 8, 10 and 14.
+
+
+{\textbf{Solve the following problems:}}
+\begin{enumerate}
+\item[1.] Recall the (local) second-order (SO) and scaled second-order (SSO) Lipschitz conditions (LC):
+\[\mbox{SOLC}:\ \|\nabla f(\x+\d)-\nabla f(\x)-\nabla^2 f(\x)\d\|\le \beta\|\d\|^2,\ \mbox{where}\ \|\d\|\le .5\]
+and
+\[\mbox{SSOLC}:\ \|X(\nabla f(\x+\d)-\nabla f(\x)-\nabla^2 f(\x)\d)\|\le \beta\d^T\nabla^2f(\x)\d,\ \mbox{where}\ \|X^{-1}\d\|\le .5,\ X=\mbox{diag}(\x).\]
+
+Find parameter $\beta$ values (or upper bounds)  of (SOLC) and (SSOLC) for each of the following scalar functions:
+\begin{itemize}
+\item[(a)] $f(x)=\frac{1}{3}x^3+x$, $x>0$
+\item[(b)] $f(x)=\log(x)$, $x>0$.
+\item[(c)] $f(x)=\log(1+e^{-x})$, $x> 0$
+\end{itemize}
+
+\item[2.] Consider again the Logistic Regression, where we like to determine $x_0$ and $\x$ to maximize
+\[
+\left(\prod_{i,c_i=1}\frac{1}{1+\exp(-\a_i^T\x-x_0)}\right)
+\left(\prod_{i,c_i=-1}\frac{1}{1+\exp(\a_i^T\x+x_0)}\right).
+\]
+which is equivalent to maximize the log-likelihood probability
+\[
+-\sum_{i,c_i=1}\log\left(1+\exp(-\a_i^T\x-x_0)\right)-\sum_{i,c_i=-1}\log\left(1+\exp(\a_i^T\x+x_0)\right).
+\]
+Or to minimize the log-logistic-loss
+\[
+f(\x,x_0)=\sum_{i,c_i=1}\log\left(1+\exp(-\a_i^T\x-x_0)\right)+\sum_{i,c_i=-1}\log\left(1+\exp(\a_i^T\x+x_0)\right).
+\]
+\begin{enumerate}
+\item[(a)] Write down the Hessian matrix function of $\x$ and $x_0$.
+
+\item[(b)] (Computation Team Work) Apply any Quasi-Newton (e.g., slide 18 of Lecture \#13 or L\&Y Chapter 10) and Newton methods to solve the problem using the data in HW2 for SVM (may or may not with regulation), randomly generate data sets, and/or benchmark data sets you can find. Compare the two methods with each other and with the previous methods used in HW3.
+\end{enumerate}
+
+\item[3.] Consider the LP problem
+\begin{eqnarray*}
+\mbox{minimize}   & f(\x)=x_1+x_2 &\\
+\mbox{subject to} & x_1+x_2+x_3  &=1,\\
+                  & (x_1,x_2,x_3)&\ge 0 .
+\end{eqnarray*}
+
+\begin{itemize}
+\item[(a)] What is the analytic center of the feasible region with the logarithmic barrier function?
+
+\item[(b)] Find the central path point $\x(\mu)=(x_1(\mu),x_2(\mu),x_3(\mu))$.
+
+\item[(c)] Show that as $\mu$ decreases to $0$, $\x(\mu)$ converges to the unique optimal solution.
+
+\item[(d)] (Computation Team Work) Draw $\x$ part of the primal-dual potential function level sets:
+\[\psi_{6}(\x,\s)\le 0 \quad\mbox{and}\quad \psi_{6}(\x,\s)\le -10,\]
+and
+\[\psi_{12}(\x,\s)\le 0 \quad\mbox{and}\quad \psi_{12}(\x,\s)\le -10;\]
+respectively in the primal feasible region (on a plane).
+
+{\bf Hint:} Sample interior points in the primal and dual feasible regions.To plot the $\x$ part of the level set of potential function, say $\psi_{6}(\x,\s)\le 0$,
+in primal feasible region $F_p$, you plot
+\[\{\x\in F_p:\ \min_{\s\in F_d}\psi_{6}(\x,\s)\le 0\}\]
+where $F_d$ represents the dual feasible region. This can be approximately done by sampling as follows.
+
+You randomly generate $N$ interior feasible points of the primal $\x^p$ and the dual $(y^q,\s^q)$, respectively. For 
+each primal point $\x^p$, you find if it is true that
+\[\min_{q=1,...,N}\psi_{6}(\x^p,\s^q)\le 0.\]
+Then, you plot those $\x^p$ who give an "yes" answer.
+
+\item[(f)] Changing the objective to $f(\x)=x_1$ and repeat questions (b)--(d).
+\end{itemize}
+
+\item[4.] Questions (a) and (b) of Problem 7, Section 5.9, the text book L\&Y.
+
+{\bf Hint:} Use the fact that, for any feasible pair $(\x,\y,\s)$ of LP,
+\[(\x-\x(\mu))^T(\s-\s(\mu))=0,\]
+the optimality of the central path solutions.
+
+\item[5.] Problem 12, Section 6.8, the text book L\&Y, where for any given symmetric matrix $D$, $|D|^2$ is the sum of all its eigenvalue squares, and  $|D|_{\infty}$ is its largest absolute eigenvalue.
+
+{\bf Hint:} $\det(I+D)$ equals the product of the eigenvalues of $I+D$. Then the proof follows from Taylor's expansion.
+
+\item[6.] Optimization with log-sum-exponential functions arises from smooth approximation for non-smooth optimization. Consider the  non-smooth optimization problem:
+\begin{equation}
+\label{piecewise}
+\min_\mathbf x \max_{1\leq i \leq m} ({\mathbf a}_i^T \mathbf x  + b_i),
+\end{equation}
+given $\mathbf a_i \in \mathbb R^n$, $b_i \in \mathbb R$.
+\begin{itemize}
+\item[(a)] Derive an equivalent LP problem and write down its dual.
+\item[(b)] Suppose we approximate the objective function $\max_{1\leq i \leq m} ({\mathbf a}_i^T \mathbf x  + b_i)$ with a smooth function and consider a different  optimization problem:
+\begin{equation}
+\label{smooth}
+\min_\mathbf x \log \left( \sum_{i=1}^m \exp({\mathbf a}_i^T \mathbf x  + b_i) \right)
+\end{equation}
+Let $z_1$ and $z_2$ be the optimal values of (\ref{piecewise}) and (\ref{smooth}), prove that
+\begin{equation*}
+0 \leq z_2 - z_1 \leq \log m.
+\end{equation*}
+{\bf Hint:} Use the monotone property of both functions $\log(.)$ and $\exp(.)$.
+\item[(c)] Suppose we use a different function for approximation:
+\begin{equation}
+\label{smooth1}
+\min_\mathbf x \frac{1}{\gamma} \log \left( \sum_{i=1}^m \exp(\gamma({\mathbf a}_i^T \mathbf x  + b_i)) \right),
+\end{equation}
+for some $\gamma > 0$.  Suppose the optimal value to (\ref{smooth1}) is $z_3$, derive a bound for $z_3 - z_1$ similar as above.  What happens as $\gamma \rightarrow \infty$?
+\end{itemize}
+
+
+\item[7.] (20pts Computation Team Work) Implement the ADMM to solve the divergence example in Lecture \&16.
+\begin{itemize}
+\item[(a)] Try $\beta=0.1$, $\beta=1$, and $\beta=10$, respectively. Does the choice of $\beta$ make a difference?
+
+\item[(b)] Add the objective function to minimize
+\[0.5(x^2_1+x^2_2+x^2_3)\]
+to the problem, and retry $\beta=0.1$, $\beta=1$, and $\beta=10$, respectively. Does the choice of $\beta$ make a difference?
+
+\item[(c)] Set $\beta=1$ and apply the random permutation updating order of $\x$ (discussed in class) to solving each of the two problems in (a) and (b). Does the iterate converge?
+\end{itemize}
+
+\item[8.] (20pts Computation Team Work) 
+All pieces of Computation Team Work stated above, and one more described below.
+
+You understand the SDP relaxation for SNL very well now, e.g., the two sensors and three anchors formulation: Find
+\[Z=\left(\begin{array}{cc}
+              I & X\\
+              X^T& Y\end{array}\right)\in S^4
+\]
+to meet the constraints in the standard form:
+\[\begin{array}{cl}
+(1;0;0;0)(1;0;0;0)^T\bullet Z &=1,\\
+(0;1;0;0)(0;1;0;0)^T\bullet Z& =1,\\
+(1;1;0;0)(1;1;0;0)^T\bullet Z& =2,\\
+(a_i;-1;0)(a_i;-1;0)^T\bullet Z &= d^2_{1i},\ i=1,2,\\
+(a_i;0;-1)(a_i;0;-1)^T\bullet Z &= d^2_{2i},\ i=2,3,\\
+(0;0;1;-1)(0;0;1;-1)^T\bullet Z&=\hat{d}^2_{12},\\
+Z &\succeq 0\in S^4.
+\end{array}
+\]
+where no objective function is present. 
+
+The question is: could we add an suitable (or regulative) objective function to improve localization quality:
+\[\begin{array}{ccl}
+\min          &  C\bullet X &\\
+\mbox{s.t.}&(1;0;0;0)(1;0;0;0)^T\bullet Z &=1,\\
+&(0;1;0;0)(0;1;0;0)^T\bullet Z& =1,\\
+&(1;1;0;0)(1;1;0;0)^T\bullet Z& =2,\\
+&(a_i;-1;0)(a_i;-1;0)^T\bullet Z &= d^2_{1i},\ i=1,2,\\
+&(a_i;0;-1)(a_i;0;-1)^T\bullet Z &= d^2_{2i},\ i=2,3,\\
+&(0;0;1;-1)(0;0;1;-1)^T\bullet Z&=\hat{d}^2_{12},\\
+&Z &\succeq 0\in S^4.
+\end{array}
+\]
+Try the following regulative objectives and construct the corresponding objective matrix $C$, and see which works best:
+\begin{itemize}
+\item Minimize the trace of $Z$
+
+\item Maximize the trace of $Z$,
+
+\item Minimize the sum of all the non-edge distance squares (a non-edge is a edge whose distance information is unknown)
+
+\item Maximize the sum of the non-edge distance squares
+\end{itemize}
+You may use your generated data as in your HW2. 
+
+You may use CVX (or DSDPMLB.m code described in class) to solve your SDP problems.
+\end{enumerate}
+
+\end{document}

@@ -1,0 +1,26 @@
+function [ Z ] = CVXSolZ(a, A, d, idx)
+%UNTITLED4 Summary of this function goes here
+%   Detailed explanation goes here
+C = 10*rand(4,4);
+cvx_expert true
+cvx_begin sdp quiet
+        variable Z(4,4) symmetric
+        minimize(sum(dot(C, Z)) + idx(1)*trace(Z) + ...
+            power(2,idx(2)*sqrt(power(2,Z(3,1)-a(1,3))+power(2,Z(3,2)-a(2,3))) + ...
+            idx(2)*sqrt(power(2,Z(4,1)-a(1,1))+power(2,Z(4,2)-a(2,1)))))
+        
+        subject to
+            sum(dot(A(:,1)*A(:,1)', Z)) == 1;
+            sum(dot(A(:,2)*A(:,2)', Z)) == 1;
+            sum(dot(A(:,3)*A(:,3)', Z)) == 2;
+            for i = 1:2  
+                sum(dot([a(:, i); -1; 0] * [a(:, i); -1; 0]',  Z)) == d(i)^2;
+                sum(dot([a(:, i+1); 0;  -1] * [a(:, i+1); 0; -1]', Z)) == d(i+2)^2;
+            end
+            sum(dot([0; 0; 1; -1] * [0; 0; 1; -1]', Z)) == d(5)^2 ;
+            Z >= 0;           
+cvx_end
+
+
+end
+
