@@ -5,7 +5,7 @@
 % f: function to optimize over
 % df: gradient function
 %%
-function [x, x0] = CGD(f, df, x_initial, x0_intial, a, b, MAX_ITER, TOL, debug,mu)
+function [x, x0,iter, fvals, gvals] = CGD(f, df, x_initial, x0_intial, a, b, MAX_ITER, TOL, debug,mu)
 
 
 

@@ -7,7 +7,7 @@
 %%
 
 
-function [x, x0] = SDM(f, df, x_initial, x0_intial, a, b,ALPHA, MAX_ITER, TOL, debug,mu)
+function [x, x0, iter,fvals, gvals] = SDM(f, df, x_initial, x0_intial, a, b,ALPHA, MAX_ITER, TOL, debug,mu)
 
 
 

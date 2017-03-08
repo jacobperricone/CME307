@@ -6,7 +6,7 @@
 % df: gradient function
 %%
 
-function [x, x0] = ASDM(f, df, x_initial, x0_intial, a, b,BETA, MAX_ITER, TOL, debug,mu)
+function [x, x0, iter,fvals, gvals] = ASDM(f, df, x_initial, x0_intial, a, b,BETA, MAX_ITER, TOL, debug,mu)
 
 
 

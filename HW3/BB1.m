@@ -5,7 +5,7 @@
 % f: function to optimize over
 % df: gradient function
 %%
-function [ x, x0 ] = BB1(f, df, x_initial, x0_intial, a, b, MAX_ITER, TOL, debug, one,mu)
+function [ x, x0,iter, fvals, gvals] = BB1(f, df, x_initial, x0_intial, a, b, MAX_ITER, TOL, debug, one,mu)
 
 
 % get initial data
