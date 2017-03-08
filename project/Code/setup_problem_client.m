@@ -11,7 +11,7 @@ num_sensors = 10;
 [sensors, dx, da] = generate_sensor(anchors,num_sensors,0);
 
 % Go from index to x,y coordinat
-id_xy = @(i,rows, cols) ([mod(i,rows), floor(i/rows) + 1]);
+id_xy = @(i,rows, cols) ([ (mod(i,rows) == 0)*rows + mod(i,rows)  , ceil(i/rows)]);
 % go from x,y to index
 id = @(row,col,rows, columns) ((col-1)*rows + row);
 
@@ -33,23 +33,23 @@ Nx = upper_quadrant(randperm(numel(upper_quadrant), num_Nx))';
 X_x = id_xy(Nx, num_sensors, num_sensors);
 % create matrix
 
-tmpX = zeros(size(X_x,1));
+tmpX = zeros(size(X_x,1),1);
 for i=1:size(X_x,1)
     tmpX(i) = dx(X_x(i,1), X_x(i,2));
 end
 
 
 Pairwise_Sensor_Distance = horzcat(X_x, dx(Nx));
-
+%%
 
 num_Na = round(numel(da)/4);
 Na = randperm(numel(da), num_Na)';
 X_a = id_xy(Na, num_sensors, num_anchors);
 
-tmpA = zeros(size(X_a,1));
+tmpA = zeros(size(X_a,1),1);
 for i=1:size(X_a,1)
     tmpA(i) = da(X_a(i,1), X_a(i,2));
 end
 
-
+da(Na) - tmpA
 Sensor_Anchor_Distance = horzcat(X_a, da(Na));
