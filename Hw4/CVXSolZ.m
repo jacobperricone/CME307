@@ -6,8 +6,9 @@ cvx_expert true
 cvx_begin sdp quiet
             variable Z(4,4) symmetric
             minimize(sum(dot(C, Z)) + idx(1)*trace(Z) + ...
-                power(2,idx(2)*sqrt(power(2,Z(3,1)-a(1,3))+power(2,Z(3,2)-a(2,3))) + ...
-                idx(2)*sqrt(power(2,Z(4,1)-a(1,1))+power(2,Z(4,2)-a(2,1)))))
+                idx(2)*power(2,norm(Z(3, 1:2)' - a(1:2, 3)) + norm(Z(4, 1:2)' - a(1:2, 1))))
+        %idx(2)*power(2,sqrt(power(2,Z(3,1)-a(1,3))+power(2,Z(3,2)-a(2,3))) + ...
+                %sqrt(power(2,Z(4,1)-a(1,1))+power(2,Z(4,2)-a(2,1)))))
             subject to
 
             sum(dot(A(:,1)*A(:,1)', Z)) == 1;
