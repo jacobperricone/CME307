@@ -1,4 +1,4 @@
-function [x, x0] = Newton(f, df, hessian,x_initial, x0_intial, a, b,ALPHA, MAX_ITER, TOL,debug)
+function [x, x0, iter,fvals, gvals, hvals] = Newton(f, df, hessian,x_initial, x0_intial, a, b,ALPHA, MAX_ITER, TOL,debug)
 
 
     x = x_initial;
@@ -32,7 +32,7 @@ function [x, x0] = Newton(f, df, hessian,x_initial, x0_intial, a, b,ALPHA, MAX_I
     norm_grad = 10000;
     delta_f = 10000;
     delta_x = 10000;
-    alpha = 10000;
+    alpha = ALPHA;
     
     
     
@@ -58,6 +58,7 @@ function [x, x0] = Newton(f, df, hessian,x_initial, x0_intial, a, b,ALPHA, MAX_I
         
         g_prev = df(x,x0,a,b);
         d = H_prev*g_prev;
+        alpha = choose_alpha(alpha, -d, x, x0, a,b,f)
         x_cat_new = x_cat_prev - ALPHA*d;
         
              

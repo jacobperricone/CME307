@@ -1,0 +1,9 @@
+function alpha = choose_alpha(alpha, d,x, x0, a,b)
+% finds appropriate alpha for next step
+while f(x, x0, alpha, b) <= objective(x + alpha * d(1:end-1), x0 + alpha*d(end), a, b) 
+    a = a / 2;
+ 
+end
+alpha = a; 
+
+end

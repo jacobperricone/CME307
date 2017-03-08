@@ -1,4 +1,4 @@
-function [x, x0] = Newton(f, df, hessian,x_initial, x0_intial, a, b,ALPHA, MAX_ITER, TOL,debug)
+function [x, x0,iter, fvals, gvals, hvals] = Newton(f, df, hessian,x_initial, x0_intial, a, b,ALPHA, MAX_ITER, TOL,debug)
 
 
     x = x_initial;

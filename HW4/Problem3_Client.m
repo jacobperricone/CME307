@@ -21,7 +21,7 @@ k = 1
 for i=1:size(p,2)
     for j=1:size(cutoffs,2)
         [out, point] = evaluate_candidacy(x,s,p(i), cutoffs(j));
-        Values(1,:,k) = out
+        Values(1,:,k) = outz
         Values(2:4,1:size(point,2),k) = point
         k = k + 1 
     end
