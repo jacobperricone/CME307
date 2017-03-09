@@ -6,7 +6,7 @@
 % returns: num_sensors randomly generate sensors
 % d_x: distance between all sensors
 % d_a: distance between all sensors and all anchors
-function [sensors, d_x, d_a] = generate_sensor(anchors, num_sensors, debug)
+function [sensors, d_x, d_a] = generate_sensor(anchors, num_sensors, debug, DT, k)
     num_dimensions = size(anchors,1);
     min_values = min(anchors,[],2);
     max_values = max(anchors,[],2);
@@ -16,22 +16,21 @@ function [sensors, d_x, d_a] = generate_sensor(anchors, num_sensors, debug)
      
     
     
+    
     if debug
 
         figure()
-        tmp = anchors;
-        tmp(:,4) = tmp(:,1);
-        plot(tmp(1,:), tmp(2,:))
+        plot(3*DT.Points(k,1)-1, 3*DT.Points(k,2)-1,'r') 
         hold on
-        scatter(sensors(1,:), sensors(2,:))
+        scatter(sensors(1,:), sensors(2,:), 'ko')
+        
     end
+   
     
     
     d_x = pdist2(sensors',sensors');
     d_a = pdist2(sensors',anchors');
     
     
-
-
 
 end
