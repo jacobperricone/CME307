@@ -14,22 +14,25 @@ cvx_begin sdp quiet
             minimize(0)
             subject to
             
-            Z(1:d, 1:d) == eye(d, d);
+           Z(1:d, 1:d) == eye(d, d);
             
             for i=1:num_s
                 ei = zeros(1, num_sensors);
-                ei(1, Pairwise_Sensor_Distance(i, 1):end)=1;
+                ei(1, Pairwise_Sensor_Distance(i, 1)) = 1;
+                
                 ej = zeros(1, num_sensors);
-                ej(1, Pairwise_Sensor_Distance(i, 1):end)=1;
+                ej(1, Pairwise_Sensor_Distance(i, 2)) = 1;
+                
                 sum(dot([zeros(1, d)';(ei-ej)']*[zeros(1, d)';(ei-ej)']', Z)) == Pairwise_Sensor_Distance(i, 3)^2;
             end
             
             
-            for i = 1:num_a
+            for j = 1:num_a
                 ej = zeros(1, num_sensors);
-                ej(1, Sensor_Anchor_Distance(i, 1):end)=1;
-                sum(dot([anchors(:, Sensor_Anchor_Distance(i, 2)); -ej'] * [anchors(:, Sensor_Anchor_Distance(i, 2)); -ej']',  Z))...
-                    == Sensor_Anchor_Distance(i, 3)^2;
+                ej(1, Sensor_Anchor_Distance(j, 1)) = 1;
+                
+                sum(dot([anchors(:, int64(Sensor_Anchor_Distance(j, 2))); -ej'] * [anchors(:, int64(Sensor_Anchor_Distance(j, 2))); -ej']',  Z))...
+                    == Sensor_Anchor_Distance(j, 3)^2;
             end
 
             Z >= 0;           
