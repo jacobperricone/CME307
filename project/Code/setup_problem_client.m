@@ -53,3 +53,5 @@ end
 
 da(Na) - tmpA
 Sensor_Anchor_Distance = horzcat(X_a, da(Na));
+
+SDP(num_sensors, Pairwise_Sensor_Distance, Sensor_Anchor_Distance, anchors)
