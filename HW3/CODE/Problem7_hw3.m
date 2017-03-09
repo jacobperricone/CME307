@@ -1,3 +1,15 @@
+%%
+% Problem7_Hw3.m
+%
+% This program finds the sensor location for a 2d problem by first
+% calling the CVXProblem7 function that estimates the location of the
+% sensor. It then uses that estimate as an initial point for two sets
+% of gradient descent fomulations (general form and the scaled one) in
+% the double for-loop.
+%
+% Retuns: Generates a set of plots
+
+
 clear all
 close all
 
