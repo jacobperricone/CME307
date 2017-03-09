@@ -1,4 +1,13 @@
 %% Function for Problem 9
+%
+% Dependencies: SDMwFtwoXs
+%
+% Computes the CVX estimate of the location of two sensors. It then uses
+% the SDMwFtwoXs function that performs a gradient descent with the
+% intial points computed by CVX.
+%
+% Returns: two estimates of sensor locations estimated using the gradient
+% descent.
 
 function [x] = XsForPlots( idx, a, d, A, ALPHA)
 
@@ -40,4 +49,5 @@ x = SDMwFtwoXs(ALPHA, a, d, x_1, x_2);
 
 
 end
+
 
