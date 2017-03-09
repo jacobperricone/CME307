@@ -1,12 +1,14 @@
 %% Solves the convex problem with the SDP relaxation.
 function [Z] = SDP(num_sensors, Pairwise_Sensor_Distance, Sensor_Anchor_Distance, anchors)
-
-% Number of sensors and anchors.
+a = anchors;
+% Number of sensors and anchors iterations.
 num_s = length(Pairwise_Sensor_Distance(:, 1));
 num_a = length(Sensor_Anchor_Distance(:, 1));
 
+% Number of sensors and anchors
 d = length(anchors(:, 1));
 n = num_sensors;
+
 
 cvx_begin sdp quiet
             %% Discuss what do to with the size here.
@@ -37,5 +39,5 @@ cvx_begin sdp quiet
 
             Z >= 0;           
 cvx_end
-        
+    
 end 
