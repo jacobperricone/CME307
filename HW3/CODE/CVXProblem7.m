@@ -1,3 +1,6 @@
+%
+% Returns: estimate of the sensor location
+
 function [x] = CVXProblem7( A, b, mu )
 cvx_expert true
 cvx_begin quiet
@@ -10,4 +13,3 @@ cvx_begin quiet
  
 cvx_end;
 end
-
