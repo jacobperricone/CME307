@@ -1,3 +1,9 @@
+%
+% Dependencies: gradx1 and gradx2
+%
+% Computes the gradient descent for two sensors.
+
+
 function [x] = SDMwFtwoXs(alpha, a, d, x1_0, x2_0)
 
 x1(:, 1) = x1_0;
