@@ -3,18 +3,24 @@
 % Client: setup_problem_client.m
 %
 % Input: vectors of true sensor locations, estiamted sensor locations, and 
-% the magnitude of the error that comes from the estimation using CVX. All 
-% sensor locations are defined in 2D. 
+% the magnitude of the error that comes from the estimation using CVX. It
+% also takes in all the locations of the anchors.
 %
 % Retuns: 3D bar plot. Adds estiamted sensor locations to the 2D plot 
 % initiatated in generate_sensor.m
 
-function [  ] = VerticleBarPlot(estimated_sensors, sensors, error_sensors)
+function [  ] = VerticleBarPlot(estimated_sensors, sensors, error_sensors, anchors)
 
     dim = size(sensors, 1);
-    
+        
     if dim == 1
+        figure()
         % Add estiamted locations to the 2D plot.
+        plot(anchors, [0, 0], 'Color', 'cyan', 'LineWidth', 10) 
+        axis([anchors(1)-.5, anchors(2)+.5, -.01, .01])
+        yticks('')
+        hold on
+        plot(sensors, zeros(1, length(sensors)), 'ko')
         hold on
         plot(estimated_sensors, zeros(1, length(estimated_sensors)), 'm.')
         title(strcat('Ture and Estimated Sensor Locations with n=',  ...
@@ -37,16 +43,35 @@ function [  ] = VerticleBarPlot(estimated_sensors, sensors, error_sensors)
         
         
     else
-        % Add estiamted locations to the 2D plot.
-        hold on
+        
+        % Add estiamted locations to the 2D plot.   
         if dim == 2
+            % creates the convexhull around (x,y)
+            DT = delaunayTriangulation(anchors');
+            % indecies of vertices of the covexhull
+            k = convexHull(DT);
+        
+            figure()
+            plot(3*DT.Points(k,1)-1, 3*DT.Points(k,2)-1,'r') 
+            hold on
+            scatter(sensors(1,:), sensors(2,:), 'ko') 
+            hold on
             scatter(estimated_sensors(1,:), estimated_sensors(2,:), 'm.')
             title(strcat('Ture and Estimated Sensor Locations with n=',  ...
                 num2str(length(estimated_sensors))))
-            %xlabel('x_1')
-            %ylabel('x_2')
-            %legend('yeah', 'yeah1', 'yeah2')
+           
         else
+            % creates the convexhull around (x,y)
+            DT = delaunayTriangulation(anchors');
+            % indecies of vertices of the covexhull
+            [k,v] = convexHull(DT);
+        
+            figure()
+            trisurf(k,3*DT.Points(:,1)-1, 3*DT.Points(:,2)-1, 3*DT.Points(:,3)-1, 'FaceColor', 'cyan')
+            alpha(.1)
+            hold on 
+            plot3(sensors(1,:), sensors(2,:), sensors(3,:), 'ko')
+            hold on
             plot3(estimated_sensors(1,:), estimated_sensors(2,:), estimated_sensors(3,:), 'm.')
             zlabel('x_3')
             
