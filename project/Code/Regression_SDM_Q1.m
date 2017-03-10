@@ -1,4 +1,4 @@
-function [estimated_sensors] = Regression_SDM_Q1(f,df, x_initial, MAX_ITER, TOL, ALPHA, num_sensors,  Pairwise_Sensor_Distance, Sensor_Anchor_Distance, anchors, debug)
+function [estimated_sensors, fvals, gvals, iter] = Regression_SDM_Q1(f,df, x_initial, MAX_ITER, TOL, ALPHA, num_sensors,  Pairwise_Sensor_Distance, Sensor_Anchor_Distance, anchors, debug)
 %
 % Description: Implements the Steepest Descent Method on an initial point
 % x_initial, generates plots of function value and gradient value over time

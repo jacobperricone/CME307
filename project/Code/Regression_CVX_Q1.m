@@ -1,4 +1,4 @@
-function [estimated_sensors] = Regression_CVX_Q1(num_sensors, Pairwise_Sensor_Distance, Sensor_Anchor_Distance, anchors)
+function [estimated_sensors, fvals, gvals] = Regression_CVX_Q1(num_sensors, Pairwise_Sensor_Distance, Sensor_Anchor_Distance, anchors)
 
 % Number of sensors and anchors iterations.
 num_s = length(Pairwise_Sensor_Distance(:, 1))

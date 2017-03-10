@@ -23,8 +23,8 @@ function [  ] = VerticleBarPlot(estimated_sensors, sensors, error_sensors, ancho
         plot(sensors, zeros(1, length(sensors)), 'ko')
         hold on
         plot(estimated_sensors, zeros(1, length(estimated_sensors)), 'm.')
-        title(strcat({'True and Estimated Sensor Locations Using the ' }, name, {' Method and n='},  ...
-            num2str(length(estimated_sensors))))
+        title(sprintf(strcat({'True and Estimated Sensor Locations \n Using the ' }, name, {' and n='},  ...
+            num2str(length(estimated_sensors)))))
         xlabel('Interval')
         legend('Convexhull', 'True Locations', 'Estimated Locations')
         
@@ -36,7 +36,7 @@ function [  ] = VerticleBarPlot(estimated_sensors, sensors, error_sensors, ancho
             hold on
         end
         
-        title(strcat({'||Error|| for Each Sensor Estimate using the '}, name, {' Method and n='},  ...
+        title(strcat({'||Error|| for Each Sensor Estimate using the '}, name, {' and n='},  ...
             num2str(length(estimated_sensors))))
         xlabel('x')
         ylabel('Error')
@@ -75,8 +75,8 @@ function [  ] = VerticleBarPlot(estimated_sensors, sensors, error_sensors, ancho
             
         end
        
-        title(strcat({'True vs. Estimated Sensor Locations using '}, name, {' Method and n='}, ...
-            num2str(length(estimated_sensors))))
+        title(sprintf(strcat({'True vs. Estimated Sensor Locations \n using the '}, name, {' and n='}, ...
+            num2str(length(estimated_sensors)))))
         xlabel('x_1')
         ylabel('x_2')
         legend('Convexhull', 'True Locations', 'Estimated Locations', 'Location','northeast')
@@ -103,10 +103,10 @@ function [  ] = VerticleBarPlot(estimated_sensors, sensors, error_sensors, ancho
         
         
         if dim == 2
-            title(strcat({'||Error|| for Each Sensor Estimate using the '}, name, {' Method and n='}, ...
-                num2str(length(estimated_sensors))))
+            title(sprintf(strcat({'||Error|| for Each Sensor Estimate using the '}, name, {' and n='}, ...
+                num2str(length(estimated_sensors)))))
         else
-            title(strcat({'||Error|| for Each Sensor Estimate using the ' }, name, {' Method and n='},...
+            title(strcat('||Error|| for Each Sensor Estimate using the Each Estiamtion of the Sensor Location with Fixed value of z using the ', name, ' and n=',...
                 num2str(length(estimated_sensors))))
         end
             xlabel('x_1')

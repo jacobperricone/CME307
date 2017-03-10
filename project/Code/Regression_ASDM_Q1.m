@@ -1,4 +1,4 @@
-function [estimated_sensors] = Regression_ASDM_Q1(f,df, x_initial, MAX_ITER, TOL, ALPHA, num_sensors,  Pairwise_Sensor_Distance, Sensor_Anchor_Distance, anchors, debug)
+function [estimated_sensors, fvals, gvals, iter] = Regression_ASDM_Q1(f,df, x_initial, MAX_ITER, TOL, ALPHA, num_sensors,  Pairwise_Sensor_Distance, Sensor_Anchor_Distance, anchors, debug)
 %
 % Description: Implements the Accelerated Steepest Descent Method on an initial point
 % x_initial, generates plots of function value and gradient value over time
@@ -66,7 +66,9 @@ function [estimated_sensors] = Regression_ASDM_Q1(f,df, x_initial, MAX_ITER, TOL
             disp([  fvals(iter), fvals(iter) - fvals(iter-1), gvals(iter), gvals(iter) - gvals(iter) ])
         end
         
-        x_prev = x_new;
+        x_prev = x_new ;
+        x_hat_prev = x_hat_new;
+        lambda_prev = lambda_new; 
     end
         
         

@@ -117,25 +117,33 @@ else
     error_sensors_ASDM = sum(((sensors-estimated_sensors_ASDM).^2)).^.5;
 end
 %%
-VerticleBarPlot(estimated_sensors_SDM, sensors, error_sensors_SDM,anchors, 'SDM')
-VerticleBarPlot(estimated_sensors_ASDM, sensors, error_sensors_ASDM,anchors,'ASDM')
-%%
+VerticleBarPlot(estimated_sensors_SDM, sensors, error_sensors_SDM,anchors)
+VerticleBarPlot(estimated_sensors_ASDM, sensors, error_sensors_ASDM,anchors)
+
 figure()
 subplot(2,1,1)
 loglog(1:iter_SDM, fvals_SDM)
 hold on
 loglog(1:iter_ASDM, fvals_ASDM)
 legend('SDM', 'ASDM')
-title('Function Value vs. Iteration ')
+title('Function Value vs. Iteration (LogSpace)')
 xlabel('$\log[\mbox{Iteration}]$','Interpreter', 'LaTex')
 ylabel('$\log[f(x)]$', 'Interpreter', 'LaTex')
 
 subplot(2,1,2)
+loglog(1:iter_N, gvals_N)
+hold on
+loglog(1:iter_DFP, gvals_DFP)
+hold on
 loglog(1:iter_SDM, gvals_SDM)
 hold on
 loglog(1:iter_ASDM, gvals_ASDM)
-legend('SDM', 'ASDM')
-title('Norm Gradient Value vs. Iteration ')
+hold on
+loglog(1:iter_CGD, gvals_CGD)
+hold on
+loglog(1:iter_BB, gvals_BB)
+legend('Newton', 'DFP', 'SDM', 'ASDM', 'CGD','BB')
+title('Norm Gradient Value vs. Iteration (LogSpace)')
 xlabel('$\log[\mbox{Iteration}]$','Interpreter', 'LaTex')
 ylabel('$\log[g(x)]$', 'Interpreter', 'LaTex')
 
