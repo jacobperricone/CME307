@@ -93,8 +93,31 @@ end
 
 % verticle bar plots
 VerticleBarPlot(estimated_sensors_SOCP, sensors, error_sensors_SOCP, anchors)
-
-
-
 toc
+%%
+% create handles for the functions
+df = @reg_gradient 
+f = @reg_fval 
+% generate random initial point
+[x_initial,blah, blah2] = generate_sensor(anchors,num_sensors,1);
+% Set the convergence and iteration limits
+MAX_ITER = 25000; TOL = .0001; ALPHA = .0001; debug = 0; 
+% run the descent methods
+
+%%
+estimated_sensors_SDM = Regression_SDM_Q1(f,df, x_initial, MAX_ITER, TOL, ALPHA, num_sensors,  Pairwise_Sensor_Distance, Sensor_Anchor_Distance, anchors, debug);
+%%
+estimated_sensors_ASDM = Regression_ASDM_Q1(f,df, x_initial, MAX_ITER, TOL, ALPHA, num_sensors,  Pairwise_Sensor_Distance, Sensor_Anchor_Distance, anchors, debug);
+
+if dim == 1
+    error_sensors_SDM = ((sensors'-estimated_sensors_SDM').^2).^.5;
+    error_sensors_ASDM = ((sensors'-estimated_sensors_ASDM').^2).^.5;
+else   
+    error_sensors_SDM = sum(((sensors-estimated_sensors_SDM).^2)).^.5;
+    error_sensors_ASDM = sum(((sensors-estimated_sensors_ASDM).^2)).^.5;
+end
+
+VerticleBarPlot(estimated_sensors_SDM, sensors, error_sensors_SDM)
+VerticleBarPlot(estimated_sensors_ASDM, sensors, error_sensors_ASDM)
+
 
