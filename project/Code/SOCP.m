@@ -1,3 +1,17 @@
+% SOCP.m
+% Inputs: The total number of sensors num_sensors, a 3 column matrix 
+% Pairwise_Sensor_Distance with indecies of the sensor(i), sensor(j) and 
+% the distance between them in its columnsm, a 3 column matrix 
+% Sensor_Anchor_Distance with columns: sensor indecies, anchor indecies and
+% the distance between them, and finally all the anchors.
+%
+% This funciton estimates locations of n sensors in 1, 2 or 3D plane by 
+% using CVX.
+%
+% Returns: nxd matrix (where x<=d) with all estimates of the sensor 
+% locations
+
+%% Solves the convex problem with the SDP relaxation.
 function [X] = SOCP(num_sensors, Pairwise_Sensor_Distance, Sensor_Anchor_Distance, anchors)
 a = anchors;
 % Number of sensors and anchors iterations.
@@ -26,6 +40,5 @@ cvx_begin sdp quiet
             end
          
 cvx_end
-X
     
 end 

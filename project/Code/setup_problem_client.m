@@ -65,12 +65,6 @@ Sensor_Anchor_Distance = horzcat(X_a, da(Na));
 Z = SDP(num_sensors, Pairwise_Sensor_Distance, Sensor_Anchor_Distance, anchors);
 estimated_sensors_SDP = Z(length(anchors(:,1))+1:end, 1:size_x)';
 
-if dim == 1
-    error_sensors_SDP = ((sensors'-estimated_sensors_SDP').^2).^.5;
-else 
-    error_sensors_SDP = sum(((sensors-estimated_sensors_SDP).^2)).^.5;
-end
-VerticleBarPlot(estimated_sensors_SDP, sensors, error_sensors_SDP)
 
 
 %% solves the SOCP Relaxation Problem/
@@ -98,15 +92,4 @@ VerticleBarPlot(estimated_sensors_SDP, sensors, error_sensors_SDP)
 %}
 
 toc
-%% Regression 
 
-df = @reg_gradient 
-f = @reg_fval 
-[x_initial,blah, blah2] = generate_sensor(anchors,num_sensors,1);
-
-MAX_ITER = 15000;
-TOL = .0001;
-ALPHA = .05;
-debug = 1; 
-
-Regression_SDM_Q1(f,df, x_initial, MAX_ITER, TOL, ALPHA, num_sensors,  Pairwise_Sensor_Distance, Sensor_Anchor_Distance, anchors, debug)
