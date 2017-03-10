@@ -1,13 +1,13 @@
 %%
-% Client Script For Problem one
+% Client Script For Problem two
 %
 %%
 clear all
 close all
 
 tic
-%% generates anchors
-dim = 3;
+%% generates anchors, and distance information
+dim = 2;
 anchors = Anchors(dim);
 
 
@@ -15,7 +15,7 @@ anchors = Anchors(dim);
 size_x = size(anchors, 1);
 num_anchors = size(anchors,2);
 % find number of sensors 
-num_sensors = 20;
+num_sensors = 40;
 % generate them
 [sensors, dx, da] = generate_sensor(anchors,num_sensors,1);
 
@@ -24,7 +24,7 @@ id_xy = @(i,rows, cols) ([ (mod(i,rows) == 0)*rows + mod(i,rows)  , ceil(i/rows)
 % go from x,y to index
 id = @(row,col,rows, columns) ((col-1)*rows + row);
 
-%% get the indices of the upper quadrant of the d_x matrix
+% get the indices of the upper quadrant of the d_x matrix
 
 upper_quadrant = zeros(1, round(num_sensors^2/2) - num_sensors);
 k = 1;
@@ -50,7 +50,7 @@ end
 
 
 Pairwise_Sensor_Distance = horzcat(X_x, dx(Nx));
-%%
+%
 if dim == 1
     num_Na = round(numel(da))-num_sensors;
 else
@@ -66,9 +66,8 @@ for i=1:size(X_a,1)
 end
 
 Sensor_Anchor_Distance = horzcat(X_a, da(Na));
-
-%% solves the SDP Relaxation Problem.
-Z = SDP(num_sensors, Pairwise_Sensor_Distance, Sensor_Anchor_Distance, anchors);
+%% 
+Z = SDP_Noise(num_sensors, Pairwise_Sensor_Distance, Sensor_Anchor_Distance, anchors);
 estimated_sensors_SDP = Z(length(anchors(:,1))+1:end, 1:size_x)';
 
 
@@ -80,38 +79,19 @@ else
 end
 
 % verticle bar plots
-VerticleBarPlot(estimated_sensors_SDP, sensors, error_sensors_SDP, anchors)
+VerticleBarPlot(estimated_sensors_SDP, sensors, error_sensors_SDP, anchors, 'SDP No Descent')
+%% Add SDM
 
-
-
-
-%% solves the SOCP Relaxation Problem/
-estimated_sensors_SOCP = SOCP(num_sensors, Pairwise_Sensor_Distance, Sensor_Anchor_Distance, anchors);
-
-
-if dim == 1
-    error_sensors_SOCP = ((sensors'-estimated_sensors_SOCP').^2).^.5;
-else 
-    error_sensors_SOCP = sum(((sensors-estimated_sensors_SOCP).^2)).^.5;
-end
-
-% verticle bar plots
-VerticleBarPlot(estimated_sensors_SOCP, sensors, error_sensors_SOCP, anchors)
-toc
-%%
-% create handles for the functions
 df = @reg_gradient 
 f = @reg_fval 
-% generate random initial point
-[x_initial,blah, blah2] = generate_sensor(anchors,num_sensors,1);
 % Set the convergence and iteration limits
-MAX_ITER = 25000; TOL = .0001; ALPHA = .0001; debug = 0; 
+MAX_ITER = 100; TOL = .0001; ALPHA = .0001; debug = 0; 
 % run the descent methods
 
 %%
-[estimated_sensors_SDM, fvals_SDM, gvals_SDM,iter_SDM] = Regression_SDM_Q1(f,df, x_initial, MAX_ITER, TOL, ALPHA, num_sensors,  Pairwise_Sensor_Distance, Sensor_Anchor_Distance, anchors, debug);
+[estimated_sensors_SDM, fvals_SDM, gvals_SDM,iter_SDM] = Regression_SDM_Q1(f,df, estimated_sensors_SDP, MAX_ITER, TOL, ALPHA, num_sensors,  Pairwise_Sensor_Distance, Sensor_Anchor_Distance, anchors, debug);
 %%
-[estimated_sensors_ASDM, fvals_ASDM, gvals_ASDM, iter_ASDM]= Regression_ASDM_Q1(f,df, x_initial, MAX_ITER, TOL, ALPHA, num_sensors,  Pairwise_Sensor_Distance, Sensor_Anchor_Distance, anchors, debug);
+[estimated_sensors_ASDM, fvals_ASDM, gvals_ASDM, iter_ASDM]= Regression_ASDM_Q1(f,df, estimated_sensors_SDP, MAX_ITER, TOL, ALPHA, num_sensors,  Pairwise_Sensor_Distance, Sensor_Anchor_Distance, anchors, debug);
 
 if dim == 1
     error_sensors_SDM = ((sensors'-estimated_sensors_SDM').^2).^.5;
@@ -142,5 +122,6 @@ legend('SDM', 'ASDM')
 title('Norm Gradient Value vs. Iteration ')
 xlabel('$\log[\mbox{Iteration}]$','Interpreter', 'LaTex')
 ylabel('$\log[g(x)]$', 'Interpreter', 'LaTex')
+
 
 

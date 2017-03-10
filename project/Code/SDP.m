@@ -1,3 +1,5 @@
+
+function [Z] = SDP(num_sensors, Pairwise_Sensor_Distance, Sensor_Anchor_Distance, anchors)
 % SPD.m
 % Inputs: The total number of sensors num_sensors, a 3 column matrix 
 % Pairwise_Sensor_Distance with indecies of the sensor(i), sensor(j) and 
@@ -14,7 +16,6 @@
 
 
 %% Solves the convex problem with the SDP relaxation.
-function [Z] = SDP(num_sensors, Pairwise_Sensor_Distance, Sensor_Anchor_Distance, anchors)
 a = anchors;
 % Number of sensors and anchors iterations.
 num_s = length(Pairwise_Sensor_Distance(:, 1));
