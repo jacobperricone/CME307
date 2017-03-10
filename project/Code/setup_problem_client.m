@@ -2,15 +2,11 @@ clear all
 close all
 
 
-%% generates anchors
-random_x = [3*rand(1,6)-1.5]';
-random_y = [3*rand(1,6)-1.5]';
-% creates the convexhull around (x,y)
-DT = delaunayTriangulation(random_x, random_y);
-% indecies of vertices of the covexhull
-k = convexHull(DT);
-anchors = [(3*DT.Points(k(1:end-1),1)-1)'; (3*DT.Points(k(1:end-1),2)-1)'];
-size_x = size(anchors,1);
+dim = 1;
+anchors = Anchors(dim);
+
+
+size_x = size(anchors, 1);
 num_anchors = size(anchors,2);
 % find number of sensors 
 num_sensors = 40;
@@ -66,9 +62,12 @@ Sensor_Anchor_Distance = horzcat(X_a, da(Na));
 Z = SDP(num_sensors, Pairwise_Sensor_Distance, Sensor_Anchor_Distance, anchors);
 estimated_sensors = Z(length(anchors(:,1))+1:end, 1:size_x)';
 
-error_sensors = ((sensors(1, :) - estimated_sensors(1, :)).^2 + ...
-    (sensors(2, :) - estimated_sensors(2, :)).^2).^.5;
 
+if dim == 1
+    error_sensors = ((sensors'-estimated_sensors').^2).^.5;
+else 
+    error_sensors = sum(((sensors-estimated_sensors).^2)).^.5;
+end
 
-%% 3d plot
-ThreeDVerticleBarPlot(estimated_sensors, sensors, error_sensors)
+%% bar plots
+VerticleBarPlot(estimated_sensors, sensors, error_sensors)
