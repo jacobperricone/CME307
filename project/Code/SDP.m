@@ -1,3 +1,18 @@
+% SPD.m
+% Inputs: The total number of sensors num_sensors, a 3 column matrix 
+% Pairwise_Sensor_Distance with indecies of the sensor(i), sensor(j) and 
+% the distance between them in its columnsm, a 3 column matrix 
+% Sensor_Anchor_Distance with columns: sensor indecies, anchor indecies and
+% the distance between them, and finally all the anchors.
+%
+% This funciton estimates locations of n sensors in 1, 2 or 3D plane by 
+% using CVX.
+%
+% Returns: n+dxn+d matrix Z which last length(anchors(:,1)) rows and first
+% d columns are the estimated locations of the sensors.
+
+
+
 %% Solves the convex problem with the SDP relaxation.
 function [Z] = SDP(num_sensors, Pairwise_Sensor_Distance, Sensor_Anchor_Distance, anchors)
 a = anchors;
