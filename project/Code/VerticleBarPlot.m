@@ -17,7 +17,8 @@ function [  ] = VerticleBarPlot(estimated_sensors, sensors, error_sensors)
         % Add estiamted locations to the 2D plot.
         hold on
         plot(estimated_sensors, zeros(1, length(estimated_sensors)), 'm.')
-        title('Ture and Estimated Sensor Locations with Respect to the Convexhull')
+        title(strcat('Ture and Estimated Sensor Locations with n=',  ...
+            num2str(length(estimated_sensors))))
         xlabel('Interval')
         legend('Convexhull', 'True Locations', 'Estimated Locations')
         
@@ -29,7 +30,8 @@ function [  ] = VerticleBarPlot(estimated_sensors, sensors, error_sensors)
             hold on
         end
         
-        title('Magnitude of the Error for Each Estiamtion of the Sensor Location.')
+        title(strcat('Magnitude of the Error for Each Estiamtion of the Sensor Location with n=',  ...
+            num2str(length(estimated_sensors))))
         xlabel('x')
         ylabel('Error')
         
@@ -39,7 +41,8 @@ function [  ] = VerticleBarPlot(estimated_sensors, sensors, error_sensors)
         hold on
         if dim == 2
             scatter(estimated_sensors(1,:), estimated_sensors(2,:), 'm.')
-            title('Ture and Estimated Sensor Locations with Respect to the Convexhull')
+            title(strcat('Ture and Estimated Sensor Locations with n=',  ...
+                num2str(length(estimated_sensors))))
             %xlabel('x_1')
             %ylabel('x_2')
             %legend('yeah', 'yeah1', 'yeah2')
@@ -49,10 +52,11 @@ function [  ] = VerticleBarPlot(estimated_sensors, sensors, error_sensors)
             
         end
        
-        title('Ture and Estimated Sensor Locations with Respect to the Convexhull')
+        title(strcat('Ture and Estimated Sensor Locations with n=', ...
+            num2str(length(estimated_sensors))))
         xlabel('x_1')
         ylabel('x_2')
-        legend('Convexhull', 'True Locations', 'Estimated Locations')
+        legend('Convexhull', 'True Locations', 'Estimated Locations', 'Location','northeast')
 
         % 3D plot
         figure()
@@ -76,9 +80,11 @@ function [  ] = VerticleBarPlot(estimated_sensors, sensors, error_sensors)
         
         
         if dim == 2
-            title('Magnitude of the Error for Each Estiamtion of the Sensor Location')
+            title(strcat('Magnitude of the Error for Each Estiamtion of the Sensor Location with n=', ...
+                num2str(length(estimated_sensors))))
         else
-            title('Magnitude of the Error for Each Estiamtion of the Sensor Location with Fixed value of z.')
+            title(strcat('Magnitude of the Error for Each Estiamtion of the Sensor Location with Fixed value of z with n=',...
+                num2str(length(estimated_sensors))))
         end
             xlabel('x_1')
             ylabel('y_1')
@@ -87,4 +93,3 @@ function [  ] = VerticleBarPlot(estimated_sensors, sensors, error_sensors)
     end
 
 end
-
