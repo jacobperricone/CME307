@@ -1,17 +1,17 @@
 clear all
 close all
 
-
-dim = 1;
+tic
+%% generates anchors
+dim = 2;
 anchors = Anchors(dim);
-
 
 size_x = size(anchors, 1);
 num_anchors = size(anchors,2);
 % find number of sensors 
 num_sensors = 40;
 % generate them
-[sensors, dx, da] = generate_sensor(anchors,num_sensors,1, DT, k);
+[sensors, dx, da] = generate_sensor(anchors,num_sensors,1);
 
 % Go from index to x,y coordinat
 id_xy = @(i,rows, cols) ([ (mod(i,rows) == 0)*rows + mod(i,rows)  , ceil(i/rows)]);
@@ -45,9 +45,12 @@ end
 
 Pairwise_Sensor_Distance = horzcat(X_x, dx(Nx));
 %%
-% -2*num_sensors works only for num_sensors>5, otherwise it needs to be
-% smaller.
-num_Na = round(numel(da))-2.5*num_sensors;
+if dim == 1
+    num_Na = round(numel(da))-num_sensors;
+else
+    num_Na = round(numel(da))-2.5*num_sensors;
+end
+
 Na = randperm(numel(da), num_Na)';
 X_a = id_xy(Na, num_sensors, num_anchors);
 
@@ -60,14 +63,50 @@ Sensor_Anchor_Distance = horzcat(X_a, da(Na));
 
 %% solves the SDP Relaxation Problem.
 Z = SDP(num_sensors, Pairwise_Sensor_Distance, Sensor_Anchor_Distance, anchors);
-estimated_sensors = Z(length(anchors(:,1))+1:end, 1:size_x)';
-
+estimated_sensors_SDP = Z(length(anchors(:,1))+1:end, 1:size_x)';
 
 if dim == 1
-    error_sensors = ((sensors'-estimated_sensors').^2).^.5;
+    error_sensors_SDP = ((sensors'-estimated_sensors_SDP').^2).^.5;
 else 
-    error_sensors = sum(((sensors-estimated_sensors).^2)).^.5;
+    error_sensors_SDP = sum(((sensors-estimated_sensors_SDP).^2)).^.5;
+end
+VerticleBarPlot(estimated_sensors_SDP, sensors, error_sensors_SDP)
+
+
+%% solves the SOCP Relaxation Problem/
+estimated_sensors_SOCP = SOCP(num_sensors, Pairwise_Sensor_Distance, Sensor_Anchor_Distance, anchors)
+
+if dim == 1
+    error_sensors_SOCP = ((sensors'-estimated_sensors_SOCP').^2).^.5;
+else 
+    error_sensors_SOCP = sum(((sensors-estimated_sensors_SOCP).^2)).^.5;
 end
 
-%% bar plots
-VerticleBarPlot(estimated_sensors, sensors, error_sensors)
+%% verticle bar plots
+VerticleBarPlot(estimated_sensors_SOCP, sensors, error_sensors_SOCP)
+
+
+
+%{
+if dim == 1
+    error_sensors_SDP = ((sensors'-estimated_sensors_SDP').^2).^.5;
+else 
+    error_sensors_SDP = sum(((sensors-estimated_sensors_SDP).^2)).^.5;
+end
+%% verticle bar plots
+VerticleBarPlot(estimated_sensors_SDP, sensors, error_sensors_SDP)
+%}
+
+toc
+%% Regression 
+
+df = @reg_gradient 
+f = @reg_fval 
+[x_initial,blah, blah2] = generate_sensor(anchors,num_sensors,1);
+
+MAX_ITER = 15000;
+TOL = .0001;
+ALPHA = .05;
+debug = 1; 
+
+Regression_SDM_Q1(f,df, x_initial, MAX_ITER, TOL, ALPHA, num_sensors,  Pairwise_Sensor_Distance, Sensor_Anchor_Distance, anchors, debug)

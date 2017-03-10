@@ -1,0 +1,35 @@
+function [estimated_sensors] = Regression_SDM_Q1(f,df, x_initial, MAX_ITER, TOL, ALPHA, num_sensors, Pairwise_Sensor_Distance, Sensor_Anchor_Distance, anchors)
+
+    %% find number of unique sensors involved in the optimization
+    
+    x_prev = x_initial;
+    
+    iter = 1;
+    fvals = [];
+    gvals = [];
+    
+    psd = Pairwise_Sensor_Distance;
+    sad = Sensor_Anchor_Distance;
+    fvals(iter) = f(psd, sad, anchors, x)
+    gvals(iter) = norm(df(num_sensors,psd,sad,anchors,x));
+    
+    
+    
+    
+    while iter < MAX_ITER
+        
+        iter = iter + 1;
+        x_new = x_prev - ALPHA*df(num_sensors, psd, sad, anchors, x_prev)
+        
+          fvals(iter) = f(psd, sad, anchors, x)
+    gvals(iter) = norm(df(num_sensors,psd,sad,anchors,x));
+        
+        
+        
+        
+    end
+    
+    
+    
+
+end
