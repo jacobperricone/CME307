@@ -1,6 +1,15 @@
-
 function [fval] = reg_fval(Pairwise_Sensor_Distance, Sensor_Anchor_Distance, anchors, x)
-
+%
+% Returns the gradient of the regression function
+% Inputs:
+    % anchors: the known anchors
+    % Pairwise_Sensor_Distance: sensor1_id, sensor2_id, distance
+    % Sensor_Anchor_Distance: sensor_id, anchor_id, distance
+    % x: the guess for the sensors!
+% return:
+	% fval: function value at x
+    
+    
 fval = 0;
 for i=1:size(Pairwise_Sensor_Distance,1)
     sensor1_idx = Pairwise_Sensor_Distance(i,1);
