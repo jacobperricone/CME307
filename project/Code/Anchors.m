@@ -22,12 +22,7 @@ function [ anchors ] = Anchors(dim)
     if dim == 1
         
         anchors = [min(random_x), max(random_x)];
-        
-        plot(anchors, [0, 0], 'Color', 'cyan', 'LineWidth', 10) 
-        axis([anchors(1)-.5, anchors(2)+.5, -.01, .01])
-        yticks('')
-        hold on
-        
+
     elseif dim == 2
         
         % creates the convexhull around (x,y)
@@ -36,23 +31,13 @@ function [ anchors ] = Anchors(dim)
         k = convexHull(DT);
         anchors = [(3*DT.Points(k(1:end-1),1)-1)'; (3*DT.Points(k(1:end-1),2)-1)'];
         
-        figure()
-        plot(3*DT.Points(k,1)-1, 3*DT.Points(k,2)-1,'r') 
-        hold on
-    
+
     elseif dim == 3
         
         % creates the convexhull around (x,y)
         DT = delaunayTriangulation(random_x, random_y, random_z);
         anchors = DT.Points';
-        % indecies of vertices of the covexhull
-        [k,v] = convexHull(DT);
-        
-        figure()
-        trisurf(k,3*DT.Points(:,1)-1, 3*DT.Points(:,2)-1, 3*DT.Points(:,3)-1, 'FaceColor', 'cyan')
-        alpha(.1)
-        hold on 
-              
+           
     end
     
 end
