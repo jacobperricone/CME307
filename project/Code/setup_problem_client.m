@@ -3,13 +3,15 @@ close all
 
 tic
 %% generates anchors
-dim = 2;
+dim = 1;
 anchors = Anchors(dim);
+
+
 
 size_x = size(anchors, 1);
 num_anchors = size(anchors,2);
 % find number of sensors 
-num_sensors = 40;
+num_sensors = 20;
 % generate them
 [sensors, dx, da] = generate_sensor(anchors,num_sensors,1);
 
@@ -67,8 +69,21 @@ estimated_sensors_SDP = Z(length(anchors(:,1))+1:end, 1:size_x)';
 
 
 
+if dim == 1
+    error_sensors_SDP = ((sensors'-estimated_sensors_SDP').^2).^.5;
+else 
+    error_sensors_SDP = sum(((sensors-estimated_sensors_SDP).^2)).^.5;
+end
+
+% verticle bar plots
+VerticleBarPlot(estimated_sensors_SDP, sensors, error_sensors_SDP, anchors)
+
+
+
+
 %% solves the SOCP Relaxation Problem/
-estimated_sensors_SOCP = SOCP(num_sensors, Pairwise_Sensor_Distance, Sensor_Anchor_Distance, anchors)
+estimated_sensors_SOCP = SOCP(num_sensors, Pairwise_Sensor_Distance, Sensor_Anchor_Distance, anchors);
+
 
 if dim == 1
     error_sensors_SOCP = ((sensors'-estimated_sensors_SOCP').^2).^.5;
@@ -76,20 +91,10 @@ else
     error_sensors_SOCP = sum(((sensors-estimated_sensors_SOCP).^2)).^.5;
 end
 
-%% verticle bar plots
-VerticleBarPlot(estimated_sensors_SOCP, sensors, error_sensors_SOCP)
+% verticle bar plots
+VerticleBarPlot(estimated_sensors_SOCP, sensors, error_sensors_SOCP, anchors)
 
 
-
-%{
-if dim == 1
-    error_sensors_SDP = ((sensors'-estimated_sensors_SDP').^2).^.5;
-else 
-    error_sensors_SDP = sum(((sensors-estimated_sensors_SDP).^2)).^.5;
-end
-%% verticle bar plots
-VerticleBarPlot(estimated_sensors_SDP, sensors, error_sensors_SDP)
-%}
 
 toc
 
