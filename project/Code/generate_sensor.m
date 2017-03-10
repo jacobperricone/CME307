@@ -13,26 +13,7 @@ function [sensors, d_x, d_a] = generate_sensor(anchors, num_sensors, debug)
     
     sensors = repmat(min_values  - mean(max_values - min_values,2)/4, 1,num_sensors,1)...
         + rand(num_dimensions,num_sensors).*(repmat(max_values + mean(max_values - min_values,2)/2 - min_values, 1, num_sensors,1));
-     
-    
-    
-    
-    if debug
-        
-        if num_dimensions == 1
-            plot(sensors, zeros(1, length(sensors)), 'ko') 
-            
-        elseif num_dimensions == 2
-            scatter(sensors(1,:), sensors(2,:), 'ko')
-            
-        elseif num_dimensions == 3
-            plot3(sensors(1,:), sensors(2,:), sensors(3,:), 'ko')
-            
-        end
-        
-    end
-   
-    
+  
     
     d_x = pdist2(sensors',sensors');
     d_a = pdist2(sensors',anchors');
