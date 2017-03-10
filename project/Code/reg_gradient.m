@@ -1,7 +1,16 @@
-
 function [grad] = reg_gradient(num_sensors, Pairwise_Sensor_Distance, Sensor_Anchor_Distance, anchors, x)
-
-d = size(anchors,1)
+%
+% Returns the gradient of the regression function
+% Inputs:
+    % num_sensors: number of sensors to estimate, 
+    % anchors: the known anchors
+    % Pairwise_Sensor_Distance: sensor1_id, sensor2_id, distance
+    % Sensor_Anchor_Distance: sensor_id, anchor_id, distance
+    % x: the guess for the sensors!
+% return:
+	% rad: gradient vector
+    
+d = size(anchors,1);
 grad = zeros(d, num_sensors);
 
 
