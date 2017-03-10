@@ -50,7 +50,7 @@ function [sensors, d_x, d_a] = generate_sensor(anchors, num_sensors, debug)
             
         end
         title('Sensors vs. Convex Hull of Anchors')
-        legend('Convex Hull', 'Sensors')
+        legend('Convex Hull
         
     end
    

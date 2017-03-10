@@ -7,7 +7,7 @@ close all
 
 tic
 %% generates anchors, and distance information
-dim = 2;
+dim = 3;
 anchors = Anchors(dim);
 
 
@@ -85,7 +85,7 @@ VerticleBarPlot(estimated_sensors_SDP, sensors, error_sensors_SDP, anchors, 'SDP
 df = @reg_gradient 
 f = @reg_fval 
 % Set the convergence and iteration limits
-MAX_ITER = 100; TOL = .0001; ALPHA = .0001; debug = 0; 
+MAX_ITER = 1000; TOL = .0001; ALPHA = .0001; debug = 0; 
 % run the descent methods
 
 %%
@@ -101,8 +101,8 @@ else
     error_sensors_ASDM = sum(((sensors-estimated_sensors_ASDM).^2)).^.5;
 end
 %%
-VerticleBarPlot(estimated_sensors_SDM, sensors, error_sensors_SDM,anchors, 'SDM')
-VerticleBarPlot(estimated_sensors_ASDM, sensors, error_sensors_ASDM,anchors,'ASDM')
+VerticleBarPlot(estimated_sensors_SDM, sensors, error_sensors_SDM,anchors, 'SDP with SDM')
+VerticleBarPlot(estimated_sensors_ASDM, sensors, error_sensors_ASDM,anchors,'SDP with ASDM')
 %%
 figure()
 subplot(2,1,1)
