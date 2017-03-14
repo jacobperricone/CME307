@@ -7,7 +7,7 @@ close all
 
 tic
 %% generates anchors, and distance information
-dim = 3;
+dim = 1;
 anchors = Anchors(dim);
 
 
