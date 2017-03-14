@@ -38,10 +38,12 @@ function [estimated_sensors, fvals, gvals, iter] = Regression_ASDM_Q1(f,df, x_in
     
     while iter < MAX_ITER
         if abs(gvals(iter)) < TOL
-            disp(sprintf('----GRADIENT NORM IS BELOW TOLERANCE CONVERGENCE OF FUNCTION AFTER %d ITERATIONS-----', iter))
-            disp(sprintf('-----------------------FINAL Iteration: %d--------------------------------', iter));
-            disp('  f(x)    delta_f(x)    g(x)     delta_g(x) ')
-            disp([  fvals(iter), fvals(iter) - fvals(iter-1), gvals(iter), gvals(iter) - gvals(iter)  ])
+            if iter > 1
+                disp(sprintf('----GRADIENT NORM IS BELOW TOLERANCE CONVERGENCE OF FUNCTION AFTER %d ITERATIONS-----', iter))
+                disp(sprintf('-----------------------FINAL Iteration: %d--------------------------------', iter));
+                disp('  f(x)    delta_f(x)    g(x)     delta_g(x) ')
+                disp([  fvals(iter), fvals(iter) - fvals(iter-1), gvals(iter), gvals(iter) - gvals(iter)  ])
+            end
             break;
         end
 
