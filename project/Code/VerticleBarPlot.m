@@ -18,7 +18,7 @@ function [  ] = VerticleBarPlot(estimated_sensors, sensors, error_sensors, ancho
         % Add estiamted locations to the 2D plot.
         plot(anchors, [0, 0], 'Color', 'cyan', 'LineWidth', 10) 
         axis([anchors(1)-.5, anchors(2)+.5, -.01, .01])
-        yticks('')
+        
         hold on
         plot(sensors, zeros(1, length(sensors)), 'ko')
         hold on
